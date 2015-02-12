@@ -1,0 +1,7 @@
+TODO
+----
+
+- [ ] tmux
+- [ ] tmuxinator
+- [ ] zsh
+
