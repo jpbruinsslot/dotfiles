@@ -1,6 +1,6 @@
 {
-    "dot_path": "/home/jp/dotfiles", 
+    "dot_path": "/home/erroneousboat/dotfiles", 
     "files": {
-        "dotconfig": "/home/jp/.dotconfig"
+        "dotconfig": "/home/erroneousboat/.dotconfig"
     }
 }
