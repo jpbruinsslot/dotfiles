@@ -8,11 +8,13 @@ import subprocess
 
 def check_status(metric_status):
     if metric_status == "Full":
-        return '✔'
+        return "✔"
     elif metric_status == "Charging":
-        return '⚡'
-    if metric_status == "Discharging":
+        return "⚡"
+    elif metric_status == "Discharging":
         return "⇣"
+    else:
+        return "?"
 
 
 def main():
@@ -28,7 +30,7 @@ def main():
 
     if "No support" in console_output:
         # There is no battery and probably on a power supply
-        print '⚡'
+        print "⚡"
         return
 
     # Format will be:
