@@ -3,6 +3,7 @@
     "files": {
         "battery": "/bin/tmux-battery.py", 
         "dotconfig": "/.dotconfig", 
-        "tmux": "/.tmux.conf"
+        "tmux": "/.tmux.conf", 
+        "zshrc": "/.zshrc"
     }
 }
