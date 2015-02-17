@@ -1,6 +1,7 @@
 {
     "dot_path": "/dotfiles", 
     "files": {
+        "battery": "/bin/tmux-battery.py", 
         "dotconfig": "/.dotconfig", 
         "tmux": "/.tmux.conf"
     }
