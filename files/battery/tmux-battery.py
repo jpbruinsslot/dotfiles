@@ -7,9 +7,11 @@ import subprocess
 
 
 def check_status(metric_status):
-    if metric_status == "charging":
+    if metric_status == "Full":
+        return '✔'
+    elif metric_status == "Charging":
         return '⚡'
-    if metric_status == "discharging":
+    if metric_status == "Discharging":
         return "⇣"
 
 
@@ -35,7 +37,6 @@ def main():
 
     metric_status = list_metrics[0].split(":")[-1].strip()
     metric_percentage = int(re.match(r'\d+', list_metrics[1]).group())
-    metric_remaining = re.match(r'[\d\:]+', list_metrics[2]).group
 
     print "%s %s%%" % (check_status(metric_status), metric_percentage)
 
