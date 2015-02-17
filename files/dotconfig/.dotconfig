@@ -1,5 +1,5 @@
 {
-    "dot_path": "/home/jp/dotfiles", 
+    "dot_path": "/dotfiles", 
     "files": {
         "dotconfig": "/.dotconfig", 
         "tmux": "/.tmux.conf"
