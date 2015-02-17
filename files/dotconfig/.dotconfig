@@ -4,6 +4,7 @@
         "battery": "/bin/tmux-battery.py", 
         "dotconfig": "/.dotconfig", 
         "tmux": "/.tmux.conf", 
+        "tmuxinator": "/.tmuxinator/scrib.yml", 
         "zshrc": "/.zshrc"
     }
 }
