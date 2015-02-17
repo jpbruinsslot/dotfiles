@@ -3,6 +3,7 @@
     "files": {
         "battery": "/bin/tmux-battery.py", 
         "dotconfig": "/.dotconfig", 
+        "sublimetext": "/.config/sublime-text-3/Packages/User/Preferences.sublime-settings", 
         "tmux": "/.tmux.conf", 
         "tmuxinator": "/.tmuxinator/scrib.yml", 
         "zshrc": "/.zshrc"
