@@ -1,7 +1,7 @@
 {
-    "dot_path": "/home/erroneousboat/dotfiles", 
+    "dot_path": "/home/jp/dotfiles", 
     "files": {
-        "dotconfig": "/home/erroneousboat/.dotconfig", 
-        "tmux": "/home/erroneousboat/.tmux.conf"
+        "dotconfig": "/.dotconfig", 
+        "tmux": "/.tmux.conf"
     }
 }
