@@ -1,0 +1,9 @@
+[core]
+    editor = vi
+
+[color]
+    ui = true
+    branch = auto
+    diff = auto
+    status = auto
+
