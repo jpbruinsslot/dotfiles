@@ -4,7 +4,7 @@
 	"Seti_tabs_small": true,
 	"anaconda_gutter_theme": "basic",
 	"anaconda_linter_mark_style": "none",
-	"color_scheme": "Packages/User/SublimeLinter/Monokai Soda (SL).tmTheme",
+	"color_scheme": "Packages/User/Monokai Soda.tmTheme",
 	"font_face": "Ubuntu Mono",
 	"font_size": 9,
 	"highlight_line": "true",
