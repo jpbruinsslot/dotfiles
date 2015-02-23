@@ -1,8 +1,6 @@
-function prompt_char {
-	if [ $UID -eq 0 ]; then echo "#"; else echo $; fi
-}
+PROMPT='%{$fg_bold[blue]%}%(!.%1~.%~) $(git_prompt_info)$PROMPT_CHAR%{$reset_color%} '
 
-PROMPT='%{$fg_bold[blue]%}%(!.%1~.%~) %{$fg_bold[green]%}$(git_prompt_info)%_$(prompt_char)%{$reset_color%} '
-
-ZSH_THEME_GIT_PROMPT_PREFIX="("
-ZSH_THEME_GIT_PROMPT_SUFFIX=") "
+ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[green]%}("
+ZSH_THEME_GIT_PROMPT_SUFFIX=") %{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[red]%}*%{$fg[green]%}"
+PROMPT_CHAR="%{$fg_bold[blue]%}$"
