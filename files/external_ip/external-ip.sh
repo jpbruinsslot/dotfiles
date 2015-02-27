@@ -1,2 +1,2 @@
 #/bin/bash
-curl http://ipecho.net/plain; echo
+dig +short myip.opendns.com @resolver1.opendns.com; echo
