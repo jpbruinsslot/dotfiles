@@ -19,7 +19,7 @@ root: ~/
 # tmux_command: byobu
 
 windows:
-  - htop: htop
+  - system: glances
   - dev:
       layout: even-horizontal
       panes:
