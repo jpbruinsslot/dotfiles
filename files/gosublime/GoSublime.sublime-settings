@@ -1,0 +1,20 @@
+{
+    // you may set specific environment variables here
+    // e.g "env": { "PATH": "$HOME/go/bin:$PATH" }
+    // in values, $PATH and ${PATH} are replaced with
+    // the corresponding environment(PATH) variable, if it exists.
+    "env": {
+        "GOPATH": "$HOME/go"
+    },
+
+    // Your shell. e.g. on Linux and OS X, if your shell bash:
+    // you may set it to ["/bin/bash", "--login", "-c", "$CMD"]
+    // it's useful to pass the --login argument in order for it run your ~/.bashrc etc.
+    // otherwise environment variables may not be seen by Sublime Text and therefore GoSublime
+    //
+    // If set, commands are passed to it instead of the Python default which for *nix is usually
+    // /bin/sh which in most cases is not what you want
+    //
+    // the special entry "$CMD" is replaced by the actual command
+    "shell": ["/bin/zsh", "--login", "c", "$CMD"],
+}
