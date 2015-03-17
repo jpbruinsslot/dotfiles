@@ -2,6 +2,7 @@
     "dot_path": "/dotfiles", 
     "files": {
         "battery": "/bin/tmux-battery.py", 
+        "dircolors": "/.dircolors", 
         "dotconfig": "/.dotconfig", 
         "external_ip": "/bin/external-ip.sh", 
         "gitconfig": "/.gitconfig", 

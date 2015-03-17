@@ -30,3 +30,8 @@ export PATH="/home/erroneousboat/.rvm/gems/ruby-2.0.0-p247/bin:/home/erroneousbo
 # Go Setup
 export GOPATH=$HOME/go
 export PATH=$GOPATH/bin:$PATH
+
+# dircolors
+if [ -f /usr/bin/dircolors ]; then
+    eval `dircolors ~/.dir_colors`
+fi
