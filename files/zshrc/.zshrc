@@ -33,5 +33,5 @@ export PATH=$GOPATH/bin:$PATH
 
 # dircolors
 if [ -f /usr/bin/dircolors ]; then
-    eval `dircolors ~/.dir_colors`
+    eval `dircolors ~/.dircolors`
 fi
