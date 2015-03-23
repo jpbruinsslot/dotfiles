@@ -3,6 +3,19 @@ execute pathogen#infect()
 syntax on
 filetype plugin indent on
 
+" use vim settings, rather than vi settings
+set nocompatible
+
+" for 256 colors on the terminal
+set t_Co=256
+
+" cursorline
+set cursorline
+hi CursorLine cterm=NONE ctermbg=8 ctermfg=NONE
+
+" allow backspacing over everything in insert mode
+set backspace=indent,eol,start
+
 " key mapping
 map <C-n> :NERDTreeToggle<CR>		" NERDtree
 
