@@ -12,6 +12,7 @@
         "tmux": "/.tmux.conf", 
         "tmuxinator": "/.tmuxinator/scrib.yml", 
         "vim": "/.vim", 
+        "vimrc": "/.vimrc", 
         "zshrc": "/.zshrc"
     }
 }
