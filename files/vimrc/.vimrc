@@ -1,30 +1,109 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => General
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " pathogen
 execute pathogen#infect()
-syntax on
 filetype plugin indent on
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => VIM user interface
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" allow backspacing over everything in insert mode
+set backspace=indent,eol,start
 
 " use vim settings, rather than vi settings
 set nocompatible
-
-" for 256 colors on the terminal
-set t_Co=256
 
 " cursorline
 set cursorline
 hi CursorLine cterm=NONE ctermbg=8 ctermfg=NONE
 
-" allow backspacing over everything in insert mode
-set backspace=indent,eol,start
+" ignore when searching
+set ignorecase
 
-" key mapping
-map <C-n> :NERDTreeToggle<CR>		" NERDtree
+" when searching try to be smart about cases
+set smartcase
+
+" highlight search result
+set hlsearch
+
+" search as characters are entered
+set incsearch
+
+" No annoying sound on errors
+set noerrorbells
+set novisualbell
+set t_vb=
+set tm=500
+
+" show line numbers
+set number
+
+" display status line at bottom of vim window
+set ruler
+
+"show command in bottom bar
+set showcmd
+
+" visual autocomplete for command menu
+set wildmenu
+
+" highlight matching [{()}]
+set showmatch
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Colors and Fonts
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" enable syntax highlighting
+syntax on
+
+" colorscheme
+set background=dark
+colorscheme molokai
+
+" Set utf8 as standard encoding and en_US as the standard language
+set encoding=utf8
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Text, tab and indent related
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Use spaces instead of tabs
+set expandtab
+
+" Be smart when using tabs ;)
+set smarttab
+
+" 1 tab == 4 spaces
+set shiftwidth=4
+set tabstop=4
+
+" Linebreak on 500 characters
+set lbr
+set tw=500
+
+set ai "Auto indent
+set si "Smart indent
+set wrap "Wrap lines
 
 " make vim handle long lines nicely
 set wrap
 set textwidth=79
 set formatoptions=qrn1
-set number
 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Key mapping
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" NERDTree
+map <C-n> :NERDTreeToggle<CR>
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " syntastic settings
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
