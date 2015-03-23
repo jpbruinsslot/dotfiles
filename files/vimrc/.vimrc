@@ -25,3 +25,4 @@ let g:syntastic_check_on_wq = 0
 " vim-airline settings
 set laststatus=2
 let g:airline_powerline_fonts = 1
+let g:airline_theme = 'molokai'
