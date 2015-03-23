@@ -4,3 +4,6 @@
 [submodule "files/vim/.vim/bundle/vim-surround"]
 	path = files/vim/.vim/bundle/vim-surround
 	url = https://github.com/tpope/vim-surround
+[submodule "files/vim/.vim/bundle/syntastic"]
+	path = files/vim/.vim/bundle/syntastic
+	url = https://github.com/scrooloose/syntastic
