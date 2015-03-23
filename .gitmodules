@@ -13,3 +13,6 @@
 [submodule "files/vim/.vim/bundle/vim-airline"]
 	path = files/vim/.vim/bundle/vim-airline
 	url = https://github.com/bling/vim-airline
+[submodule "files/vim/.vim/bundle/molokai"]
+	path = files/vim/.vim/bundle/molokai
+	url = https://github.com/tomasr/molokai
