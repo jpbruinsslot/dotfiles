@@ -10,3 +10,6 @@
 [submodule "files/vim/.vim/bundle/ctrlp.vim"]
 	path = files/vim/.vim/bundle/ctrlp.vim
 	url = https://github.com/kien/ctrlp.vim
+[submodule "files/vim/.vim/bundle/vim-airline"]
+	path = files/vim/.vim/bundle/vim-airline
+	url = https://github.com/bling/vim-airline
