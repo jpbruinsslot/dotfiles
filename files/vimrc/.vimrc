@@ -59,8 +59,13 @@ set showmatch
 " enable syntax highlighting
 syntax on
 
-" colorscheme
+" use 256 colors
+set t_Co=256
+
+" background color
 set background=dark
+
+" colorscheme
 colorscheme molokai
 
 " Set utf8 as standard encoding and en_US as the standard language
