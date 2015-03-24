@@ -19,6 +19,9 @@ plugins=(git git-extras docker vagrant sublime tmuxinator vi-mode)
 # A shortcut for tmuxinator
 alias mux=tmuxinator
 
+# force tmux to use 256 colors
+alias tmux='tmux -2'
+
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
