@@ -60,7 +60,7 @@ set showmatch
 syntax on
 
 " use 256 colors
-set t_Co=256
+" set t_Co=256
 
 " background color
 set background=dark
