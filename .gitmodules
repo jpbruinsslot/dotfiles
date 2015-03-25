@@ -22,3 +22,6 @@
 [submodule "files/vim/.vim/bundle/numbers.vim"]
 	path = files/vim/.vim/bundle/numbers.vim
 	url = https://github.com/myusuf3/numbers.vim
+[submodule "files/vim/.vim/bundle/neocomplete.vim"]
+	path = files/vim/.vim/bundle/neocomplete.vim
+	url = https://github.com/Shougo/neocomplete.vim
