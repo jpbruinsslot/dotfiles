@@ -123,3 +123,6 @@ let g:syntastic_check_on_wq = 0
 set laststatus=2
 let g:airline_powerline_fonts = 1
 let g:airline_theme = 'powerlineish'
+
+" neocomplete settings
+let g:neocomplete#enable_at_start_up = 1
