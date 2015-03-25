@@ -28,3 +28,6 @@
 [submodule "files/vim/.vim/bundle/tagbar"]
 	path = files/vim/.vim/bundle/tagbar
 	url = https://github.com/majutsushi/tagbar
+[submodule "files/vim/.vim/bundle/nerdcommenter"]
+	path = files/vim/.vim/bundle/nerdcommenter
+	url = https://github.com/scrooloose/nerdcommenter
