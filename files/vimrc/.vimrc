@@ -52,6 +52,8 @@ set wildmenu
 " highlight matching [{()}]
 set showmatch
 
+" remove default vim mode information
+set noshowmode
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
