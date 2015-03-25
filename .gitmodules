@@ -31,3 +31,6 @@
 [submodule "files/vim/.vim/bundle/nerdcommenter"]
 	path = files/vim/.vim/bundle/nerdcommenter
 	url = https://github.com/scrooloose/nerdcommenter
+[submodule "files/vim/.vim/bundle/vim-go"]
+	path = files/vim/.vim/bundle/vim-go
+	url = https://github.com/fatih/vim-go
