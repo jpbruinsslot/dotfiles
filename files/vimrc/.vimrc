@@ -105,6 +105,8 @@ set formatoptions=qrn1
 " NERDTree
 map <C-n> :NERDTreeToggle<CR>
 
+" Tagbar
+nmap <F8> :TagbarToggle<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin settings
