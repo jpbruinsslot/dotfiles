@@ -1,7 +1,0 @@
-TODO
-----
-
-- [ ] tmux
-- [ ] tmuxinator
-- [ ] zsh
-
