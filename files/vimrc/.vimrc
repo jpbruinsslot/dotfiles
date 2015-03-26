@@ -31,8 +31,7 @@ set autoread
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Plug-ins
-" :source %
+" => Plugins 
 " : PlugInstall
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
@@ -90,6 +89,7 @@ set number
 
 " display status line at bottom of vim window
 set ruler
+set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%)
 
 "show command in bottom bar
 set showcmd
@@ -99,6 +99,9 @@ set wildmenu
 
 " highlight matching [{()}]
 set showmatch
+
+" redraw only when we need to
+set lazyredraw
 
 " remove default vim mode information
 set noshowmode
@@ -194,6 +197,19 @@ map <leader>tm :tabmove
 " Super useful when editing files in the same directory
 map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 
+" save session, reopen it with vim -S
+nnoremap <leader>s :mksession<cr>
+
+" ctrl+s should save
+nmap <C-s>s :w<CR>
+vmap <C-s> <Esc><C-s>gv
+nmap <C-s> <Esc><C-s>
+
+" Wrapped lines goed down/up to next row, rather than next
+" line in file.
+noremap j gj
+noremap k gk
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin settings
@@ -248,3 +264,12 @@ let g:tagbar_type_go = {
     \ 'ctagsbin'  : 'gotags',
     \ 'ctagsargs' : '-sort -silent'
 \ }
+
+" tmux settings: allows cursor change in tmux mode
+if exists('$TMUX')
+    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+else
+    let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+    let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+endif
