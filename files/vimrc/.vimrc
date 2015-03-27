@@ -103,6 +103,9 @@ set showmatch
 " redraw only when we need to
 set lazyredraw
 
+" disable background erase, background color will work in tmux
+set t_ut=
+
 " remove default vim mode information
 set noshowmode
 
@@ -117,6 +120,7 @@ autocmd BufReadPost *
 
 " enable all python syntax highlighting features
 let python_highlight_all = 1
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
@@ -205,7 +209,7 @@ nmap <C-s>s :w<CR>
 vmap <C-s> <Esc><C-s>gv
 nmap <C-s> <Esc><C-s>
 
-" Wrapped lines goed down/up to next row, rather than next
+" Wrapped lines goes down/up to next row, rather than next
 " line in file.
 noremap j gj
 noremap k gk
