@@ -20,11 +20,7 @@ root: ~/
 
 windows:
   - system: glances
-  - dev:
-      layout: even-horizontal
-      panes:
-        - Projects
-        - Projects
+  - vim: vim
   - scribendio: 
       layout: f919,237x29,0,0[237x14,0,0{118x14,0,0,6,118x14,119,0,9},237x7,0,15,7,237x6,0,23,8]
       panes:
@@ -46,5 +42,10 @@ windows:
           - sleep 120s
           - vagrant ssh
           - sudo tail -f /var/log/nginx/error.log
+  - dev:
+      layout: even-horizontal
+      panes:
+        - Projects
+        - Projects
   - sshuttle: sshuttle.sh
   - vpn: /etc/openvpn/
