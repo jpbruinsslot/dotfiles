@@ -20,7 +20,7 @@ root: ~/
 
 windows:
   - system: glances
-  - vim: vim
+  - vim: cd ~/Projects/scribendio-django/ && vim
   - scribendio: 
       layout: f919,237x29,0,0[237x14,0,0{118x14,0,0,6,118x14,119,0,9},237x7,0,15,7,237x6,0,23,8]
       panes:
