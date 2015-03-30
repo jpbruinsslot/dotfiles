@@ -231,7 +231,7 @@ let NERDTreeShowBookmarks=1
 " pymode
 let g:pymode_folding=0
 let g:pymode_lint_cwindow=0
-let g:pymode_rope_complete_on_dot = 0
+set completeopt-=preview
 
 " lightline.vim
 set laststatus=2
