@@ -121,6 +121,13 @@ autocmd BufReadPost *
 " enable all python syntax highlighting features
 let python_highlight_all = 1
 
+" highlight column limit
+set colorcolumn=79
+
+" highlight only when exceeding column limit
+" highlight ColorColumn ctermbg=magenta
+" call matchadd('ColorColumn', '\%79v', 100)
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
