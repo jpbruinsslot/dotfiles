@@ -49,6 +49,9 @@ Plug 'https://github.com/fatih/vim-go.git'
 Plug 'https://github.com/myusuf3/numbers.vim.git'
 Plug 'https://github.com/Lokaltog/vim-easymotion.git'
 Plug 'https://github.com/klen/python-mode.git'
+Plug 'https://github.com/Yggdroot/indentLine.git'
+Plug 'https://github.com/leshill/vim-json.git'
+Plug 'https://github.com/ekalinin/Dockerfile.vim.git'
 
 call plug#end()
 
@@ -114,9 +117,9 @@ set wildignore=*.o,*~,*.pyc
 
 " return to last edit position when opening files (You want this!)
 autocmd BufReadPost *
-     \ if line("'\"") > 0 && line("'\"") <= line("$") |
-     \   exe "normal! g`\"" |
-     \ endif
+    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal! g`\"" |
+    \ endif
 
 " enable all python syntax highlighting features
 let python_highlight_all = 1
