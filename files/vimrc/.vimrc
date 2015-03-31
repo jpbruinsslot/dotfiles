@@ -208,6 +208,11 @@ map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove
 
+" Custom mapping for tabs
+map <C-S-T> :tabnew<cr>
+map <C-]> gt
+map <C-[> gT
+
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
 map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
@@ -215,7 +220,7 @@ map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 " save session, reopen it with vim -S
 nnoremap <leader>s :mksession<cr>
 
-" ctrl+s should save
+" ctrl+s should save (only works in gui)
 nmap <C-s>s :w<CR>
 vmap <C-s> <Esc><C-s>gv
 nmap <C-s> <Esc><C-s>
