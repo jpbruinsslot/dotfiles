@@ -206,15 +206,14 @@ map - <C-W>-
 map + <C-W>+
 
 " Useful mappings for managing tabs
-map <leader>tn :tabnew<cr>
-map <leader>to :tabonly<cr>
-map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove
+nnoremap tn :tabnew<cr>
+nnoremap to :tabonly<cr>
+nnoremap tc :tabclose<cr>
+nnoremap tm :tabmove<Space>
 
-" Custom mapping for tabs
-map <C-S-T> :tabnew<cr>
-map <C-]> gt
-map <C-[> gT
+" Tab navigation
+nnoremap th :tabprev<CR>
+nnoremap tl :tabnext<CR>
 
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
