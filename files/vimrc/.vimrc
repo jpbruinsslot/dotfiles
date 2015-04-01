@@ -52,6 +52,7 @@ Plug 'https://github.com/klen/python-mode.git'
 Plug 'https://github.com/Yggdroot/indentLine.git'
 Plug 'https://github.com/leshill/vim-json.git'
 Plug 'https://github.com/ekalinin/Dockerfile.vim.git'
+Plug 'https://github.com/tpope/vim-fugitive.git'
 
 call plug#end()
 
@@ -249,9 +250,58 @@ set completeopt-=preview
 
 " lightline.vim
 set laststatus=2
+
 let g:lightline = {
     \ 'colorscheme': 'wombat',
+    \ 'active': {
+    \   'left': [ [ 'mode', 'paste' ],
+    \             [ 'fugitive', 'filename' ] ]
+    \ },
+    \ 'component_function': {
+    \   'fugitive': 'MyFugitive',
+    \   'readonly': 'MyReadonly',
+    \   'modified': 'MyModified',
+    \   'filename': 'MyFilename'
+    \ },
+    \ 'separator': { 'left': '', 'right': '' },
+    \ 'subseparator': { 'left': '|', 'right': '|' }
     \ }
+
+function! MyModified()
+    if &filetype == "help"
+        return ""
+    elseif &modified
+        return "+"
+    elseif &modifiable
+        return ""
+    else
+        return ""
+    endif
+endfunction
+
+function! MyReadonly()
+    if &filetype == "help"
+        return ""
+    elseif &readonly
+        return ""
+    else
+        return ""
+    endif
+endfunction
+
+function! MyFugitive()
+    if exists("*fugitive#head")
+        let _ = fugitive#head()
+        return strlen(_) ? ' '._ : ''
+    endif
+    return ''
+endfunction
+
+function! MyFilename()
+    return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
+        \ ('' != expand('%:t') ? expand('%:t') : '[No Name]') .
+        \ ('' != MyModified() ? ' ' . MyModified() : '')
+endfunction
 
 " neocomplete settings
 let g:acp_enableAtStartup = 0
