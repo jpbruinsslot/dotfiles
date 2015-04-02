@@ -53,6 +53,7 @@ Plug 'https://github.com/Yggdroot/indentLine.git'
 Plug 'https://github.com/leshill/vim-json.git'
 Plug 'https://github.com/ekalinin/Dockerfile.vim.git'
 Plug 'https://github.com/tpope/vim-fugitive.git'
+Plug 'https://github.com/Townk/vim-autoclose.git'
 
 call plug#end()
 
