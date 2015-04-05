@@ -234,6 +234,9 @@ nmap <C-s> <Esc><C-s>
 noremap j gj
 noremap k gk
 
+" Remove highlight from search when not needed
+nmap <leader>q :nohlsearch<cr>
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin settings
