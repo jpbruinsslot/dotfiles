@@ -222,7 +222,7 @@ nnoremap tl :tabnext<CR>
 map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 
 " save session, reopen it with vim -S
-nnoremap <leader>s :mksession<cr>
+nnoremap <leader>s :mksession!<cr>
 
 " ctrl+s should save (only works in gui)
 nmap <C-s>s :w<CR>
