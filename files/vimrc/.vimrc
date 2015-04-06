@@ -252,7 +252,19 @@ let g:pymode_folding=0
 let g:pymode_lint_cwindow=0
 set completeopt-=preview
 
-" lightline.vim
+" vim-go settings
+
+" enable goimports to automatically insert import paths instead of gofmt
+let g:go_fmt_command = "goimports"
+
+" syntax highlighting for functions, methods and structs
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
+
+" lightline.vim settings
 set laststatus=2
 
 let g:lightline = {
