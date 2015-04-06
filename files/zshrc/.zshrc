@@ -34,6 +34,9 @@ export PATH="/home/erroneousboat/.rvm/gems/ruby-2.0.0-p247/bin:/home/erroneousbo
 export GOPATH=$HOME/go
 export PATH=$GOPATH/bin:$PATH
 
+# Neovim setup, set truecolor support
+export NVIM_TUI_ENABLE_TRUE_COLOR=1
+
 # dircolors
 if [ -f /usr/bin/dircolors ]; then
     eval `dircolors ~/.dircolors`
