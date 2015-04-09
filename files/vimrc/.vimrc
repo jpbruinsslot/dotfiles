@@ -54,6 +54,7 @@ Plug 'https://github.com/leshill/vim-json.git'
 Plug 'https://github.com/ekalinin/Dockerfile.vim.git'
 Plug 'https://github.com/tpope/vim-fugitive.git'
 Plug 'https://github.com/Townk/vim-autoclose.git'
+Plug 'https://github.com/kchmck/vim-coffee-script'
 
 call plug#end()
 
