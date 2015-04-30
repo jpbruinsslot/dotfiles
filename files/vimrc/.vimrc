@@ -55,6 +55,7 @@ Plug 'https://github.com/ekalinin/Dockerfile.vim.git'
 Plug 'https://github.com/tpope/vim-fugitive.git'
 Plug 'https://github.com/Townk/vim-autoclose.git'
 Plug 'https://github.com/kchmck/vim-coffee-script'
+Plug 'https://github.com/mhinz/vim-startify.git'
 
 call plug#end()
 
@@ -364,3 +365,22 @@ else
     let &t_SI = "\<Esc>]50;CursorShape=1\x7"
     let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
+
+" easymotion
+let g:EasyMotion_leader_key = '<leader><leader>'
+
+" startify, used figlet -f slant erroneousboat for ascii text
+let g:startify_list_order = ['bookmarks', 'files', 'sessions']
+let g:startify_bookmarks = [
+    \ '~/Projects',
+    \ ]
+let g:startify_custom_header = [
+    \ '                                                      __                __ ',
+    \ '    ___  ______________  ____  ___  ____  __  _______/ /_  ____  ____ _/ /_',
+    \ '   / _ \/ ___/ ___/ __ \/ __ \/ _ \/ __ \/ / / / ___/ __ \/ __ \/ __ `/ __/',
+    \ '  /  __/ /  / /  / /_/ / / / /  __/ /_/ / /_/ (__  ) /_/ / /_/ / /_/ / /_  ',
+    \ '  \___/_/  /_/   \____/_/ /_/\___/\____/\__,_/____/_.___/\____/\__,_/\__/  ',
+    \ '',
+    \ '  =========================================================================',
+    \ '',
+    \ ]
