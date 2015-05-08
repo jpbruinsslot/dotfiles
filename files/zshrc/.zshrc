@@ -19,6 +19,9 @@ plugins=(git git-extras docker vagrant sublime tmuxinator vi-mode zsh-syntax-hig
 # A shortcut for tmuxinator
 alias mux=tmuxinator
 
+# A shortcut for docker-compose
+alias compose=docker-compose
+
 # force tmux to use 256 colors
 alias tmux='tmux -2'
 
