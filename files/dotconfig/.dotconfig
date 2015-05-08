@@ -7,6 +7,7 @@
         "external_ip": "/bin/external-ip.sh", 
         "gitconfig": "/.gitconfig", 
         "gosublime": "/.config/sublime-text-3/Packages/User/GoSublime.sublime-settings", 
+        "httpie": "/.httpie/config.json", 
         "ohmyzsh_theme": "/.oh-my-zsh/custom/gentoo.zsh-theme", 
         "sublimetext": "/.config/sublime-text-3/Packages/User/Preferences.sublime-settings", 
         "tmux": "/.tmux.conf", 
