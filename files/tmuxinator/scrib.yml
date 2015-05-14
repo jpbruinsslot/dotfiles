@@ -20,10 +20,11 @@ root: ~/
 
 windows:
   - system:
-      layout: even-vertical
+      layout: 2b7a,213x50,0,0[213x24,0,0,0,213x12,0,25,6,213x12,0,38,13]
       panes:
         - glances
         - sudo nethogs
+        - /etc/openvpn && clear
   - nvim: cd ~/Projects/scribendio-django/ && nvim
   - scribendio: 
       layout: f919,237x29,0,0[237x14,0,0{118x14,0,0,6,118x14,119,0,9},237x7,0,15,7,237x6,0,23,8]
@@ -49,7 +50,5 @@ windows:
   - dev:
       layout: even-horizontal
       panes:
-        - Projects
-        - Projects
-  - sshuttle: sshuttle.sh
-  - vpn: /etc/openvpn/
+        - Projects && clear
+        - Projects && clear
