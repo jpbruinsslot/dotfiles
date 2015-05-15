@@ -10,9 +10,14 @@ def get_cpu_load():
     return "%s%%" % load
 
 
+def get_memory_percent():
+    mem = psutil.virtual_memory()
+    return "%s%%" % mem.percent
+
+
 def main():
     try:
-        print get_cpu_load()
+        print "%s %s" % (get_cpu_load(), get_memory_percent())
     except:
         sys.exit(
             "psutil not found please install with pip install psutil")
