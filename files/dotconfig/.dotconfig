@@ -12,7 +12,7 @@
         "ohmyzsh_theme": "/.oh-my-zsh/custom/gentoo.zsh-theme", 
         "sublimetext": "/.config/sublime-text-3/Packages/User/Preferences.sublime-settings", 
         "tmux": "/.tmux.conf", 
-        "tmuxinator": "/.tmuxinator/scrib.yml", 
+        "tmuxinator": "/.tmuxinator", 
         "vim": "/.vim", 
         "vimrc": "/.vimrc", 
         "zshrc": "/.zshrc"
