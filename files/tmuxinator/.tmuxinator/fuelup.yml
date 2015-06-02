@@ -23,7 +23,7 @@ windows:
       layout: 2b7a,213x50,0,0[213x24,0,0,0,213x12,0,25,6,213x12,0,38,13]
       panes:
         - glances
-        - sudo nethogs
+        - sudo nethogs wlan0
         - /etc/openvpn && clear
   - nvim: cd ~/Projects/fuelup/ && nvim
   - dev:
