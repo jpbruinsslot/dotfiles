@@ -29,5 +29,5 @@ windows:
   - dev:
       layout: even-horizontal
       panes:
-        - Projects && clear
-        - Projects && clear
+        - Projects/fuelup && clear
+        - Projects/fuelup && clear
