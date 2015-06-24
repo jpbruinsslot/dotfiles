@@ -56,6 +56,7 @@ Plug 'https://github.com/tpope/vim-fugitive.git'
 Plug 'https://github.com/Townk/vim-autoclose.git'
 Plug 'https://github.com/kchmck/vim-coffee-script'
 Plug 'https://github.com/mhinz/vim-startify.git'
+Plug 'https://github.com/Matt-Deacalion/vim-systemd-syntax'
 
 call plug#end()
 
