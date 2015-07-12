@@ -385,3 +385,6 @@ let g:startify_custom_header = [
     \ '  =========================================================================',
     \ '',
     \ ]
+
+" autoclose settings
+let g:AutoClosePairs_add = """ '' <> "
