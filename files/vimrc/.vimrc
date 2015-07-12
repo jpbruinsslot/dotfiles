@@ -57,6 +57,8 @@ Plug 'https://github.com/Townk/vim-autoclose.git'
 Plug 'https://github.com/kchmck/vim-coffee-script'
 Plug 'https://github.com/mhinz/vim-startify.git'
 Plug 'https://github.com/Matt-Deacalion/vim-systemd-syntax'
+Plug 'https://github.com/scrooloose/syntastic.git'
+Plug 'https://github.com/mxw/vim-jsx.git'
 
 call plug#end()
 
@@ -388,3 +390,13 @@ let g:startify_custom_header = [
 
 " autoclose settings
 let g:AutoClosePairs_add = """ '' <> "
+
+" syntastic settings
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
