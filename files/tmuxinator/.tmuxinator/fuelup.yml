@@ -27,7 +27,7 @@ windows:
         - /etc/openvpn && clear
   - nvim: cd ~/Projects/fuelup/ && nvim
   - dev:
-      layout: even-horizontal
+      layout: even-vertical
       panes:
         - Projects/fuelup && clear
         - Projects/fuelup && clear
