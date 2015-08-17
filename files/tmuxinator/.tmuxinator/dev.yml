@@ -27,7 +27,7 @@ windows:
         - /etc/openvpn && clear
   - nvim: cd ~/Projects && clear
   - dev:
-      layout: even-horizontal
+      layout: even-vertical
       panes:
         - Projects && clear
         - Projects && clear
