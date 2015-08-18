@@ -57,7 +57,6 @@ Plug 'https://github.com/Townk/vim-autoclose.git'
 Plug 'https://github.com/kchmck/vim-coffee-script'
 Plug 'https://github.com/mhinz/vim-startify.git'
 Plug 'https://github.com/Matt-Deacalion/vim-systemd-syntax'
-Plug 'https://github.com/scrooloose/syntastic.git'
 Plug 'https://github.com/mxw/vim-jsx.git'
 
 call plug#end()
