@@ -32,7 +32,7 @@ set autoread
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins 
-" : PlugInstall
+" :PlugInstall
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
 
@@ -77,6 +77,9 @@ set nocompatible
 " cursorline
 set cursorline
 hi CursorLine cterm=NONE ctermbg=8 ctermfg=NONE
+
+" line seperator character
+set fillchars+=vert:│
 
 " ignore when searching
 set ignorecase
@@ -278,9 +281,11 @@ call NERDTreeHighlightFile('gitignore', 'Gray', 'none', '#7F7F7F', 'none')
 call NERDTreeHighlightFile('bashrc', 'Gray', 'none', '#686868', 'none')
 call NERDTreeHighlightFile('bashprofile', 'Gray', 'none', '#686868', 'none')
 
-call NERDTreeHighlightFile('py', 'yellow', 'none', '#ee9d16', 'none')
+call NERDTreeHighlightFile('py', 'blue', 'none', '#376F9D', 'none')
 call NERDTreeHighlightFile('md', 'blue', 'none', '#679EB5', 'none')
 call NERDTreeHighlightFile('sh', 'blue', 'none', '#AB74A0', 'none')
+call NERDTreeHighlightFile('go', 'blue', 'none', '#6AD7E5', 'none')
+call NERDTreeHighlightFile('html', 'red', 'none', '#6AD7E5', 'none')
 
 " pymode
 let g:pymode_folding=0
@@ -417,4 +422,4 @@ let g:startify_custom_header = [
     \ ]
 
 " indent line
-let g:indentLine_char = '|'
+let g:indentLine_char = '│'
