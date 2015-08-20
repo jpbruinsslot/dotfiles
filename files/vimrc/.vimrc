@@ -53,11 +53,14 @@ Plug 'https://github.com/Yggdroot/indentLine.git'
 Plug 'https://github.com/leshill/vim-json.git'
 Plug 'https://github.com/ekalinin/Dockerfile.vim.git'
 Plug 'https://github.com/tpope/vim-fugitive.git'
-Plug 'https://github.com/Townk/vim-autoclose.git'
 Plug 'https://github.com/kchmck/vim-coffee-script'
 Plug 'https://github.com/mhinz/vim-startify.git'
 Plug 'https://github.com/Matt-Deacalion/vim-systemd-syntax'
 Plug 'https://github.com/mxw/vim-jsx.git'
+Plug 'https://github.com/chriskempson/base16-vim/'
+Plug 'https://github.com/Raimondi/delimitMate'
+Plug 'https://github.com/valloric/MatchTagAlways'
+Plug 'https://github.com/ryanoasis/vim-devicons'
 
 call plug#end()
 
@@ -251,17 +254,43 @@ let NERDTreeIgnore=['\.vim$', '\~$', '\.pyc$', '\.swp$']
 let NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$',  '\~$']
 let NERDTreeShowBookmarks=1
 
+" NERDTress File highlighting
+function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
+exec 'autocmd FileType nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
+exec 'autocmd FileType nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
+endfunction
+
+call NERDTreeHighlightFile('jade', 'green', 'none', 'green', 'none')
+call NERDTreeHighlightFile('ini', 'yellow', 'none', '#d8a235', 'none')
+call NERDTreeHighlightFile('yml', 'yellow', 'none', '#d8a235', 'none')
+call NERDTreeHighlightFile('config', 'yellow', 'none', '#d8a235', 'none')
+call NERDTreeHighlightFile('conf', 'yellow', 'none', '#d8a235', 'none')
+call NERDTreeHighlightFile('json', 'green', 'none', '#d8a235', 'none')
+call NERDTreeHighlightFile('html', 'yellow', 'none', '#d8a235', 'none')
+" call NERDTreeHighlightFile('styl', 'cyan', 'none', 'cyan', 'none')
+" call NERDTreeHighlightFile('css', 'cyan', 'none', 'cyan', 'none')
+call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', 'none')
+call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', 'none')
+call NERDTreeHighlightFile('php', 'Magenta', 'none', '#ff00ff', 'none')
+call NERDTreeHighlightFile('ds_store', 'Gray', 'none', '#686868', 'none')
+call NERDTreeHighlightFile('gitconfig', 'black', 'none', '#686868', 'none')
+call NERDTreeHighlightFile('gitignore', 'Gray', 'none', '#7F7F7F', 'none')
+call NERDTreeHighlightFile('bashrc', 'Gray', 'none', '#686868', 'none')
+call NERDTreeHighlightFile('bashprofile', 'Gray', 'none', '#686868', 'none')
+
+call NERDTreeHighlightFile('py', 'yellow', 'none', '#ee9d16', 'none')
+call NERDTreeHighlightFile('md', 'blue', 'none', '#679EB5', 'none')
+call NERDTreeHighlightFile('sh', 'blue', 'none', '#AB74A0', 'none')
+
 " pymode
 let g:pymode_folding=0
 let g:pymode_lint_cwindow=0
 set completeopt-=preview
 
-" vim-go settings
-
-" enable goimports to automatically insert import paths instead of gofmt
+" vim-go: enable goimports to automatically insert import paths instead of gofmt
 let g:go_fmt_command = "goimports"
 
-" syntax highlighting for functions, methods and structs
+" vim-go: syntax highlighting for functions, methods and structs
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
@@ -387,15 +416,5 @@ let g:startify_custom_header = [
     \ '',
     \ ]
 
-" autoclose settings
-let g:AutoClosePairs_add = """ '' <> "
-
-" syntastic settings
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+" indent line
+let g:indentLine_char = '|'
