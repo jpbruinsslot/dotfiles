@@ -7,7 +7,6 @@ ZSH_THEME="gentoo"
 # Disable autosetting terminal title.
 DISABLE_AUTO_TITLE="true"
 
-
 # Command execution time stamp in the history command output.
 HIST_STAMPS="dd.mm.yyyy"
 
@@ -21,6 +20,9 @@ alias mux=tmuxinator
 
 # A shortcut for docker-compose
 alias compose=docker-compose
+
+# A shortcut for ccat
+alias cat=ccat
 
 # force tmux to use 256 colors
 alias tmux='tmux -2'
