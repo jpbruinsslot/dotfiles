@@ -61,6 +61,7 @@ Plug 'https://github.com/chriskempson/base16-vim/'
 Plug 'https://github.com/Raimondi/delimitMate'
 Plug 'https://github.com/valloric/MatchTagAlways'
 Plug 'https://github.com/ryanoasis/vim-devicons'
+Plug 'https://github.com/scrooloose/syntastic'
 
 call plug#end()
 
@@ -423,3 +424,15 @@ let g:startify_custom_header = [
 
 " indent line
 let g:indentLine_char = '│'
+
+" syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 0
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_error_symbol = "✗"
+let g:syntastic_warning_symbol = "⚠"
