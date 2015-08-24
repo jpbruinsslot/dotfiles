@@ -1,5 +1,5 @@
 [core]
-	editor = vi
+	editor = nvim
 
 [color]
     ui = true
