@@ -15,6 +15,9 @@ HIST_STAMPS="dd.mm.yyyy"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 plugins=(git git-extras docker vagrant sublime tmuxinator vi-mode zsh-syntax-highlighting)
 
+# Set term
+export TERM=xterm-256color-italic
+
 # A shortcut for tmuxinator
 alias mux=tmuxinator
 

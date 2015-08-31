@@ -62,6 +62,8 @@ Plug 'https://github.com/Raimondi/delimitMate'
 Plug 'https://github.com/valloric/MatchTagAlways'
 Plug 'https://github.com/ryanoasis/vim-devicons'
 Plug 'https://github.com/scrooloose/syntastic'
+Plug 'https://github.com/xolox/vim-easytags'
+Plug 'https://github.com/xolox/vim-misc'
 
 call plug#end()
 
@@ -160,9 +162,13 @@ set background=dark
 " colorscheme
 colorscheme molokai
 
-" Set utf8 as standard encoding and en_US as the standard language
+" set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
 
+" set italics
+highlight Comment gui=italic
+set t_ZH=^[[3m
+set t_ZR=^[[23m
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files, backups and undo
