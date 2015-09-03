@@ -146,6 +146,15 @@ set colorcolumn=79
 " highlight ColorColumn ctermbg=magenta
 " call matchadd('ColorColumn', '\%79v', 100)
 
+" Show syntax highlighting groups for word under cursor
+nmap <leader>p :call <SID>SynStack()<CR>
+function! <SID>SynStack()
+  if !exists("*synstack")
+    return
+  endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
