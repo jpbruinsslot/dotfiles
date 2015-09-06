@@ -279,29 +279,23 @@ exec 'autocmd FileType nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' 
 exec 'autocmd FileType nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
 endfunction
 
-call NERDTreeHighlightFile('jade', 'green', 'none', 'green', 'none')
 call NERDTreeHighlightFile('ini', 'yellow', 'none', '#d8a235', 'none')
 call NERDTreeHighlightFile('yml', 'yellow', 'none', '#d8a235', 'none')
-call NERDTreeHighlightFile('config', 'yellow', 'none', '#d8a235', 'none')
 call NERDTreeHighlightFile('conf', 'yellow', 'none', '#d8a235', 'none')
 call NERDTreeHighlightFile('json', 'green', 'none', '#d8a235', 'none')
-call NERDTreeHighlightFile('html', 'yellow', 'none', '#d8a235', 'none')
-" call NERDTreeHighlightFile('styl', 'cyan', 'none', 'cyan', 'none')
-" call NERDTreeHighlightFile('css', 'cyan', 'none', 'cyan', 'none')
 call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', 'none')
-call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', 'none')
-call NERDTreeHighlightFile('php', 'Magenta', 'none', '#ff00ff', 'none')
-call NERDTreeHighlightFile('ds_store', 'Gray', 'none', '#686868', 'none')
 call NERDTreeHighlightFile('gitconfig', 'black', 'none', '#686868', 'none')
 call NERDTreeHighlightFile('gitignore', 'Gray', 'none', '#7F7F7F', 'none')
-call NERDTreeHighlightFile('bashrc', 'Gray', 'none', '#686868', 'none')
-call NERDTreeHighlightFile('bashprofile', 'Gray', 'none', '#686868', 'none')
 
+call NERDTreeHighlightFile('js', 'yellow', 'none', '#F8DC3D', 'none')
 call NERDTreeHighlightFile('py', 'blue', 'none', '#376F9D', 'none')
 call NERDTreeHighlightFile('md', 'blue', 'none', '#679EB5', 'none')
 call NERDTreeHighlightFile('sh', 'blue', 'none', '#AB74A0', 'none')
 call NERDTreeHighlightFile('go', 'blue', 'none', '#6AD7E5', 'none')
-call NERDTreeHighlightFile('html', 'red', 'none', '#6AD7E5', 'none')
+call NERDTreeHighlightFile('html', 'red', 'none', '#E44D26', 'none')
+call NERDTreeHighlightFile('jsx', 'cyan', 'none', '#00d8ff', 'none')
+call NERDTreeHighlightFile('css', 'blue', 'none', '#1C70B0', 'none')
+call NERDTreeHighlightFile('scss', 'cyan', 'none', '#C6538C', 'none')
 
 " pymode
 let g:pymode_folding=0
