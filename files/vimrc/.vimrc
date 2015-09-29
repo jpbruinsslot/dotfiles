@@ -57,12 +57,10 @@ Plug 'https://github.com/kchmck/vim-coffee-script'
 Plug 'https://github.com/mhinz/vim-startify.git'
 Plug 'https://github.com/Matt-Deacalion/vim-systemd-syntax'
 Plug 'https://github.com/mxw/vim-jsx.git'
-Plug 'https://github.com/chriskempson/base16-vim/'
 Plug 'https://github.com/Raimondi/delimitMate'
 Plug 'https://github.com/valloric/MatchTagAlways'
 Plug 'https://github.com/ryanoasis/vim-devicons'
 Plug 'https://github.com/scrooloose/syntastic'
-Plug 'https://github.com/xolox/vim-easytags'
 Plug 'https://github.com/xolox/vim-misc'
 
 call plug#end()
