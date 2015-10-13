@@ -1,0 +1,13 @@
+#!/bin/bash
+
+export PATH=/usr/local/bin:$PATH
+export PATH=/usr/sbin:$PATH
+export PATH=/usr/bin:$PATH
+export PATH=/sbin:$PATH
+export PATH=/bin:$PATH
+export PATH=/home/erroneousboat/bin:$PATH
+export PATH=/usr/local/go/bin:$PATH
+
+# Go Setup
+export GOPATH=$HOME/go
+export PATH=$GOPATH/bin:$PATH

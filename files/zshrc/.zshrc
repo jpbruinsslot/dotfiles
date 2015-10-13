@@ -13,39 +13,29 @@ HIST_STAMPS="dd.mm.yyyy"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git git-extras docker vagrant sublime tmuxinator vi-mode zsh-syntax-highlighting)
-
-# Set term
-export TERM=xterm-256color-italic
-
-# A shortcut for tmuxinator
-alias mux=tmuxinator
-
-# A shortcut for docker-compose
-alias compose=docker-compose
-
-# A shortcut for ccat
-alias cat=ccat
-
-# force tmux to use 256 colors
-alias tmux='tmux -2'
+plugins=(
+    git
+    git-extras
+    docker
+    vagrant
+    tmuxinator
+    vi-mode
+    zsh-syntax-highlighting
+)
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
-export PATH="/home/erroneousboat/.rvm/gems/ruby-2.0.0-p247/bin:/home/erroneousboat/.rvm/gems/ruby-2.0.0-p247@global/bin:/home/erroneousboat/.rvm/rubies/ruby-2.0.0-p247/bin:/home/erroneousboat/.rvm/bin:/home/erroneousboat/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/erroneousboat/Projects/scribdev/scribdev:/usr/local/go/bin"
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
-
-# Go Setup
-export GOPATH=$HOME/go
-export PATH=$GOPATH/bin:$PATH
-
-# Neovim setup, set truecolor support
-export NVIM_TUI_ENABLE_TRUE_COLOR=1
+#export PATH="/home/erroneousboat/.rvm/gems/ruby-2.0.0-p247/bin:/home/erroneousboat/.rvm/gems/ruby-2.0.0-p247@global/bin:/home/erroneousboat/.rvm/rubies/ruby-2.0.0-p247/bin:/home/erroneousboat/.rvm/bin:/home/erroneousboat/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/erroneousboat/Projects/scribdev/scribdev:/usr/local/go/bin"
 
 # dircolors
 if [ -f /usr/bin/dircolors ]; then
     eval `dircolors ~/.dircolors`
 fi
+
+# source dotfiles
+source $HOME/.env
+source $HOME/.path
+source $HOME/.alias
+source $HOME/.functions
+source $HOME/.dockerfunc

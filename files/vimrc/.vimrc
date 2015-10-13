@@ -38,7 +38,6 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'https://github.com/erroneousboat/molokai.git'
 Plug 'https://github.com/itchyny/lightline.vim.git'
-Plug 'https://github.com/Shougo/neocomplete.vim.git'
 Plug 'https://github.com/scrooloose/nerdtree.git'
 Plug 'https://github.com/kien/ctrlp.vim.git'
 Plug 'https://github.com/majutsushi/tagbar.git'
@@ -62,6 +61,7 @@ Plug 'https://github.com/valloric/MatchTagAlways'
 Plug 'https://github.com/ryanoasis/vim-devicons'
 Plug 'https://github.com/scrooloose/syntastic'
 Plug 'https://github.com/xolox/vim-misc'
+Plug 'https://github.com:Shougo/deoplete.nvim.git'
 
 call plug#end()
 
@@ -153,6 +153,17 @@ function! <SID>SynStack()
   echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
 
+" enable folding
+set foldenable
+
+" open most folds by default
+set foldlevelstart=10
+
+" 10 nested fold max
+set foldnestmax=10
+
+" fold based on indent level
+set foldmethod=indent
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
@@ -296,6 +307,7 @@ call NERDTreeHighlightFile('css', 'blue', 'none', '#1C70B0', 'none')
 call NERDTreeHighlightFile('scss', 'cyan', 'none', '#C6538C', 'none')
 
 " pymode
+let g:pymode_rope_complete_on_dot = 0
 let g:pymode_folding=0
 let g:pymode_lint_cwindow=0
 set completeopt-=preview
@@ -364,13 +376,6 @@ function! MyFilename()
         \ ('' != expand('%:t') ? expand('%:t') : '[No Name]') .
         \ ('' != MyModified() ? ' ' . MyModified() : '')
 endfunction
-
-" neocomplete settings
-let g:acp_enableAtStartup = 0
-let g:neocomplete#enable_at_start_up = 1
-let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 
 " tagbar golang settings
 let g:tagbar_type_go = {
@@ -443,3 +448,6 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_error_symbol = "✗"
 let g:syntastic_warning_symbol = "⚠"
+
+" deoplete
+let g:deoplete#enable_at_startup = 1

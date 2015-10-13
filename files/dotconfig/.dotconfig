@@ -1,20 +1,25 @@
 {
-    "dot_path": "/dotfiles", 
-    "files": {
-        "battery": "/bin/tmux-battery.py", 
-        "cpu-load": "/bin/cpu-load.py", 
-        "dircolors": "/.dircolors", 
-        "dotconfig": "/.dotconfig", 
-        "external_ip": "/bin/external-ip.sh", 
-        "gitconfig": "/.gitconfig", 
-        "gosublime": "/.config/sublime-text-3/Packages/User/GoSublime.sublime-settings", 
-        "httpie": "/.httpie/config.json", 
-        "ohmyzsh_theme": "/.oh-my-zsh/custom/gentoo.zsh-theme", 
-        "sublimetext": "/.config/sublime-text-3/Packages/User/Preferences.sublime-settings", 
-        "tmux": "/.tmux.conf", 
-        "tmuxinator": "/.tmuxinator", 
-        "vim": "/.vim", 
-        "vimrc": "/.vimrc", 
-        "zshrc": "/.zshrc"
-    }
+	"dot_path": "/dotfiles",
+	"files": {
+		"alias": "/.alias",
+		"battery": "/bin/tmux-battery.py",
+		"cpu-load": "/bin/cpu-load.py",
+		"dircolors": "/.dircolors",
+		"dockerfunc": "/.dockerfunc",
+		"dotconfig": "/.dotconfig",
+		"env": "/.env",
+		"external_ip": "/bin/external-ip.sh",
+		"functions": "/.functions",
+		"gitconfig": "/.gitconfig",
+		"gosublime": "/.config/sublime-text-3/Packages/User/GoSublime.sublime-settings",
+		"httpie": "/.httpie/config.json",
+		"ohmyzsh_theme": "/.oh-my-zsh/custom/gentoo.zsh-theme",
+		"path": "/.path",
+		"sublimetext": "/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
+		"tmux": "/.tmux.conf",
+		"tmuxinator": "/.tmuxinator",
+		"vim": "/.vim",
+		"vimrc": "/.vimrc",
+		"zshrc": "/.zshrc"
+	}
 }
