@@ -41,7 +41,7 @@ Plug 'https://github.com/itchyny/lightline.vim.git'
 Plug 'https://github.com/scrooloose/nerdtree.git'
 Plug 'https://github.com/kien/ctrlp.vim.git'
 Plug 'https://github.com/majutsushi/tagbar.git'
-Plug 'https://github.com/scrooloose/nerdcommenter.git'
+Plug 'https://github.com/tomtom/tcomment_vim'
 Plug 'https://github.com/airblade/vim-gitgutter.git'
 Plug 'https://github.com/tpope/vim-surround.git'
 Plug 'https://github.com/fatih/vim-go.git'
@@ -61,7 +61,9 @@ Plug 'https://github.com/valloric/MatchTagAlways'
 Plug 'https://github.com/ryanoasis/vim-devicons'
 Plug 'https://github.com/scrooloose/syntastic'
 Plug 'https://github.com/xolox/vim-misc'
-Plug 'https://github.com:Shougo/deoplete.nvim.git'
+Plug 'https://github.com/Shougo/deoplete.nvim'
+Plug 'https://github.com/sjl/gundo.vim'
+Plug 'https://github.com/rking/ag.vim'
 
 call plug#end()
 
@@ -232,6 +234,12 @@ map <C-n> :NERDTreeToggle<CR>
 " Tagbar
 nmap <F8> :TagbarToggle<CR>
 
+" Gundo
+nnoremap <leader>u :GundoToggle<CR>
+
+" ag.vim
+nnoremap <leader>a :Ag
+
 " Smart way to move between windows
 map <C-j> <C-W>j
 map <C-k> <C-W>k
@@ -272,6 +280,18 @@ noremap k gk
 " Remove highlight from search when not needed
 nmap <leader>q :nohlsearch<cr>
 
+" Leader is comma
+let mapleader=","
+
+" Indent lines with ctrl+[ and ctrl+]
+nmap <C-]> >>
+nmap <C-[> <<
+vmap <C-[> <gv
+vmap <C-]> >gv
+
+" Comment lines with ctrl+/
+map <C-/> :TComment<cr>
+vmap <C-/> :TComment<cr>gv
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin settings
@@ -451,3 +471,9 @@ let g:syntastic_warning_symbol = "⚠"
 
 " deoplete
 let g:deoplete#enable_at_startup = 1
+
+" CtrlP
+let g:ctrlp_match_window = 'bottom,order:ttb'
+let g:ctrlp_switch_buffer = 0
+let g:ctrlp_working_path_mode = 0
+let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
