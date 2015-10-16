@@ -11,3 +11,6 @@ alias cat=ccat
 
 # Force tmux to use 256 colors
 alias tmux="tmux -2"
+
+# A shortcut for kubernetes kubectl
+alias kube=kubectl
