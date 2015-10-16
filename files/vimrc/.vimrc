@@ -283,12 +283,6 @@ nmap <leader>q :nohlsearch<cr>
 " Leader is comma
 let mapleader=","
 
-" Indent lines with ctrl+[ and ctrl+]
-nmap <C-]> >>
-nmap <C-[> <<
-vmap <C-[> <gv
-vmap <C-]> >gv
-
 " Comment lines with ctrl+/
 map <C-/> :TComment<cr>
 vmap <C-/> :TComment<cr>gv
@@ -471,6 +465,7 @@ let g:syntastic_warning_symbol = "⚠"
 
 " deoplete
 let g:deoplete#enable_at_startup = 1
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 
 " CtrlP
 let g:ctrlp_match_window = 'bottom,order:ttb'
