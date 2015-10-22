@@ -13,7 +13,7 @@
 		"gitconfig": "/.gitconfig",
 		"gosublime": "/.config/sublime-text-3/Packages/User/GoSublime.sublime-settings",
 		"httpie": "/.httpie/config.json",
-		"ohmyzsh_theme": "/.oh-my-zsh/custom/gentoo.zsh-theme",
+		"ohmyzsh_theme": "/.oh-my-zsh/custom/erroneousboat.zsh-theme",
 		"path": "/.path",
 		"sublimetext": "/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
 		"tmux": "/.tmux.conf",

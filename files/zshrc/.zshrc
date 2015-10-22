@@ -2,7 +2,7 @@
 ZSH=$HOME/.oh-my-zsh
 
 # Load theme
-ZSH_THEME="gentoo"
+ZSH_THEME="erroneousboat"
 
 # Disable autosetting terminal title.
 DISABLE_AUTO_TITLE="true"
@@ -24,9 +24,6 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
-
-# User configuration
-#export PATH="/home/erroneousboat/.rvm/gems/ruby-2.0.0-p247/bin:/home/erroneousboat/.rvm/gems/ruby-2.0.0-p247@global/bin:/home/erroneousboat/.rvm/rubies/ruby-2.0.0-p247/bin:/home/erroneousboat/.rvm/bin:/home/erroneousboat/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/erroneousboat/Projects/scribdev/scribdev:/usr/local/go/bin"
 
 # dircolors
 if [ -f /usr/bin/dircolors ]; then
