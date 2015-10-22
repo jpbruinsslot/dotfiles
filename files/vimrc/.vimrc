@@ -36,7 +36,7 @@ set autoread
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
 
-Plug 'https://github.com/erroneousboat/molokai.git'
+Plug 'https://github.com/erroneousboat/molokai.git', {'branch': 'dev'}
 Plug 'https://github.com/itchyny/lightline.vim.git'
 Plug 'https://github.com/scrooloose/nerdtree.git'
 Plug 'https://github.com/kien/ctrlp.vim.git'
