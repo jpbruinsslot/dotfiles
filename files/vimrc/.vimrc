@@ -471,6 +471,8 @@ let g:neomake_python_enabled_makers = ['flake8']
 autocmd! BufWritePost * Neomake
 
 highlight ErrorSign ctermbg=black ctermfg=red
+highlight ErrorSign guibg=none guifg=red
+
 let g:neomake_error_sign = {
             \ 'text': '✗',
             \ 'texthl': 'ErrorSign',
