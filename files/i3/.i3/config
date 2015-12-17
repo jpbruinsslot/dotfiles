@@ -109,11 +109,17 @@ bindsym $mod+a focus parent
 # focus the child container
 #bindsym $mod+d focus child
 
+# name workspaces
+set $tag1 "sys"
+set $tag2 "nvim"
+set $tag3 "term"
+set $tag4 "www"
+
 # switch to workspace
-bindsym $mod+1 workspace 1
-bindsym $mod+2 workspace 2
-bindsym $mod+3 workspace 3
-bindsym $mod+4 workspace 4
+bindsym $mod+1 workspace 1 $tag1
+bindsym $mod+2 workspace 2 $tag2
+bindsym $mod+3 workspace 3 $tag3
+bindsym $mod+4 workspace 4 $tag4
 bindsym $mod+5 workspace 5
 bindsym $mod+6 workspace 6
 bindsym $mod+7 workspace 7
@@ -122,10 +128,10 @@ bindsym $mod+9 workspace 9
 bindsym $mod+0 workspace 10
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace 1
-bindsym $mod+Shift+2 move container to workspace 2
-bindsym $mod+Shift+3 move container to workspace 3
-bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+1 move container to workspace 1 $tag1
+bindsym $mod+Shift+2 move container to workspace 2 $tag2
+bindsym $mod+Shift+3 move container to workspace 3 $tag3
+bindsym $mod+Shift+4 move container to workspace 4 $tag4
 bindsym $mod+Shift+5 move container to workspace 5
 bindsym $mod+Shift+6 move container to workspace 6
 bindsym $mod+Shift+7 move container to workspace 7
@@ -176,14 +182,6 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-# Autorun commands
-
-# remap caps lock to escape
-exec setxkbmap -layout us -option caps:escape
-
-# set background image
-exec --no-startup-id feh --bg-fill /home/erroneousboat/Pictures/background.jpg
-
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
@@ -193,7 +191,7 @@ bar {
         separator_symbol " | "
 
         # no icons in status bar
-        tray_output none
+        # tray_output none
 
         colors {
             # background color
@@ -213,3 +211,20 @@ bar {
 
         status_command i3status --config ~/.i3/status.conf
 }
+
+# Autorun commands
+
+# remap caps lock to escape
+exec setxkbmap -layout us -option caps:escape
+
+# set background image
+exec --no-startup-id feh --bg-fill /home/erroneousboat/Pictures/background.jpg
+
+# gnome settings daemon
+exec --no-startup-id gnome-settings-daemon
+
+# use gnome sound applet
+exec --no-startup-id gnome-sound-applet
+
+# set programs to workspaces
+exec --no-startup-id i3-msg ""

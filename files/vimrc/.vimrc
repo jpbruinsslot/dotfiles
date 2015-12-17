@@ -39,7 +39,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'https://github.com/erroneousboat/molokai.git', {'branch': 'dev'}
 Plug 'https://github.com/itchyny/lightline.vim.git'
 Plug 'https://github.com/scrooloose/nerdtree.git'
-Plug 'https://github.com/kien/ctrlp.vim.git'
+Plug 'https://github.com/ctrlpvim/ctrlp.vim.git'
 Plug 'https://github.com/majutsushi/tagbar.git'
 Plug 'https://github.com/tomtom/tcomment_vim'
 Plug 'https://github.com/airblade/vim-gitgutter.git'
@@ -54,16 +54,16 @@ Plug 'https://github.com/ekalinin/Dockerfile.vim.git'
 Plug 'https://github.com/tpope/vim-fugitive.git'
 Plug 'https://github.com/kchmck/vim-coffee-script'
 Plug 'https://github.com/mhinz/vim-startify.git'
-Plug 'https://github.com/Matt-Deacalion/vim-systemd-syntax'
 Plug 'https://github.com/mxw/vim-jsx.git'
 Plug 'https://github.com/Raimondi/delimitMate'
 Plug 'https://github.com/valloric/MatchTagAlways'
 Plug 'https://github.com/ryanoasis/vim-devicons'
-Plug 'https://github.com/scrooloose/syntastic'
+Plug 'https://github.com/benekastah/neomake.git'
 Plug 'https://github.com/xolox/vim-misc'
 Plug 'https://github.com/Shougo/deoplete.nvim'
 Plug 'https://github.com/sjl/gundo.vim'
 Plug 'https://github.com/rking/ag.vim'
+Plug 'https://github.com/xolox/vim-session.git'
 
 call plug#end()
 
@@ -170,6 +170,11 @@ set foldmethod=indent
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Install font from https://github.com/ryanoasis/nerd-fonts
+" a patched version of Hack called Knack, this will work with
+" devicons. And set the font in the terminal preferences.
+
 " enable syntax highlighting
 syntax on
 
@@ -306,10 +311,6 @@ call NERDTreeHighlightFile('ini', 'yellow', 'none', '#d8a235', 'none')
 call NERDTreeHighlightFile('yml', 'yellow', 'none', '#d8a235', 'none')
 call NERDTreeHighlightFile('conf', 'yellow', 'none', '#d8a235', 'none')
 call NERDTreeHighlightFile('json', 'green', 'none', '#d8a235', 'none')
-call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', 'none')
-call NERDTreeHighlightFile('gitconfig', 'black', 'none', '#686868', 'none')
-call NERDTreeHighlightFile('gitignore', 'Gray', 'none', '#7F7F7F', 'none')
-
 call NERDTreeHighlightFile('js', 'yellow', 'none', '#F8DC3D', 'none')
 call NERDTreeHighlightFile('py', 'blue', 'none', '#376F9D', 'none')
 call NERDTreeHighlightFile('md', 'blue', 'none', '#679EB5', 'none')
@@ -433,7 +434,11 @@ endif
 let g:EasyMotion_leader_key = '<leader><leader>'
 
 " startify, used figlet -f slant erroneousboat for ascii text
-let g:startify_list_order = ['bookmarks', 'files', 'sessions']
+let g:startify_session_dir = '~/.vim/sessions'
+let g:startify_session_persistence = 1
+let g:startify_change_to_vcs_root = 1
+let g:startify_enable_special = 0
+let g:startify_list_order = ['sessions', 'bookmarks', 'files']
 let g:startify_bookmarks = [
     \ '~/Projects',
     \ ]
@@ -451,18 +456,6 @@ let g:startify_custom_header = [
 " indent line
 let g:indentLine_char = '│'
 
-" syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 0
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_error_symbol = "✗"
-let g:syntastic_warning_symbol = "⚠"
-
 " deoplete
 let g:deoplete#enable_at_startup = 1
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
@@ -472,3 +465,21 @@ let g:ctrlp_match_window = 'bottom,order:ttb'
 let g:ctrlp_switch_buffer = 0
 let g:ctrlp_working_path_mode = 0
 let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+
+" Neomake (sudo pip3 install flake8)
+let g:neomake_python_enabled_makers = ['flake8']
+autocmd! BufWritePost * Neomake
+
+highlight ErrorSign ctermbg=black ctermfg=red
+let g:neomake_error_sign = {
+            \ 'text': '✗',
+            \ 'texthl': 'ErrorSign',
+            \ }
+let g:neomake_warning_sign = {
+            \ 'text': '⚠',
+            \ 'texthl': 'ErrorSign',
+            \ }
+
+" Vim session
+let g:session_autoload = 'no'
+let g:session_autosave = 'yes'
