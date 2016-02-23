@@ -1,4 +1,4 @@
-# ~/.tmuxinator/scrib.yml
+# ~/.tmuxinator/dev.yml
 
 name: dev
 root: ~/
@@ -18,12 +18,14 @@ root: ~/
 # Change the command to call tmux.  This can be used by derivatives/wrappers like byobu.
 # tmux_command: byobu
 
+# Get window layout: $ tmux list-windows
+
 windows:
   - system:
-      layout: 2b7a,213x50,0,0[213x24,0,0,0,213x12,0,25,6,213x12,0,38,13]
+      layout: a222,213x57,0,0[213x28,0,0,0,213x28,0,29{106x28,0,29,6,106x28,107,29,7}]
       panes:
         - glances
-        - sudo nethogs
+        - slurm -i eth0
         - /etc/openvpn && clear
   - nvim: cd ~/Projects && clear
   - dev:
