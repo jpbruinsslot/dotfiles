@@ -34,7 +34,7 @@ set autoread
 " => Plugins 
 " :PlugInstall
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.config/nvim/plugged')
 
 Plug 'https://github.com/erroneousboat/molokai.git', {'branch': 'dev'}
 Plug 'https://github.com/itchyny/lightline.vim.git'
@@ -178,14 +178,14 @@ set foldmethod=indent
 " enable syntax highlighting
 syntax on
 
-" use 256 colors
-" set t_Co=256
-
 " background color
 set background=dark
 
 " colorscheme
 colorscheme molokai
+
+" neovim true color now requires
+set termguicolors
 
 " set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
