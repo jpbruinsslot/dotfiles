@@ -9,8 +9,9 @@ alias compose=docker-compose
 # A shortcut for ccat
 alias cat=ccat
 
-# Force tmux to use 256 colors
-alias tmux="tmux -2"
+# Source: http://homeonrails.com/2016/05/truecolor-in-gnome-terminal-tmux-and-neovim/
+# See: ~/.terminfo/xterm-256color-italic.terminfo
+alias tmux="env TERM=xterm-256color tmux"
 
 # A shortcut for kubernetes kubectl
 alias kube=kubectl

@@ -52,7 +52,6 @@ Plug 'https://github.com/Yggdroot/indentLine.git'
 Plug 'https://github.com/leshill/vim-json.git'
 Plug 'https://github.com/ekalinin/Dockerfile.vim.git'
 Plug 'https://github.com/tpope/vim-fugitive.git'
-Plug 'https://github.com/kchmck/vim-coffee-script'
 Plug 'https://github.com/mhinz/vim-startify.git'
 Plug 'https://github.com/mxw/vim-jsx.git'
 Plug 'https://github.com/Raimondi/delimitMate'
@@ -63,7 +62,8 @@ Plug 'https://github.com/xolox/vim-misc'
 Plug 'https://github.com/Shougo/deoplete.nvim'
 Plug 'https://github.com/sjl/gundo.vim'
 Plug 'https://github.com/rking/ag.vim'
-Plug 'https://github.com/xolox/vim-session.git'
+Plug 'https://github.com/crosbymichael/vim-cfmt.git'
+Plug 'https://github.com/freeo/vim-kalisi.git'
 
 call plug#end()
 
@@ -485,3 +485,6 @@ let g:neomake_warning_sign = {
 " Vim session
 let g:session_autoload = 'no'
 let g:session_autosave = 'yes'
+
+" vim-cfmt
+let g:cfmt_style = '-linux'

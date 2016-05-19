@@ -17,6 +17,7 @@
 		"ohmyzsh_theme": "/.oh-my-zsh/custom/erroneousboat.zsh-theme",
 		"path": "/.path",
 		"sublimetext": "/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
+		"terminfo": "/.terminfo",
 		"tmux": "/.tmux.conf",
 		"tmuxinator": "/.tmuxinator",
 		"zshrc": "/.zshrc"
