@@ -2,6 +2,9 @@
 	"dot_path": "/dotfiles",
 	"files": {
 		"alias": "/.alias",
+		"bash_profile": "/.bash_profile",
+		"bash_prompt": "/.bash_prompt",
+		"bashrc": "/.bashrc",
 		"battery": "/bin/tmux-battery.py",
 		"cpu-load": "/bin/cpu-load.py",
 		"dircolors": "/.dircolors",
