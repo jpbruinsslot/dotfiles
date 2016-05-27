@@ -37,6 +37,7 @@ set autoread
 call plug#begin('~/.config/nvim/plugged')
 
 Plug 'https://github.com/erroneousboat/molokai.git', {'branch': 'dev'}
+Plug 'https://github.com/erroneousboat/python-mode.git'
 Plug 'https://github.com/itchyny/lightline.vim.git'
 Plug 'https://github.com/scrooloose/nerdtree.git'
 Plug 'https://github.com/ctrlpvim/ctrlp.vim.git'
@@ -47,7 +48,6 @@ Plug 'https://github.com/tpope/vim-surround.git'
 Plug 'https://github.com/fatih/vim-go.git'
 Plug 'https://github.com/myusuf3/numbers.vim.git'
 Plug 'https://github.com/Lokaltog/vim-easymotion.git'
-Plug 'https://github.com/klen/python-mode.git'
 Plug 'https://github.com/Yggdroot/indentLine.git'
 Plug 'https://github.com/leshill/vim-json.git'
 Plug 'https://github.com/ekalinin/Dockerfile.vim.git'
@@ -63,7 +63,7 @@ Plug 'https://github.com/Shougo/deoplete.nvim'
 Plug 'https://github.com/sjl/gundo.vim'
 Plug 'https://github.com/rking/ag.vim'
 Plug 'https://github.com/crosbymichael/vim-cfmt.git'
-Plug 'https://github.com/freeo/vim-kalisi.git'
+Plug 'https://github.com/Xuyuanp/nerdtree-git-plugin.git'
 
 call plug#end()
 
@@ -299,7 +299,9 @@ vmap <C-/> :TComment<cr>gv
 let NERDTreeChDirMode=2
 let NERDTreeIgnore=['\.vim$', '\~$', '\.pyc$', '\.swp$']
 let NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$',  '\~$']
-let NERDTreeShowBookmarks=1
+let NERDTreeShowBookmarks=0
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
 
 " NERDTress File highlighting
 function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
@@ -320,6 +322,10 @@ call NERDTreeHighlightFile('html', 'red', 'none', '#E44D26', 'none')
 call NERDTreeHighlightFile('jsx', 'cyan', 'none', '#00d8ff', 'none')
 call NERDTreeHighlightFile('css', 'blue', 'none', '#1C70B0', 'none')
 call NERDTreeHighlightFile('scss', 'cyan', 'none', '#C6538C', 'none')
+
+hi NERDTreeDir guifg=#A6E22E
+hi NERDTreeOpenable guifg=#F92672
+hi NERDTreeClosable guifg=#F92672
 
 " pymode
 let g:pymode_rope_complete_on_dot = 0
@@ -488,3 +494,16 @@ let g:session_autosave = 'yes'
 
 " vim-cfmt
 let g:cfmt_style = '-linux'
+
+" NERDTree Git Plugin
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "✹",
+    \ "Staged"    : "✚",
+    \ "Untracked" : "✭",
+    \ "Renamed"   : "➜",
+    \ "Unmerged"  : "═",
+    \ "Deleted"   : "✖",
+    \ "Dirty"     : "✗",
+    \ "Clean"     : "✔︎",
+    \ "Unknown"   : "?"
+    \ }
