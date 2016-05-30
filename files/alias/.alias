@@ -11,7 +11,7 @@ alias cat=ccat
 
 # Source: http://homeonrails.com/2016/05/truecolor-in-gnome-terminal-tmux-and-neovim/
 # See: ~/.terminfo/xterm-256color-italic.terminfo
-alias tmux="env TERM=xterm-256color tmux"
+# alias tmux="env TERM=xterm-256color tmux"
 
 # A shortcut for kubernetes kubectl
 alias kube=kubectl
@@ -44,11 +44,15 @@ alias grep='grep --color=auto '
 # Enable aliases to be sudo’ed
 alias sudo='sudo '
 
-# copy file interactive
+# Copy file interactive
 alias cp='cp -i'
 
-# move file interactive
+# Move file interactive
 alias mv='mv -i'
 
-# untar
+# Untar
 alias untar='tar xvf'
+
+# Emit message when task is done
+# Usage: docker-compose build --no-cache && compose up && rdy
+alias rdy='notify-send "Task is done"'
