@@ -56,3 +56,7 @@ alias untar='tar xvf'
 # Emit message when task is done
 # Usage: docker-compose build --no-cache && compose up && rdy
 alias rdy='notify-send "Task is done"'
+
+# quickly get into fuelup folder
+alias fu='cd ~/Projects/fuelup'
+
