@@ -50,20 +50,22 @@ Plug 'https://github.com/myusuf3/numbers.vim.git'
 Plug 'https://github.com/Lokaltog/vim-easymotion.git'
 Plug 'https://github.com/Yggdroot/indentLine.git'
 Plug 'https://github.com/leshill/vim-json.git'
-Plug 'https://github.com/ekalinin/Dockerfile.vim.git'
 Plug 'https://github.com/tpope/vim-fugitive.git'
 Plug 'https://github.com/mhinz/vim-startify.git'
-Plug 'https://github.com/mxw/vim-jsx.git'
 Plug 'https://github.com/Raimondi/delimitMate'
 Plug 'https://github.com/valloric/MatchTagAlways'
 Plug 'https://github.com/ryanoasis/vim-devicons'
 Plug 'https://github.com/benekastah/neomake.git'
-Plug 'https://github.com/xolox/vim-misc'
-Plug 'https://github.com/Shougo/deoplete.nvim'
 Plug 'https://github.com/sjl/gundo.vim'
 Plug 'https://github.com/rking/ag.vim'
 Plug 'https://github.com/crosbymichael/vim-cfmt.git'
 Plug 'https://github.com/Xuyuanp/nerdtree-git-plugin.git'
+Plug 'https://github.com/Shougo/deoplete.nvim'
+Plug 'https://github.com/zchee/deoplete-go.git', {'do': 'make'}
+
+" filetype plugins
+Plug 'https://github.com/ekalinin/Dockerfile.vim.git'
+Plug 'https://github.com/mxw/vim-jsx.git'
 
 call plug#end()
 
@@ -292,6 +294,27 @@ let mapleader=","
 map <C-/> :TComment<cr>
 vmap <C-/> :TComment<cr>gv
 
+" Indent lines with ctrl+[ and ctrl+]
+" Commented out, produces weird behaviour.
+" Normal mode, ESC will undo indent.
+" Visual mode, can't get back to normal mode
+" nmap <C-]> >>
+" nmap <C-[> <<
+" vmap <C-[> <gv
+" vmap <C-]> >gv
+
+" Search mappings: These will make it so that going to the next one in a
+" search will center on the line it's found in.
+nnoremap n nzzzv
+nnoremap N Nzzzv
+
+" Center when moving up and down
+noremap <C-d> <C-d>zz
+noremap <C-u> <C-u>zz
+
+" Do not show q: window
+map q: :q
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -362,6 +385,7 @@ let g:lightline = {
     \ 'subseparator': { 'left': '|', 'right': '|' }
     \ }
 
+" Will add `+` next to file name when file has changed
 function! MyModified()
     if &filetype == "help"
         return ""
@@ -374,6 +398,7 @@ function! MyModified()
     endif
 endfunction
 
+" Will show ... when file is Read Only
 function! MyReadonly()
     if &filetype == "help"
         return ""
@@ -384,6 +409,7 @@ function! MyReadonly()
     endif
 endfunction
 
+" Will make use of plugin Fugitive to show branch and `⎇` icon
 function! MyFugitive()
     if exists("*fugitive#head")
         let _ = fugitive#head()
@@ -466,10 +492,27 @@ let g:indentLine_char = '│'
 let g:deoplete#enable_at_startup = 1
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#ignore_sources = {}
+let g:deoplete#ignore_sources._ = ['buffer', 'member', 'tag', 'file', 'neosnippet']
+let g:deoplete#sources#go#sort_class = ['func', 'type', 'var', 'const']
+let g:deoplete#sources#go#align_class = 1
+
+" Use partial fuzzy matches like YouCompleteMe
+call deoplete#custom#set('_', 'matchers', ['matcher_fuzzy'])
+call deoplete#custom#set('_', 'converters', ['converter_remove_paren'])
+call deoplete#custom#set('_', 'disabled_syntaxes', ['Comment', 'String'])
+
 " CtrlP
-let g:ctrlp_match_window = 'bottom,order:ttb'
-let g:ctrlp_switch_buffer = 0
-let g:ctrlp_working_path_mode = 0
+let g:ctrlp_cmd = 'CtrlPMRU'
+let g:ctrlp_match_window = 'bottom,order:btt,min:10,max:10,results:10'
+let g:ctrlp_mruf_max=450 		    " number of recently opened files
+let g:ctrlp_switch_buffer = 'et'	" jump to a file if it's open already
+let g:ctrlp_max_files=0  		    " do not limit the number of searchable files
+let g:ctrlp_use_caching = 1
+let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 
 " Neomake (sudo pip3 install flake8)
@@ -488,10 +531,6 @@ let g:neomake_warning_sign = {
             \ 'texthl': 'ErrorSign',
             \ }
 
-" Vim session
-let g:session_autoload = 'no'
-let g:session_autosave = 'yes'
-
 " vim-cfmt
 let g:cfmt_style = '-linux'
 
@@ -507,3 +546,12 @@ let g:NERDTreeIndicatorMapCustom = {
     \ "Clean"     : "✔︎",
     \ "Unknown"   : "?"
     \ }
+
+" DelimitMate
+let g:delimitMate_expand_cr = 1		
+let g:delimitMate_expand_space = 1		
+let g:delimitMate_smart_quotes = 1		
+let g:delimitMate_expand_inside_quotes = 0		
+let g:delimitMate_smart_matchpairs = '^\%(\w\|\$\)'		
+
+imap <expr> <CR> pumvisible() ? "\<c-y>" : "<Plug>delimitMateCR"
