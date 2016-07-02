@@ -16,6 +16,10 @@ alias cat=ccat
 # A shortcut for kubernetes kubectl
 alias kube=kubectl
 
+# Show mouse pointer again
+# See: https://ask.fedoraproject.org/en/question/31186/my-mouse-cursor-dissapears-when-using-gnome3/?answer=49702#post-id-49702
+alias mouse='dconf write /org/gnome/settings-daemon/plugins/cursor/active false'
+
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
 alias ...="cd ../.."
@@ -27,7 +31,7 @@ alias -- -="cd -"
 colorflag="--color"
 
 # List all files colorized in long format
-alias l="ls -lF ${colorflag}"
+alias l="ls -lah ${colorflag}"
 
 # List all files colorized in long format, including dot files
 alias la="ls -laF ${colorflag}"
