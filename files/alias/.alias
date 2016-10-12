@@ -67,6 +67,9 @@ alias rdy='notify-send "Task is done"'
 # quickly get into fuelup folder
 alias fu='cd ~/Projects/fuelup'
 
+# quickly get into Projects folder
+alias pro='cd ~/Projects'
+
 # Yeah I know, don't judge me!
 alias gti='git'
 

@@ -121,3 +121,8 @@ function v() {
         nvim "$@";
     fi;
 }
+
+# Setup resolutions and scaling when attached to external monitor
+function screen() {
+    xrandr --output eDP1 --scale 1x1 --pos 3840x0 ; xrandr --output DP1 --scale 2x2 --mode 1920x1080 --fb 7680x2160 --pos 0x0
+}
