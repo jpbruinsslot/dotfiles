@@ -14,6 +14,7 @@
 		"external_ip": "/bin/external-ip.sh",
 		"functions": "/.functions",
 		"gitconfig": "/.gitconfig",
+		"gnome-terminal-palette": "/gnome-term-profile.sh",
 		"gosublime": "/.config/sublime-text-3/Packages/User/GoSublime.sublime-settings",
 		"httpie": "/.httpie/config.json",
 		"nvim": "/.config/nvim",
