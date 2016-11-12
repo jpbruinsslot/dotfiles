@@ -26,7 +26,7 @@ windows:
       panes:
         - glances
         - slurm -i wlan0
-        - /etc/openvpn && clear
+        - tail -f /var/log/syslog
   - nvim: cd ~/Projects/fuelup/ && nvim
   - dev:
       layout: even-vertical
