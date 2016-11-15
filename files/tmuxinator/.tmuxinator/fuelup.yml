@@ -33,3 +33,5 @@ windows:
       panes:
         - Projects/fuelup && clear
         - Projects/fuelup && clear
+  - slack:
+      - slack-term
