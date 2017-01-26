@@ -74,7 +74,7 @@ alias pro='cd ~/Projects'
 alias gti='git'
 
 # What the hell did I do yesterday
-alias standup='cd ~/Projects/fuelup && git log --author="Jan Pieter" --author="erroneousboat"'
+alias standup='cd ~/Projects/fuelup && git log --pretty=oneline --abbrev-commit --decorate --author="Jan Pieter" --author="erroneousboat" --since=$(date --date="1 day ago" +"%Y-%m-%d")'
 
 # Useful extraction function:
 # Source: https://github.com/xvoland/Extract
