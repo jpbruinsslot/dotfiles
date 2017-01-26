@@ -73,6 +73,9 @@ alias pro='cd ~/Projects'
 # Yeah I know, don't judge me!
 alias gti='git'
 
+# What the hell did I do yesterday
+alias standup='cd ~/Projects/fuelup && git log --author="Jan Pieter" --author="erroneousboat"'
+
 # Useful extraction function:
 # Source: https://github.com/xvoland/Extract
 function extract {
