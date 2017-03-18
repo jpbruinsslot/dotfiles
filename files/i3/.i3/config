@@ -140,19 +140,21 @@ bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
 # audio controls
-bindsym XF86AudioRaiseVolume exec amixer set Master 5+ # increase sound volume
-bindsym XF86AudioLowerVolume exec amixer set Master 5- # decrease sound volume
-bindsym XF86AudioMute exec amixer set Master 1+ toggle # mute sound
+bindsym XF86AudioRaiseVolume exec amixer set Master 5+  # increase sound volume
+bindsym XF86AudioLowerVolume exec amixer set Master 5-  # decrease sound volume
+bindsym XF86AudioMute exec amixer set Master 1+ toggle  # mute sound
 bindsym XF86AudioMicMute exec amixer set Capture toggle # mute mic
 
 # screen brightness controls
-bindsym XF86MonBrightnessUp exec sudo light -A 5 # increase screen brightness
-bindsym XF86MonBrightnessDown exec sudo light -A 5 # decrease screen brightness
+bindsym XF86MonBrightnessUp exec sudo light -A 5    # increase screen brightness
+bindsym XF86MonBrightnessDown exec sudo light -A 5  # decrease screen brightness
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
+
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
+
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
