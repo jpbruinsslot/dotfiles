@@ -29,20 +29,14 @@ font pango:Hack 20
 # no title bars on windows
 new_window 1pixel
 
-# window colors         border  backgr. text    indicator
-client.focused          #4c7899 #285577 #ffffff #2e9ef4
-client.focused_inactive #333333 #5f676a #ffffff #484e50
-client.unfocused        #333333 #222222 #888888 #292d2e
-client.urgent           #2f343a #900000 #ffffff #900000
-client.placeholder      #000000 #0c0c0c #ffffff #000000
-
-client.background       #ffffff
-
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
+
+# start a browser
+bindsym $mod+c exec google-chrome
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -66,10 +60,10 @@ bindsym $mod+k focus up
 bindsym $mod+l focus right
 
 # alternatively, you can use the cursor keys:
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
+bindsym $mod+Left   focus left
+bindsym $mod+Down   focus down
+bindsym $mod+Up     focus up
+bindsym $mod+Right  focus right
 
 # move focused window
 bindsym $mod+Shift+h move left
@@ -78,10 +72,10 @@ bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
 # alternatively, you can use the cursor keys:
-bindsym $mod+Shift+Left move left
-bindsym $mod+Shift+Down move down
-bindsym $mod+Shift+Up move up
-bindsym $mod+Shift+Right move right
+bindsym $mod+Shift+Left     move left
+bindsym $mod+Shift+Down     move down
+bindsym $mod+Shift+Up       move up
+bindsym $mod+Shift+Right    move right
 
 # split in horizontal orientation
 bindsym $mod+v split h
@@ -107,7 +101,7 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
 
 # focus the child container
-#bindsym $mod+d focus child
+# bindsym $mod+d focus child
 
 # name workspaces
 set $tag1 "sys"
@@ -140,14 +134,14 @@ bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
 # audio controls
-bindsym XF86AudioRaiseVolume exec amixer set Master 5+  # increase sound volume
-bindsym XF86AudioLowerVolume exec amixer set Master 5-  # decrease sound volume
-bindsym XF86AudioMute exec amixer set Master 1+ toggle  # mute sound
-bindsym XF86AudioMicMute exec amixer set Capture toggle # mute mic
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl -- set-sink-volume 1 +5%    # increase sound volume
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl -- set-sink-volume 1 -5%    # increase sound volume
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 1 toggle             # mute sound
+# bindsym XF86AudioMicMute exec amixer set Capture toggle # mute mic
 
 # screen brightness controls
-bindsym XF86MonBrightnessUp exec sudo light -A 5    # increase screen brightness
-bindsym XF86MonBrightnessDown exec sudo light -A 5  # decrease screen brightness
+bindsym XF86MonBrightnessUp exec xbacklight -inc 20    # increase screen brightness
+bindsym XF86MonBrightnessDown exec xbacklight -dec 20  # decrease screen brightness
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -184,34 +178,50 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+# Color Definitions
+set $text-color           #ebdbb2
+set $inactive-text-color  #665c54
+set $bg-color             #282828
+set $inactive-bg-color    #282828
+set $urgent-bg-color      #cc241d
+set $border               #689d6a
+set $indicator            #8ec07c
+
+# Window colors
+#                       border             bg                 text                 indicator
+client.focused          $bg-color          $border            $text-color          $indicator
+client.unfocused        $inactive-bg-color $inactive-bg-color $inactive-text-color $inactive-bg-color
+client.focused_inactive $inactive-bg-color $inactive-bg-color $inactive-text-color $inactive-bg-color
+client.urgent           $urgent-bg-color   $urgent-bg-color   $text-color          $urgent-bg-color
+
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        font pango:Hack 20
+    status_command i3blocks -c ~/.i3/i3blocks.conf
 
-        # change seprator symbol
-        separator_symbol " | "
+    position bottom
 
-        # no icons in status bar
-        # tray_output none
+    tray_output primary
 
-        colors {
-            # background color
-            background #272822
+    # no icons in status bar
+    # tray_output none
 
-            # foreground color
-            statusline #F8F8F2
+    font pango:Hack 20
 
-            # separator symbol color
-            separator #F92672
+    workspace_buttons yes
 
-            focused_workspace  #4c7899 #285577 #ffffff
-            active_workspace   #333333 #5f676a #ffffff
-            inactive_workspace #333333 #222222 #888888
-            urgent_workspace   #2f343a #900000 #ffffff
-        }
+    colors {
+        background $bg-color
+        separator $bg-color
+        statusline $text-color
 
-        status_command i3status --config ~/.i3/status.conf
+
+        #                   border             bg               text
+        focused_workspace  $bg-color          $bg-color          $text-color
+        active_workspace   $bg-color          $bg-color          $text-color
+        inactive_workspace $inactive-bg-color $inactive-bg-color $inactive-text-color
+        urgent_workspace   $urgent-bg-color   $urgent-bg-color   $text-color
+    }
 }
 
 # Autorun commands
