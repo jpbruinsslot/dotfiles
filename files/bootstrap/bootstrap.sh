@@ -114,7 +114,8 @@ sudo -H pip3 install --no-cache-dir --upgrade --force-reinstall \
     httpie \
     neovim \
     glances \
-    docker-compose
+    docker-compose \
+    psutil
 
 # Needed for gsutil
 sudo -H pip2 install --no-cache-dir --upgrade --force-reinstall \
