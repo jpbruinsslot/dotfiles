@@ -17,6 +17,7 @@
 		"gitconfig": "/.gitconfig",
 		"gnome-terminal-palette": "/gnome-term-profile.sh",
 		"httpie": "/.httpie/config.json",
+        "i3": "/.i3",
 		"nvim": "/.config/nvim",
 		"ohmyzsh_theme": "/.oh-my-zsh/custom/erroneousboat.zsh-theme",
 		"path": "/.path",
