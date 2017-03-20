@@ -102,6 +102,9 @@ sudo apt-get install -y \
     ca-certificates \
     software-properties-common \
     htop \
+    pulseaudio \
+    xbacklight \
+    sysstat \
     && sudo rm -rf /var/lib/apt/lists/*
 
 # Install: Python packages
@@ -217,14 +220,24 @@ cd
 
 # Install: Nerd Fonts
 # (https://github.com/ryanoasis/nerd-fonts)
-mkdir -p ~/.local/share/fonts
-cd ~/.local/share/fonts && curl -fLo "Droid Sans Mono for Powerline Nerd Font Complete.otf" https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20for%20Powerline%20Nerd%20Font%20Complete.otf
-cd
+# mkdir -p ~/.local/share/fonts
+# cd ~/.local/share/fonts && curl -fLo "Droid Sans Mono for Powerline Nerd Font Complete.otf" https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20for%20Powerline%20Nerd%20Font%20Complete.otf
+# cd
 
 # Install: i3
+print_cyan "... Installing i3"
 echo "deb http://debian.sur5r.net/i3/ $(lsb_release -c -s) universe" | sudo tee -a /etc/apt/sources.list
 sudo apt-get update
 sudo apt-get --allow-unauthenticated install sur5r-keyring
 sudo apt-get update
 sudo apt-get install i3
 
+# Install: i3-blocks
+print_cyan "... Installing i3-blocks"
+rm -rf ~/i3-blocks
+git clone git://github.com/vivien/i3blocks
+cd i3blocks
+make clean all
+sudo make install
+cd
+rm -rf ~/i3blocks
