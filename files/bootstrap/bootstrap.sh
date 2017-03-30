@@ -78,6 +78,7 @@ sudo apt-get install -y \
     zsh \
     wget \
     curl \
+    tree \
     git-core \
     openssh-server \
     build-essential \
@@ -208,19 +209,19 @@ cd ~/dotfiles
 git clone git@github.com:erroneousboat/dotfiles.git
 cd
 
-# Sync dotfiles
+# TODO Sync dotfiles
 
-# c (valgrind)
+# TODO c (valgrind)
 
-# dockerconfig ?
+# TODO dockerconfig ?
 
-# Terminfo etc.
+# TODO Terminfo etc.
 
-# urvxt
+# TODO urvxt
 
-# slack-term config
+# TODO slack-term config
 
-# Install: Nerd Fonts
+# TODO Install: Nerd Fonts
 # (https://github.com/ryanoasis/nerd-fonts)
 # mkdir -p ~/.local/share/fonts
 # cd ~/.local/share/fonts && curl -fLo "Droid Sans Mono for Powerline Nerd Font Complete.otf" https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20for%20Powerline%20Nerd%20Font%20Complete.otf
@@ -244,5 +245,4 @@ sudo make install
 cd
 rm -rf ~/i3blocks
 
-# Install: Bash 4
-
+# TODO Install: Bash 4
