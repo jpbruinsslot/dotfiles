@@ -30,7 +30,7 @@ def main():
 
     if "No support" in console_output:
         # There is no battery and probably on a power supply
-        print "⚡"
+        print("🔌")
         return
 
     # Format will be:
@@ -40,7 +40,7 @@ def main():
     metric_status = list_metrics[0].split(":")[-1].strip()
     metric_percentage = int(re.match(r'\d+', list_metrics[1]).group())
 
-    print "%s %s%%" % (check_status(metric_status), metric_percentage)
+    print("%s %s%%" % (check_status(metric_status), metric_percentage))
 
 if __name__ == '__main__':
     main()

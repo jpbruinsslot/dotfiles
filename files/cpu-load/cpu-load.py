@@ -17,7 +17,7 @@ def get_memory_percent():
 
 def main():
     try:
-        print("%s %s" % (get_cpu_load(), get_memory_percent()))
+        print("%5s %4s" % (get_cpu_load(), get_memory_percent()))
     except:
         sys.exit(
             "psutil not found please install with pip install psutil")
