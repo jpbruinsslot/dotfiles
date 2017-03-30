@@ -136,6 +136,7 @@ export PATH=$PATH:/usr/local/go/bin
 print_cyan "... Installing Go packages"
 go get -u \
     github.com/erroneousboat/slack-term \
+    github.com/erroneousboat/dot \
     github.com/jingweno/ccat \
     github.com/golang/dep/... \
     github.com/kardianos/govendor
@@ -207,7 +208,7 @@ cd ~/dotfiles
 git clone git@github.com:erroneousboat/dotfiles.git
 cd
 
-# Sync dotfiles (needs dot)
+# Sync dotfiles
 
 # c (valgrind)
 
@@ -242,3 +243,6 @@ make clean all
 sudo make install
 cd
 rm -rf ~/i3blocks
+
+# Install: Bash 4
+
