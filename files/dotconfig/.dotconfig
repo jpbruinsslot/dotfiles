@@ -16,6 +16,7 @@
 		"functions": "/.functions",
 		"gitconfig": "/.gitconfig",
 		"gnome-terminal-palette": "/gnome-term-profile.sh",
+		"host": "/bin/host.sh",
 		"httpie": "/.httpie/config.json",
 		"i3": "/.i3",
 		"inputrc": "/.inputrc",
