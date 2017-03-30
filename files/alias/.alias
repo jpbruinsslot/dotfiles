@@ -45,6 +45,12 @@ alias ls="command ls ${colorflag}"
 # Always enable colored `grep` output
 alias grep='grep --color=auto '
 
+# Always enable colored `fgrep` output (grep -F)
+alias fgrep='fgrep --color=auto'
+
+# Always enable colored `egrep` output (grep -E)
+alias egrep='egrep --color=auto'
+
 # Enable aliases to be sudo’ed
 alias sudo='sudo '
 
@@ -64,17 +70,32 @@ alias targz='tar -czvf'
 # Usage: docker-compose build --no-cache && compose up && rdy
 alias rdy='notify-send "Task is done"'
 
-# quickly get into fuelup folder
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+# Quickly get into fuelup folder
 alias fu='cd ~/Projects/fuelup'
 
-# quickly get into Projects folder
+# Quickly get into Projects folder
 alias pro='cd ~/Projects'
 
 # Yeah I know, don't judge me!
 alias gti='git'
 
 # What the hell did I do yesterday
-alias standup='cd ~/Projects/fuelup && git log --pretty=oneline --branches --abbrev-commit --decorate --author="Jan Pieter" --author="erroneousboat" --since=$(date --date="1 day ago" +"%Y-%m-%d")'
+#   $ standup [days]
+function standup {
+    pwd=$(pwd)
+
+    if [ -z "$1" ]; then
+        days=1
+    else
+        days="$1"
+    fi
+
+    fu && git log --pretty=oneline --branches --abbrev-commit --decorate --author "J.P.H. Bruins Slot" --author="Jan Pieter" --author="erroneousboat" --since=$(date --date="${days} day ago" +"%Y-%m-%d") && cd ${pwd}
+}
 
 # Useful extraction function:
 # Source: https://github.com/xvoland/Extract
