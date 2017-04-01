@@ -1,3 +1,13 @@
+# .bash_profile
+#
+# .bash_profile is executed for login shells, while .bashrc is executed for
+# interactive non-login shells. By either logging in with your username and
+# password locally or ssh, the .bash_profile file is executed to configure
+# your shell before the intial command prompt. But, if you're already logged
+# into your machine and open a new terminal window then the .bashrc file
+# is executed before the window command prompt.
+# Source: http://apple.stackexchange.com/a/51038
+
 # Load the shell dotfiles, and then some:
 # * ~/.path can be used to extend `$PATH`.
 # * ~/.extra can be used for other settings you don’t want to commit.

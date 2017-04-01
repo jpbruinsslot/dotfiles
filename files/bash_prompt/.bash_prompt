@@ -1,12 +1,3 @@
-##########################################################################
-# Bash Coloring and Prompt Changing
-# -- 10/26/01 by Justin J. Novack
-# Purpose: Changes Root Prompt to be Red
-# Purpose: Add in graphic for non-zero exits
-# Documentation: Copy this file to /etc/profile.d/ and chmod +x
-# ChangeLog: Mar 06, 2014 - Learned the wonders of tput
-# Source: https://raw.githubusercontent.com/jnovack/dotfiles/master/bash/colorize.sh
-
 reset=$(   tput sgr0 )
 bold=$(    tput bold )
 under=$(   tput smul )
