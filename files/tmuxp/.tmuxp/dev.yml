@@ -1,0 +1,18 @@
+session_name: dev
+windows:
+- window_name: sys
+  panes:
+    - glances
+- window_name: nvim
+  shell_command_before:
+    - cd ~/Projects
+  panes:
+    - nvim
+- window_name: dev
+  shell_command_before:
+    - cd ~/Projects
+  layout: main-horizontal
+  panes:
+    -
+    -
+

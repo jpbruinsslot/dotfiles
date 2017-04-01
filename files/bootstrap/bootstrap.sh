@@ -95,7 +95,6 @@ sudo apt-get install -y \
     python-pip \
     python3-dev \
     python3-pip \
-    ruby \
     numix-icon-theme-circle \
     linux-image-extra-$(uname -r) \
     linux-image-extra-virtual \
@@ -116,7 +115,8 @@ sudo -H pip3 install --no-cache-dir --upgrade --force-reinstall \
     neovim \
     glances \
     docker-compose \
-    psutil
+    psutil \
+    tmuxp
 
 # Needed for gsutil
 sudo -H pip2 install --no-cache-dir --upgrade --force-reinstall \
@@ -161,10 +161,6 @@ sh autogen.sh
 ./configure && make
 sudo make install
 cd
-
-# Install: Tmuxinator
-print_cyan "... Installing tmuxinator"
-sudo gem install tmuxinator
 
 # Install: Docker
 print_cyan "... Installing docker"

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # A shortcut for tmuxinator
-alias mux=tmuxinator
+alias mux="tmuxp load"
 
 # A shortcut for docker-compose
 alias compose=docker-compose

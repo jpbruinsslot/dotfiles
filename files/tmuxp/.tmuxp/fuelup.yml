@@ -1,0 +1,20 @@
+session_name: fuelup
+windows:
+- window_name: sys
+  panes:
+    - glances
+- window_name: nvim
+  shell_command_before:
+    - cd ~/Projects
+  panes:
+    - nvim
+- window_name: dev
+  shell_command_before:
+    - cd ~/Projects/fuelup
+  layout: main-horizontal
+  panes:
+    -
+    -
+- window_name: slack
+  panes:
+    - slack-term
