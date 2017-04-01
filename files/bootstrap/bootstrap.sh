@@ -221,11 +221,13 @@ cd
 
 # TODO slack-term config
 
-# TODO Install: Nerd Fonts
+# Install: Nerd Fonts
 # (https://github.com/ryanoasis/nerd-fonts)
-# mkdir -p ~/.local/share/fonts
-# cd ~/.local/share/fonts && curl -fLo "Droid Sans Mono for Powerline Nerd Font Complete.otf" https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20for%20Powerline%20Nerd%20Font%20Complete.otf
-# cd
+mkdir -p ~/.local/share/fonts
+cd ~/.local/share/fonts && \
+    curl -fLo "Knack Regular Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Hack/Regular/complete/Knack%20Regular%20Nerd%20Font%20Complete%20Mono.ttf && \
+    curl -fLo "Ubuntu Mono Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/UbuntuMono/Original/complete/Ubuntu%20Mono%20Nerd%20Font%20Complete.ttf
+cd
 
 # Install: i3
 print_cyan "... Installing i3"
