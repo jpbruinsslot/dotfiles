@@ -76,8 +76,8 @@ function parse_git_branch() {
 	BRANCH=`git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
 	if [ ! "${BRANCH}" == "" ]
 	then
-        STAT=`parse_git_dirty`
-		echo " $bldgrn(${BRANCH}$bldred${STAT}$bldgrn)"
+        STATUS=$(parse_git_dirty)
+		echo " $bldgrn(${BRANCH}$bldred${STATUS}$bldgrn)"
 	else
 		echo ""
 	fi
@@ -85,7 +85,10 @@ function parse_git_branch() {
 
 # get state of branch
 function parse_git_dirty {
-  [[ "$(git status 2> /dev/null | tail -n1)" != "nothing to commit (working directory clean)" ]] && echo "*"
+    STATUS=$(git status 2> /dev/null | tail -n1)
+    if [ "${STATUS}" != "nothing to commit, working directory clean" ]; then
+        echo "*"
+    fi
 }
 
 export PS1="\[$bldblu\]\w\$(parse_git_branch) \[$bldblu\]$ \[$reset\]"
