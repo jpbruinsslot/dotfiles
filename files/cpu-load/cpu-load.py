@@ -6,21 +6,19 @@ import psutil
 
 
 def get_cpu_load():
-    load = psutil.cpu_percent(interval=1)
-    return "%s%%" % load
+    return psutil.cpu_percent(interval=1)
 
 
-def get_memory_percent():
+def get_mem_load():
     mem = psutil.virtual_memory()
-    return "%s%%" % mem.percent
+    return mem.percent
 
 
 def main():
     try:
-        print(" %5s %4s" % (get_cpu_load(), get_memory_percent()))
+        print(" %5s%% %4s%%" % (get_cpu_load(), get_mem_load()))
     except:
-        sys.exit(
-            "psutil not found please install with pip install psutil")
+        sys.exit("psutil not found, please install it (pip install psutil)")
 
 if __name__ == '__main__':
     main()
