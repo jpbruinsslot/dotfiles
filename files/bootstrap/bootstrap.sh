@@ -79,6 +79,7 @@ sudo apt-get install -y \
     wget \
     curl \
     tree \
+    htop \
     git-core \
     openssh-server \
     build-essential \
@@ -101,13 +102,13 @@ sudo apt-get install -y \
     apt-transport-https \
     ca-certificates \
     software-properties-common \
-    htop \
     pulseaudio \
     xbacklight \
     sysstat \
+    acpi \
     && sudo rm -rf /var/lib/apt/lists/*
 
-# Install: Python packages
+# Install: Python3 packages
 print_cyan "... Installing Python packages"
 sudo -H pip3 install --upgrade pip
 sudo -H pip3 install --no-cache-dir --upgrade --force-reinstall \
@@ -118,6 +119,7 @@ sudo -H pip3 install --no-cache-dir --upgrade --force-reinstall \
     psutil \
     tmuxp
 
+# Install: Python2 packages
 # Needed for gsutil
 sudo -H pip2 install --no-cache-dir --upgrade --force-reinstall \
     crcmod
@@ -205,7 +207,8 @@ cd ~/dotfiles
 git clone git@github.com:erroneousboat/dotfiles.git
 cd
 
-# TODO Sync dotfiles
+# Sync dotfiles
+print_cyan "... Syncing dotfiles"
 
 # TODO c (valgrind)
 
@@ -213,12 +216,11 @@ cd
 
 # TODO Terminfo etc.
 
-# TODO urvxt
-
 # TODO slack-term config
 
 # Install: Nerd Fonts
 # (https://github.com/ryanoasis/nerd-fonts)
+print_cyan "... Installing nerd-fonts"
 mkdir -p ~/.local/share/fonts
 cd ~/.local/share/fonts && \
     curl -fLo "Knack Regular Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Hack/Regular/complete/Knack%20Regular%20Nerd%20Font%20Complete%20Mono.ttf && \
@@ -243,4 +245,19 @@ sudo make install
 cd
 rm -rf ~/i3blocks
 
-# TODO Install: Bash 4
+# Install: Bash 4.4
+# (https://www.gnu.org/software/bash/)
+function install_bash() {
+	if [[ ! -z "$1" ]]; then
+		export BASH_VERSION=$1
+	fi
+}
+
+print_cyan "... Installing bash"
+BASH_VERSION=4.4
+wget -q http://ftp.gnu.org/gnu/bash/bash-${BASH_VERSION}.tar.gz
+tar -xzf bash-${BASH_VERSION}.tar.gz
+cd ${BASH_VERSION}
+./configure && make && sudo make install
+# cp /usr/local/bin/bash /bin/bash
+cd
