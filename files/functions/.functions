@@ -129,6 +129,10 @@ function screen() {
 
 # What the hell did I do yesterday
 #   $ standup [days]
+#
+# Helpful format sources:
+# - https://git-scm.com/docs/pretty-formats
+# - http://stackoverflow.com/q/1441010
 function standup() {
     pwd=$(pwd)
 
@@ -138,7 +142,7 @@ function standup() {
         days="$1"
     fi
 
-    fu && git log --pretty=oneline --branches --abbrev-commit --decorate --author "J.P.H. Bruins Slot" --author="Jan Pieter" --author="erroneousboat" --since=$(date --date="${days} day ago" +"%Y-%m-%d") && cd ${pwd}
+    fu && git log --pretty=format:"%C(auto,yellow)%h %C(auto,blue)%>(12,trunc)%ad %C(auto,reset)%s%C(auto,red)% gD% D" --date=relative --author="J.P.H. Bruins Slot" --author="Jan Pieter" --author="erroneousboat" --since=$(date --date="${days} day ago" +"%Y-%m-%d") && cd ${pwd}
 }
 
 # Useful extraction function:
