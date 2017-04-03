@@ -5,13 +5,12 @@ windows:
     - glances
 - window_name: nvim
   shell_command_before:
-    - cd ~/Projects
+    - cd ~/Projects/fuelup
   panes:
     - nvim
 - window_name: dev
   shell_command_before:
     - cd ~/Projects/fuelup
-  layout: main-horizontal
   panes:
     -
     -
