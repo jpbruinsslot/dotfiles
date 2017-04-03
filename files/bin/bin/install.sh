@@ -43,106 +43,127 @@ print_green "==> Bootstrapping system"
 # Make necessary directories
 print_cyan "... Creating directories"
 mkdir -p \
-    $HOME/Projects \
-    $HOME/.ssh
+    $HOME/Projects
 
 # Copy ssh-keys 
-print_cyan "... Retrieving SSH keys from remote host"
-read -p "--> Copy SSH keys from remote host? [y/n] " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-    read -p "--> Please enter user@host: " HOST
-    scp $HOST:~/.ssh/id_rsa* ~/.ssh/
-    eval "$(ssh-agent -s)"
-    ssh-add ~/.ssh/id_rsa
-fi
+function ssh() {
+    print_cyan "... Create ssh directory"
+    mkdir -p $HOME/.ssh
+
+    print_cyan "... Retrieving SSH keys from remote host"
+    read -p "--> Copy SSH keys from remote host? [y/n] " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        read -p "--> Please enter user@host: " HOST
+        scp $HOST:~/.ssh/id_rsa* ~/.ssh/
+        eval "$(ssh-agent -s)"
+        ssh-add ~/.ssh/id_rsa
+    fi
+}
 
 # Add additional repositories
-print_cyan "... Adding additional repositories"
-sudo add-apt-repository -y ppa:numix/ppa
-sudo add-apt-repository -y ppa:neovim-ppa/stable
+function sources() {
+    print_cyan "... Adding additional repositories"
+    sudo add-apt-repository -y ppa:numix/ppa
+    sudo add-apt-repository -y ppa:neovim-ppa/stable
+}
 
-# Synchronize package index files
-print_cyan "... Synchronizing package index files"
-sudo apt-get update
+function base() {
+    # Synchronize package index files
+    print_cyan "... Synchronizing package index files"
+    sudo apt-get update
 
-# Install new versions of all packages
-print_cyan "... Installing new versions of all packages"
-sudo apt-get -y dist-upgrade
+    # Install new versions of all packages
+    print_cyan "... Installing new versions of all packages"
+    sudo apt-get -y dist-upgrade
 
-# Install packages
-print_cyan "... Installing system packages"
-sudo apt-get install -y \
-    vim \
-    neovim \
-    zsh \
-    wget \
-    curl \
-    tree \
-    htop \
-    git-core \
-    openssh-server \
-    build-essential \
-    automake \
-    libevent-dev \
-    autoconf \
-    pkg-config \
-    libncurses5-dev \
-    libncursesw5-dev \
-    virtualbox \
-    gnome-do \
-    dconf-tools \
-    python-dev \
-    python-pip \
-    python3-dev \
-    python3-pip \
-    numix-icon-theme-circle \
-    linux-image-extra-$(uname -r) \
-    linux-image-extra-virtual \
-    apt-transport-https \
-    ca-certificates \
-    software-properties-common \
-    pulseaudio \
-    xbacklight \
-    sysstat \
-    acpi \
-    && sudo rm -rf /var/lib/apt/lists/*
+    # Install packages
+    print_cyan "... Installing system packages"
+    sudo apt-get install -y \
+        vim \
+        neovim \
+        zsh \
+        wget \
+        curl \
+        tree \
+        htop \
+        git-core \
+        openssh-server \
+        build-essential \
+        automake \
+        libevent-dev \
+        autoconf \
+        pkg-config \
+        libncurses5-dev \
+        libncursesw5-dev \
+        virtualbox \
+        gnome-do \
+        dconf-tools \
+        python-dev \
+        python-pip \
+        python3-dev \
+        python3-pip \
+        numix-icon-theme-circle \
+        linux-image-extra-$(uname -r) \
+        linux-image-extra-virtual \
+        apt-transport-https \
+        ca-certificates \
+        software-properties-common \
+        pulseaudio \
+        xbacklight \
+        sysstat \
+        acpi \
+        && sudo rm -rf /var/lib/apt/lists/*
+}
 
-# Install: Python3 packages
-print_cyan "... Installing Python packages"
-sudo -H pip3 install --upgrade pip
-sudo -H pip3 install --no-cache-dir --upgrade --force-reinstall \
-    httpie \
-    neovim \
-    glances \
-    docker-compose \
-    psutil \
-    tmuxp
 
-# Install: Python2 packages
-# Needed for gsutil
-sudo -H pip2 install --no-cache-dir --upgrade --force-reinstall \
-    crcmod
+
+function python() {
+    # Install: Python3 packages
+    print_cyan "... Installing Python packages"
+    sudo -H pip3 install --upgrade pip
+    sudo -H pip3 install --no-cache-dir --upgrade --force-reinstall \
+        httpie \
+        neovim \
+        glances \
+        docker-compose \
+        psutil \
+        tmuxp
+
+    # Install: Python2 packages
+    # Needed for gsutil
+    sudo -H pip2 install --no-cache-dir --upgrade --force-reinstall \
+        crcmod
+}
 
 # Install: Golang
-print_cyan "... Installing Go programming language"
-read -p "--> Please enter the version of Go you want to install: " GOVERSION
-GOLANG=go$GOVERSION.linux-amd64
+function golang() {
+    GO_VERSION=1.8
 
-sudo rm -rf /usr/local/go
+	if [[ ! -z "$1" ]]; then
+		export GO_VERSION=$1
+	fi
 
-wget -O $GOLANG.tar.gz https://storage.googleapis.com/golang/$GOLANG.tar.gz 
-sudo tar -C /usr/local -xzf $GOLANG.tar.gz
-export PATH=$PATH:/usr/local/go/bin
+    print_cyan "... Installing Go programming language"
+    read -p "--> Please enter the version of Go you want to install: " GOVERSION
+    GOLANG=go$GOVERSION.linux-amd64
 
-# Install: Go packages
-print_cyan "... Installing Go packages"
-go get -u \
-    github.com/erroneousboat/slack-term \
-    github.com/erroneousboat/dot \
-    github.com/jingweno/ccat \
-    github.com/golang/dep/... \
-    github.com/kardianos/govendor
+    # Removing prior version of Go
+    sudo rm -rf /usr/local/go
+
+    wget -O $GOLANG.tar.gz https://storage.googleapis.com/golang/$GOLANG.tar.gz 
+    sudo tar -C /usr/local -xzf $GOLANG.tar.gz
+    export PATH=$PATH:/usr/local/go/bin
+
+    # Install: Go packages
+    print_cyan "... Installing Go packages"
+    go get -u \
+        github.com/erroneousboat/slack-term \
+        github.com/erroneousboat/dot \
+        github.com/jingweno/ccat \
+        github.com/golang/dep/... \
+        github.com/kardianos/govendor
+}
 
 # Install: oh-my-zsh
 print_cyan "... Installing oh-my-zsh"
@@ -261,3 +282,45 @@ cd ${BASH_VERSION}
 ./configure && make && sudo make install
 # cp /usr/local/bin/bash /bin/bash
 cd
+
+usage() {
+    echo "install.sh"
+    echo
+    echo "This script can install and setup the following on an ubuntu based system:"
+    echo
+	echo "Usage:"
+    echo "  all                         - setup all below"
+	echo "  ssh                         - setup ssh & get keys"
+	echo "  sources                     - setup sources & install base pkgs"
+	echo "  python                      - setup python packages"
+	echo "  golang [version]            - setup golang language ang packages"
+}
+
+all() {
+    sources
+    base
+    ssh
+    python
+    golang
+} 
+
+main() {
+    local cmd=$1
+
+    if [[ -z "$cmd" ]]; then
+		usage
+		exit 1
+	fi
+
+    if [[ $cmd == "sources" ]]; then
+		check_is_sudo
+
+		sources
+
+		base
+    elif [[ $cmd == "python" ]]; then
+        python
+    else
+        usage
+    fi
+}
