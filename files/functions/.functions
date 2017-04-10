@@ -127,7 +127,9 @@ function screen() {
     xrandr --output eDP1 --scale 1x1 --pos 3840x0 ; xrandr --output DP1 --scale 2x2 --mode 1920x1080 --fb 7680x2160 --pos 0x0
 }
 
-# What the hell did I do yesterday
+# What the hell did I do yesterday, will return all commits on local branches
+# in the last `n` days.
+#
 #   $ standup [days]
 #
 # Helpful format sources:
@@ -142,7 +144,7 @@ function standup() {
         days="$1"
     fi
 
-    fu && git log --pretty=format:"%C(auto,yellow)%h %C(auto,blue)%>(12,trunc)%ad %C(auto,reset)%s%C(auto,red)% gD% D" --date=relative --author="J.P.H. Bruins Slot" --author="Jan Pieter" --author="erroneousboat" --since=$(date --date="${days} day ago" +"%Y-%m-%d") && cd ${pwd}
+    fu && git log --branches --pretty=format:"%C(auto,yellow)%h %C(auto,blue)%>(12,trunc)%ad %C(auto,reset)%s%C(auto,red)% gD% D" --date=relative --author="J.P.H. Bruins Slot" --author="Jan Pieter" --author="erroneousboat" --since=$(date --date="${days} day ago" +"%Y-%m-%d") && cd ${pwd}
 }
 
 # Useful extraction function:
