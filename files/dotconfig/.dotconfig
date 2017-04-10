@@ -5,7 +5,7 @@
 		"bash_profile": "/.bash_profile",
 		"bash_prompt": "/.bash_prompt",
 		"bashrc": "/.bashrc",
-		"bin": "/bin/",
+		"bin": "/bin",
 		"dircolors": "/.dircolors",
 		"dockerfunc": "/.dockerfunc",
 		"dotconfig": "/.dotconfig",
