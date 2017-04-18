@@ -116,8 +116,6 @@ function base() {
         && sudo rm -rf /var/lib/apt/lists/*
 }
 
-
-
 function python() {
     # Install: Python3 packages
     print_cyan "... Installing Python packages"
@@ -128,7 +126,8 @@ function python() {
         glances \
         docker-compose \
         psutil \
-        tmuxp
+        tmuxp \
+        flake8
 
     # Install: Python2 packages
     # Needed for gsutil
@@ -145,8 +144,9 @@ function golang() {
 	fi
 
     print_cyan "... Installing Go programming language"
-    read -p "--> Please enter the version of Go you want to install: " GOVERSION
-    GOLANG=go$GOVERSION.linux-amd64
+    # read -p "--> Please enter the version of Go you want to install: " GO_VERSION
+
+    GOLANG=go$GO_VERSION.linux-amd64
 
     # Removing prior version of Go
     sudo rm -rf /usr/local/go
@@ -165,10 +165,27 @@ function golang() {
         github.com/kardianos/govendor
 }
 
+# Install: Docker
+function docker() {
+    print_cyan "... Installing docker"
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    sudo add-apt-repository \
+       "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+       $(lsb_release -cs) \
+       stable"
+    sudo apt-get update
+    sudo apt-get install -y docker-ce
+
+    sudo usermod -a -G docker $USER
+    sudo service docker restart
+}
+
 # Install: oh-my-zsh
-print_cyan "... Installing oh-my-zsh"
-rm -rf ~/.oh-my-zsh
-git clone --bare git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+function ohmyzsh() {
+    print_cyan "... Installing oh-my-zsh"
+    rm -rf ~/.oh-my-zsh
+    git clone --bare git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+}
 
 # Install: Chrome (http://askubuntu.com/a/79284)
 # wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
@@ -185,18 +202,6 @@ sh autogen.sh
 sudo make install
 cd
 
-# Install: Docker
-print_cyan "... Installing docker"
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
-   stable"
-sudo apt-get update
-sudo apt-get install -y docker-ce
-
-sudo usermod -a -G docker $USER
-sudo service docker restart
 
 # Install: GCloud
 print_cyan "... Installing gcloud"
@@ -293,7 +298,8 @@ usage() {
 	echo "  ssh                         - setup ssh & get keys"
 	echo "  sources                     - setup sources & install base pkgs"
 	echo "  python                      - setup python packages"
-	echo "  golang [version]            - setup golang language ang packages"
+	echo "  golang [version]            - setup golang language and packages"
+	echo "  docker                      - setup docker"
 }
 
 all() {
@@ -302,6 +308,7 @@ all() {
     ssh
     python
     golang
+    docker
 } 
 
 main() {
@@ -320,6 +327,10 @@ main() {
 		base
     elif [[ $cmd == "python" ]]; then
         python
+    elif [[ $cmd == "golang" ]]; then
+        golang
+    elif [[ $cmd == "docker" ]]; then
+        docker
     else
         usage
     fi
