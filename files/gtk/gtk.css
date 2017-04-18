@@ -1,0 +1,15 @@
+/*
+ * Make title bar smaller in height. Reload: alt+f2, enter "r" and enter.
+ *
+ * Source: http://blog.samalik.com/make-your-gnome-title-bars-smaller/
+ *
+ */
+.header-bar.default-decoration {
+ padding-top: 3px;
+ padding-bottom: 3px;
+ font-size: 0.8em;
+}
+
+.header-bar.default-decoration .button.titlebutton {
+ padding: 0px;
+}

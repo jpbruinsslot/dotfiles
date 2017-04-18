@@ -13,6 +13,7 @@
 		"functions": "/.functions",
 		"gitconfig": "/.gitconfig",
 		"gnome-terminal-palette": "/gnome-term-profile.sh",
+		"gtk": "/.config/gtk-3.0/gtk.css",
 		"httpie": "/.httpie/config.json",
 		"i3": "/.i3",
 		"inputrc": "/.inputrc",
