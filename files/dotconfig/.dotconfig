@@ -2,6 +2,7 @@
 	"dot_path": "/dotfiles",
 	"files": {
 		"alias": "/.alias",
+		"background": "/.background",
 		"bash_profile": "/.bash_profile",
 		"bash_prompt": "/.bash_prompt",
 		"bashrc": "/.bashrc",
