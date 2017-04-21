@@ -9,12 +9,14 @@
 #
 # On ubuntu this is probably the easiest to create a cron jobs with a symlink:
 #
-# $ sudo ln -s $HOME/.background/background.sh /etc/cron.hourly/background.sh
+# $ sudo ln -s $HOME/.background/background.sh /etc/cron.hourly/background
 #
 # This will run the script every hour and update the background.
 set -e
 
-# Get the hour in simple format
+# Get the hour in simple format, number with preceding 0 (e.g. 08), are
+# interpreted as an octal number so ${HOUR#0} is necessary to make it
+# decimal
 HOUR=$(date +"%H")
 
 # Location of this script
@@ -26,58 +28,62 @@ IMAGES=($DIR/images/*)
 # The specific command that will set the background
 COMMAND="gsettings set org.gnome.desktop.background picture-uri file://"
 
+
 function set_background() {
-    if ((${HOUR} >= 5 && $HOUR <= 7)); then
+    if ((${HOUR#0} >= 5 && ${HOUR#0} <= 7)); then
         $COMMAND${IMAGES[0]}
-    elif ((${HOUR} >= 7 && $HOUR <= 9)); then
+    elif ((${HOUR#0} >= 7 && ${HOUR#0} <= 9)); then
         $COMMAND${IMAGES[1]}
-    elif ((${HOUR} >= 9 && $HOUR <= 11)); then
+    elif ((${HOUR#0} >= 9 && ${HOUR#0} <= 11)); then
         $COMMAND${IMAGES[2]}
-    elif ((${HOUR} >= 11 && $HOUR <= 13)); then
+    elif ((${HOUR#0} >= 11 && ${HOUR#0} <= 13)); then
         $COMMAND${IMAGES[3]}
-    elif ((${HOUR} >= 13 && $HOUR <= 15)); then
+    elif ((${HOUR#0} >= 13 && ${HOUR#0} <= 15)); then
         $COMMAND${IMAGES[4]}
-    elif ((${HOUR} >= 15 && $HOUR <= 17)); then
+    elif ((${HOUR#0} >= 15 && ${HOUR#0} <= 17)); then
         $COMMAND${IMAGES[5]}
-    elif ((${HOUR} >= 17 && $HOUR <= 19)); then
+    elif ((${HOUR#0} >= 17 && ${HOUR#0} <= 19)); then
         $COMMAND${IMAGES[6]}
-    elif ((${HOUR} >= 19 && $HOUR <= 21)); then
+    elif ((${HOUR#0} >= 19 && ${HOUR#0} <= 21)); then
         $COMMAND${IMAGES[7]}
-    elif ((${HOUR} >= 21 && $HOUR <= 23)); then
+    elif ((${HOUR#0} >= 21 && ${HOUR#0} <= 23)); then
         $COMMAND${IMAGES[8]}
-    elif ((${HOUR} >= 23 && $HOUR <= 1)); then
+    elif ((${HOUR#0} >= 23 && ${HOUR#0} <= 1)); then
         $COMMAND${IMAGES[9]}
-    elif ((${HOUR} >= 1 && $HOUR <= 3)); then
+    elif ((${HOUR#0} >= 1 && ${HOUR#0} <= 3)); then
         $COMMAND${IMAGES[10]}
-    elif ((${HOUR} >= 3 && $HOUR <= 5)); then
+    elif ((${HOUR#0} >= 3 && ${HOUR#0} <= 5)); then
         $COMMAND${IMAGES[11]}
     fi
 }
 
 
 function cycle() {
-    # cycle throught all images
     for i in "${IMAGES[@]}"; do
         $COMMAND$i
         sleep 2
     done
 
-    # reset
+    # reset to correct background
     set_background
 }
+
 
 usage() {
     echo "background.sh"
     echo
-    echo "This will set the background for a gnome 3 window manager based on"
-    echo "a specific time of day. See the script itself on how to set it up."
+    echo "This will set the background for a gnome 3 window manager"
+    echo "based on a specific time of day. See the script itself on how"
+    echo "to set it up."
     echo
-    echo "When no argument is provided it will try and set the correct background."
+    echo "When no argument is provided it will try and set the correct"
+    echo "background."
     echo 
     echo "Usage:"
     echo "  cycle               - cycle through all the backgrounds"
     echo "  help                - show this page"
 }
+
 
 main() {
     local cmd=$1
