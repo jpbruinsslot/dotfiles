@@ -38,12 +38,15 @@ function print_blue {
     printf "${BLUE}${B}$1${N}${NC}\n"
 }
 
-print_green "==> Bootstrapping system"
+
 
 # Make necessary directories
-print_cyan "... Creating directories"
-mkdir -p \
-    $HOME/Projects
+function dir() {
+    print_cyan "... Creating directories"
+    mkdir -p \
+        $HOME/Projects \
+        $HOME/Downloads
+}
 
 # Copy ssh-keys 
 function ssh() {
@@ -113,6 +116,7 @@ function base() {
         xbacklight \
         sysstat \
         acpi \
+        feh \
         && sudo rm -rf /var/lib/apt/lists/*
 }
 
@@ -151,9 +155,13 @@ function golang() {
     # Removing prior version of Go
     sudo rm -rf /usr/local/go
 
+    # Download
+    cd /tmp
     wget -O $GOLANG.tar.gz https://storage.googleapis.com/golang/$GOLANG.tar.gz 
     sudo tar -C /usr/local -xzf $GOLANG.tar.gz
     export PATH=$PATH:/usr/local/go/bin
+
+    cd "$HOME"
 
     # Install: Go packages
     print_cyan "... Installing Go packages"
@@ -180,61 +188,100 @@ function docker() {
     sudo service docker restart
 }
 
-# Install: oh-my-zsh
-function ohmyzsh() {
-    print_cyan "... Installing oh-my-zsh"
-    rm -rf ~/.oh-my-zsh
-    git clone --bare git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+
+# Install: Chrome
+# (http://askubuntu.com/a/79284)
+function chrome() {
+    cd /tmp
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    dpkg -i google-chrome*.deb
+    apt-get install -f
+
+    cd "$HOME"
 }
 
-# Install: Chrome (http://askubuntu.com/a/79284)
-# wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-# dpkg -i google-chrome*.deb
-# apt-get install -f
-
 # Install: Tmux
-print_cyan "... Installing tmux"
-rm -rf ~/tmux
-git clone https://github.com/tmux/tmux.git
-cd tmux
-sh autogen.sh
-./configure && make
-sudo make install
-cd
+function tmux() {
+    print_cyan "... Installing tmux"
+
+    if [[ -d /tmp/tmux ]]; then
+        rm -rf /tmp/tmux
+    fi
+
+    git clone https://github.com/tmux/tmux.git /tmp/tmux
+
+    cd /tmp/tmux
+    sh autogen.sh
+    ./configure && make
+    sudo make install
+
+    cd "$HOME"
+}
 
 
 # Install: GCloud
-print_cyan "... Installing gcloud"
-GCLOUD_VERSION=146.0.0
-wget -q https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${GCLOUD_VERSION}-linux-x86_64.tar.gz
-tar -xzf google-cloud-sdk-${GCLOUD_VERSION}-linux-x86_64.tar.gz
-./google-cloud-sdk/install.sh --usage-reporting=true --path-update=true --bash-completion=true --rc-path=/.bashrc --additional-components app-engine-java app-engine-python kubectl alpha beta gcd-emulator pubsub-emulator
-rm google-cloud-sdk-${GCLOUD_VERSION}-linux-x86_64.tar.gz
+function gcloud() {
+    print_cyan "... Installing gcloud"
+
+    # Check for version argument
+	if [[ ! -z "$1" ]]; then
+		export GCLOUD_VERSION=$1
+	fi
+
+    GCLOUD_VERSION=146.0.0
+
+    cd /tmp
+    wget -q https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${GCLOUD_VERSION}-linux-x86_64.tar.gz
+    tar -xzf google-cloud-sdk-${GCLOUD_VERSION}-linux-x86_64.tar.gz
+    ./google-cloud-sdk/install.sh --usage-reporting=true --path-update=true --bash-completion=true --rc-path=/.bashrc --additional-components app-engine-java app-engine-python kubectl alpha beta gcd-emulator pubsub-emulator
+    rm google-cloud-sdk-${GCLOUD_VERSION}-linux-x86_64.tar.gz
+
+    cd "$HOME"
+}
+
 
 # Install: Minikube
-print_cyan "... Installing minikube"
-MINIKUBE_VERSION=v0.17.1
-curl -Lo minikube https://storage.googleapis.com/minikube/releases/$MINIKUBE_VERSION/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
+function minikube() {
+    print_cyan "... Installing minikube"
+
+    # Check for version argument
+	if [[ ! -z "$1" ]]; then
+		export MINIKUBE_VERSION=$1
+	fi
+
+    MINIKUBE_VERSION=v0.17.1
+
+    # Download
+    cd /tmp
+    curl -Lo minikube https://storage.googleapis.com/minikube/releases/$MINIKUBE_VERSION/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
+
+    cd "$HOME"
+}
 
 # Copy kubernetes config
-print_cyan "... Retrieving kubernetes config from remote host"
-read -p "--> Copy kubernetes config from remote host? [y/n] " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-    read -p "--> Please enter user@host: " HOST
-    scp -r $HOST:~/.kube/ ~
-fi
+function kubeconfig() {
+    print_cyan "... Retrieving kubernetes config from remote host"
+    read -p "--> Copy kubernetes config from remote host? [y/n] " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        read -p "--> Please enter user@host: " HOST
+        scp -r $HOST:~/.kube/ ~
+    fi
+}
 
 # Install: Dotfiles
-print_cyan "... Cloning dotfiles"
-rm -rf ~/dotfiles
-mkdir ~/dotfiles
-cd ~/dotfiles
-git clone git@github.com:erroneousboat/dotfiles.git
-cd
+function dotfiles() {
+    print_cyan "... Cloning dotfiles"
 
-# Sync dotfiles
-print_cyan "... Syncing dotfiles"
+    # Download
+    git clone https://github.com/erroneousboat/dotfiles.git "${HOME}/dotfiles"
+
+    print_cyan "... Syncing dotfiles"
+
+    # TODO
+
+    cd "$HOME"
+}
 
 # TODO c (valgrind)
 
@@ -246,47 +293,88 @@ print_cyan "... Syncing dotfiles"
 
 # Install: Nerd Fonts
 # (https://github.com/ryanoasis/nerd-fonts)
-print_cyan "... Installing nerd-fonts"
-mkdir -p ~/.local/share/fonts
-cd ~/.local/share/fonts && \
-    curl -fLo "Knack Regular Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Hack/Regular/complete/Knack%20Regular%20Nerd%20Font%20Complete%20Mono.ttf && \
+function fonts() {
+    print_cyan "... Installing fonts"
+
+    mkdir -p ~/.local/share/fonts
+    cd ~/.local/share/fonts
+
+    curl -fLo "Knack Regular Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Hack/Regular/complete/Knack%20Regular%20Nerd%20Font%20Complete%20Mono.ttf
+
     curl -fLo "Ubuntu Mono Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/UbuntuMono/Original/complete/Ubuntu%20Mono%20Nerd%20Font%20Complete.ttf
-cd
+
+    cd "$HOME"
+}
 
 # Install: i3
-print_cyan "... Installing i3"
-echo "deb http://debian.sur5r.net/i3/ $(lsb_release -c -s) universe" | sudo tee -a /etc/apt/sources.list
-sudo apt-get update
-sudo apt-get --allow-unauthenticated install sur5r-keyring
-sudo apt-get update
-sudo apt-get install i3
+function i3(){
+    print_cyan "... Installing i3"
+    echo "deb http://debian.sur5r.net/i3/ $(lsb_release -c -s) universe" | sudo tee -a /etc/apt/sources.list
+    sudo apt-get update
+    sudo apt-get --allow-unauthenticated install sur5r-keyring
+    sudo apt-get update
+    sudo apt-get install i3
 
-# Install: i3-blocks
-print_cyan "... Installing i3-blocks"
-rm -rf ~/i3-blocks
-git clone git://github.com/vivien/i3blocks
-cd i3blocks
-make clean all
-sudo make install
-cd
-rm -rf ~/i3blocks
+    i3apps
+}
+
+# Install: i3-apps
+function i3apps() {
+    print_cyan "... Installing i3-apps"
+
+    if [[ -d /tmp/i3blocks ]]; then
+        rm -rf /tmp/i3blocks
+    fi
+
+    # Download
+    git clone "https://github.com/vivien/i3blocks.git" /tmp/i3blocks
+
+    # Install
+    cd /tmp/i3blocks
+    make clean all
+    sudo make install
+
+    cd "$HOME"
+
+    sudo apt-get update
+    sudo apt-get install -y --no-install-recommends \
+        i3lock \
+        i3status
+}
+
 
 # Install: Bash 4.4
 # (https://www.gnu.org/software/bash/)
 function install_bash() {
+    print_cyan "... Installing bash"
+
+    # Check for version argument
 	if [[ ! -z "$1" ]]; then
 		export BASH_VERSION=$1
 	fi
+
+    BASH_VERSION=4.4
+
+    # Download
+    cd /tmp
+    wget -q http://ftp.gnu.org/gnu/bash/bash-${BASH_VERSION}.tar.gz
+    tar -xzf bash-${BASH_VERSION}.tar.gz
+
+    # Install
+    cd ${BASH_VERSION}
+    ./configure && make && sudo make install
+    cp /usr/local/bin/bash /bin/bash        # not yet sure if it works
+
+    cd "$HOME"
 }
 
-print_cyan "... Installing bash"
-BASH_VERSION=4.4
-wget -q http://ftp.gnu.org/gnu/bash/bash-${BASH_VERSION}.tar.gz
-tar -xzf bash-${BASH_VERSION}.tar.gz
-cd ${BASH_VERSION}
-./configure && make && sudo make install
-# cp /usr/local/bin/bash /bin/bash
-cd
+
+check_is_sudo() {
+	if [ "$EUID" -ne 0 ]; then
+		echo "Please run as root."
+		exit
+	fi
+}
 
 usage() {
     echo "install.sh"
@@ -295,20 +383,33 @@ usage() {
     echo
 	echo "Usage:"
     echo "  all                         - setup all below"
+    echo "  dir                         - setup all necessary directories"
 	echo "  ssh                         - setup ssh & get keys"
 	echo "  sources                     - setup sources & install base pkgs"
+    echo "  bash [version]              - setup bash"
 	echo "  python                      - setup python packages"
 	echo "  golang [version]            - setup golang language and packages"
 	echo "  docker                      - setup docker"
+	echo "  i3                          - setup i3"
+	echo "  i3-apps                     - setup i3-blocks"
+	echo "  fonts                       - setup fonts"
+	echo "  dotfiles                    - setup dotfiles"
+	echo "  gcloud                      - setup gcloud"
 }
 
 all() {
+    dir
     sources
     base
     ssh
+    bash
     python
     golang
     docker
+    i3
+    i3apps
+    fonts
+    dotfiles
 } 
 
 main() {
@@ -319,19 +420,33 @@ main() {
 		exit 1
 	fi
 
-    if [[ $cmd == "sources" ]]; then
+    if [[ $cmd == "all" ]]; then
+        all
+    elif [[ $cmd == "dir" ]]; then
+        dir
+    elif [[ $cmd == "sources" ]]; then
 		check_is_sudo
 
 		sources
 
 		base
+    elif [[ $cmd == "bash" ]]; then
+        bash
     elif [[ $cmd == "python" ]]; then
         python
     elif [[ $cmd == "golang" ]]; then
         golang
     elif [[ $cmd == "docker" ]]; then
         docker
+    elif [[ $cmd == "i3" ]]; then
+        i3
+    elif [[ $cmd == "i3-apps" ]]; then
+        i3apps
+    elif [[ $cmd == "fonts" ]]; then
+        fonts
     else
         usage
     fi
 }
+
+main "$@"
