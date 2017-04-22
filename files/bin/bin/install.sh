@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Install ...
+# big help ...
+
 # Source: http://www.davidpashley.com/articles/writing-robust-shell-scripts/
 # set -o nounset
 set -o errexit
@@ -66,12 +69,14 @@ function ssh() {
 
 # Add additional repositories
 function sources() {
-    print_cyan "... Adding additional repositories"
+    print_red ">>> Adding additional repositories"
     sudo add-apt-repository -y ppa:numix/ppa
     sudo add-apt-repository -y ppa:neovim-ppa/stable
 }
 
 function base() {
+    print_red ">>> Installing base packages"
+
     # Synchronize package index files
     print_cyan "... Synchronizing package index files"
     sudo apt-get update
@@ -83,41 +88,62 @@ function base() {
     # Install packages
     print_cyan "... Installing system packages"
     sudo apt-get install -y \
-        vim \
-        neovim \
-        zsh \
-        wget \
-        curl \
-        tree \
-        htop \
-        git-core \
-        openssh-server \
-        build-essential \
-        automake \
-        libevent-dev \
+        acpi \
+        apt-transport-https \
         autoconf \
-        pkg-config \
+        automake \
+        build-essential \
+        ca-certificates \
+        curl \
+        dconf-tools \
+        feh \
+        git-core \
+        gnome-do \
+        htop \
+        libevent-dev \
         libncurses5-dev \
         libncursesw5-dev \
-        virtualbox \
-        gnome-do \
-        dconf-tools \
+        linux-image-extra-$(uname -r) \
+        linux-image-extra-virtual \
+        neovim \
+        numix-icon-theme-circle \
+        openssh-server \
+        pkg-config \
         python-dev \
         python-pip \
         python3-dev \
         python3-pip \
-        numix-icon-theme-circle \
-        linux-image-extra-$(uname -r) \
-        linux-image-extra-virtual \
-        apt-transport-https \
-        ca-certificates \
         software-properties-common \
-        pulseaudio \
-        xbacklight \
         sysstat \
-        acpi \
-        feh \
-        && sudo rm -rf /var/lib/apt/lists/*
+        tree \
+        vim \
+        virtualbox \
+        wget \
+        zsh
+
+    print_cyan "... Cleaning up"
+    sudo apt-get autoremove
+    sudo apt-get autoclean
+    sudo apt-get clean
+}
+
+# Install: graphics drivers
+function graphics() {
+	local system=$1
+
+	if [[ -z "$system" ]]; then
+		echo "You need to specify if you're installing on a laptop or desktop"
+		exit 1
+	fi
+
+	local pkgs=( nvidia-kernel-dkms bumblebee-nvidia primus )
+
+	if [[ $system == "laptop" ]]; then
+		pkgs=( xorg xserver-xorg xserver-xorg-video-intel )
+	fi
+
+    print_red ">>> Installing graphics drivers"
+	apt-get install -y "${pkgs[@]}" --no-install-recommends
 }
 
 function python() {
@@ -242,7 +268,7 @@ function gcloud() {
 
 # Install: Minikube
 function minikube() {
-    print_cyan "... Installing minikube"
+    print_cyan ">>> Install minikube"
 
     # Check for version argument
 	if [[ ! -z "$1" ]]; then
@@ -258,9 +284,9 @@ function minikube() {
     cd "$HOME"
 }
 
-# Copy kubernetes config
+# Install: kubernetes config
 function kubeconfig() {
-    print_cyan "... Retrieving kubernetes config from remote host"
+    print_red ">>> Install kubernetes configuration"
     read -p "--> Copy kubernetes config from remote host? [y/n] " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
@@ -271,13 +297,12 @@ function kubeconfig() {
 
 # Install: Dotfiles
 function dotfiles() {
-    print_cyan "... Cloning dotfiles"
+    print_red ">>> Install dotfiles"
 
-    # Download
+    print_cyan "... Cloning dotfiles"
     git clone https://github.com/erroneousboat/dotfiles.git "${HOME}/dotfiles"
 
     print_cyan "... Syncing dotfiles"
-
     # TODO
 
     cd "$HOME"
@@ -314,32 +339,45 @@ function i3(){
     sudo apt-get --allow-unauthenticated install sur5r-keyring
     sudo apt-get update
     sudo apt-get install i3
-
-    i3apps
 }
 
 # Install: i3-apps
 function i3apps() {
-    print_cyan "... Installing i3-apps"
+    print_red ">>> Installing i3-apps"
 
     if [[ -d /tmp/i3blocks ]]; then
         rm -rf /tmp/i3blocks
     fi
 
-    # Download
+    # Download: i3blocks
     git clone "https://github.com/vivien/i3blocks.git" /tmp/i3blocks
 
-    # Install
+    # Install: i3blocks
     cd /tmp/i3blocks
     make clean all
     sudo make install
 
-    cd "$HOME"
-
-    sudo apt-get update
-    sudo apt-get install -y --no-install-recommends \
+    # Install additional apps
+    apt-get update
+    apt-get install -y --no-install-recommends \
+        alsa-utils \
+        feh \
         i3lock \
-        i3status
+        i3status \
+        pulseaudio \
+        rofi \
+        xbacklight \
+
+    cd "$HOME"
+}
+
+function i3setup() {
+    # TODO screen-backlight
+    # TODO keyboard-backlight
+    # TODO wifi
+    # TODO sound + keyboard shortcut for sound
+    # TODO external monitor
+    cd "$HOME"
 }
 
 
@@ -386,12 +424,12 @@ usage() {
     echo "  dir                         - setup all necessary directories"
 	echo "  ssh                         - setup ssh & get keys"
 	echo "  sources                     - setup sources & install base pkgs"
+	echo "  graphics {laptop,desktop}   - setup graphics drivers"
     echo "  bash [version]              - setup bash"
 	echo "  python                      - setup python packages"
 	echo "  golang [version]            - setup golang language and packages"
 	echo "  docker                      - setup docker"
 	echo "  i3                          - setup i3"
-	echo "  i3-apps                     - setup i3-blocks"
 	echo "  fonts                       - setup fonts"
 	echo "  dotfiles                    - setup dotfiles"
 	echo "  gcloud                      - setup gcloud"
@@ -402,12 +440,12 @@ all() {
     sources
     base
     ssh
+    graphics
     bash
     python
     golang
     docker
     i3
-    i3apps
     fonts
     dotfiles
 } 
@@ -426,22 +464,24 @@ main() {
         dir
     elif [[ $cmd == "sources" ]]; then
 		check_is_sudo
-
 		sources
-
 		base
+    elif [[ $cmd == "ssh" ]]; then
+        ssh
+    elif [[ $cmd == "graphics" ]]; then
+        graphics
     elif [[ $cmd == "bash" ]]; then
-        bash
+        bash "$2"
     elif [[ $cmd == "python" ]]; then
         python
     elif [[ $cmd == "golang" ]]; then
-        golang
+        golang "$2"
     elif [[ $cmd == "docker" ]]; then
         docker
     elif [[ $cmd == "i3" ]]; then
         i3
-    elif [[ $cmd == "i3-apps" ]]; then
         i3apps
+        i3setup
     elif [[ $cmd == "fonts" ]]; then
         fonts
     else
