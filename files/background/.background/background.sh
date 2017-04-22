@@ -1,22 +1,6 @@
 #!/bin/bash
-#
-# Background changer based on the time of day for gnome 3 window manager
-# on ubuntu, when using a different window manager check how to change your
-# background on the commandline, `feh` is a good program.
-#
-# Download backgrounds from: http://www.bitday.me, place those files and
-# this script in the ./background directory
-#
-# On ubuntu this is probably the easiest to create a cron jobs with a symlink:
-#
-# $ sudo ln -s $HOME/.background/background.sh /etc/cron.hourly/background
-#
-# This will run the script every hour and update the background.
 set -e
 
-# Get the hour in simple format, number with preceding 0 (e.g. 08), are
-# interpreted as an octal number so ${HOUR#0} is necessary to make it
-# decimal
 HOUR=$(date +"%H")
 
 # Location of this script
@@ -27,61 +11,86 @@ IMAGES=($DIR/images/*)
 
 # The specific command that will set the background
 COMMAND="gsettings set org.gnome.desktop.background picture-uri file://"
+# COMMAND="feh --bg-fill "
 
+function 8bit() {
+    # Get the hour in simple format, number with preceding 0 (e.g. 08), are
+    # interpreted as an octal number so ${hour#0} is necessary to make it
+    # decimal
+    local hour=$(date +"%H")
 
-function set_background() {
-    if ((${HOUR#0} >= 5 && ${HOUR#0} <= 7)); then
-        $COMMAND${IMAGES[0]}
-    elif ((${HOUR#0} >= 7 && ${HOUR#0} <= 9)); then
-        $COMMAND${IMAGES[1]}
-    elif ((${HOUR#0} >= 9 && ${HOUR#0} <= 11)); then
-        $COMMAND${IMAGES[2]}
-    elif ((${HOUR#0} >= 11 && ${HOUR#0} <= 13)); then
-        $COMMAND${IMAGES[3]}
-    elif ((${HOUR#0} >= 13 && ${HOUR#0} <= 15)); then
-        $COMMAND${IMAGES[4]}
-    elif ((${HOUR#0} >= 15 && ${HOUR#0} <= 17)); then
-        $COMMAND${IMAGES[5]}
-    elif ((${HOUR#0} >= 17 && ${HOUR#0} <= 19)); then
-        $COMMAND${IMAGES[6]}
-    elif ((${HOUR#0} >= 19 && ${HOUR#0} <= 21)); then
-        $COMMAND${IMAGES[7]}
-    elif ((${HOUR#0} >= 21 && ${HOUR#0} <= 23)); then
-        $COMMAND${IMAGES[8]}
-    elif ((${HOUR#0} >= 23 && ${HOUR#0} <= 1)); then
-        $COMMAND${IMAGES[9]}
-    elif ((${HOUR#0} >= 1 && ${HOUR#0} <= 3)); then
-        $COMMAND${IMAGES[10]}
-    elif ((${HOUR#0} >= 3 && ${HOUR#0} <= 5)); then
-        $COMMAND${IMAGES[11]}
+    # The directory that has the background images
+    local images=($DIR/8bit/*)
+
+    # Cycle through all images to showcase it
+    if [[ "$1" == "cycle" ]]; then
+        for i in "${images[@]}"; do
+            $COMMAND$i
+            sleep 2
+        done
+    fi
+
+    if ((${hour#0} >= 5 && ${hour#0} <= 7)); then
+        $COMMAND${images[0]}
+    elif ((${hour#0} >= 7 && ${hour#0} <= 9)); then
+        $COMMAND${images[1]}
+    elif ((${hour#0} >= 9 && ${hour#0} <= 11)); then
+        $COMMAND${images[2]}
+    elif ((${hour#0} >= 11 && ${hour#0} <= 13)); then
+        $COMMAND${images[3]}
+    elif ((${hour#0} >= 13 && ${hour#0} <= 15)); then
+        $COMMAND${images[4]}
+    elif ((${hour#0} >= 15 && ${hour#0} <= 17)); then
+        $COMMAND${images[5]}
+    elif ((${hour#0} >= 17 && ${hour#0} <= 19)); then
+        $COMMAND${images[6]}
+    elif ((${hour#0} >= 19 && ${hour#0} <= 21)); then
+        $COMMAND${images[7]}
+    elif ((${hour#0} >= 21 && ${hour#0} <= 23)); then
+        $COMMAND${images[8]}
+    elif ((${hour#0} >= 23 && ${hour#0} <= 1)); then
+        $COMMAND${images[9]}
+    elif ((${hour#0} >= 1 && ${hour#0} <= 3)); then
+        $COMMAND${images[10]}
+    elif ((${hour#0} >= 3 && ${hour#0} <= 5)); then
+        $COMMAND${images[11]}
     fi
 }
 
+function soho() {
+    local num=$1
+    local nums=( 171 195 284 304 )
 
-function cycle() {
-    for i in "${IMAGES[@]}"; do
-        $COMMAND$i
-        sleep 2
-    done
+    if [[ -z "$num" ]]; then
+        num=304
+    elif [[ "$num" == "cycle" ]]; then
+        for i in "${nums[@]}"; do
+            soho $i
+            sleep 3
+        done
 
-    # reset to correct background
-    set_background
+        soho
+        exit 0
+    fi
+
+    if [[ ! "${nums[@]}" =~ "$num" ]]; then
+        echo "Incorrect number, please select the following: 171, 195, 284, 304."
+        exit 1
+    fi
+
+    curl -sSL https://sohowww.nascom.nasa.gov/data/realtime/eit_$num/1024/latest.jpg > /tmp/soho-$num.jpg
+    $COMMAND/tmp/soho-$num.jpg
 }
-
 
 usage() {
     echo "background.sh"
     echo
-    echo "This will set the background for a gnome 3 window manager"
-    echo "based on a specific time of day. See the script itself on how"
-    echo "to set it up."
-    echo
-    echo "When no argument is provided it will try and set the correct"
-    echo "background."
+    echo "This script will set a background based on the time of day."
     echo 
     echo "Usage:"
-    echo "  cycle               - cycle through all the backgrounds"
-    echo "  help                - show this page"
+    echo "  8bit {cycle}                   - set 8bit-day background"
+    echo "  soho {171,195,284,304,cycle}   - get image from solar and heliospheric observatory"
+    echo "  help                           - show this page"
 }
 
 
@@ -89,11 +98,16 @@ main() {
     local cmd=$1
 
     if [[ -z "$cmd" ]]; then
-        set_background
+        usage
+        exit 1
     fi
 
-    if [[ $cmd == "cycle" ]]; then
-        cycle
+    if [[ $cmd == "8bit" ]]; then
+        8bit "$2"
+    fi
+
+    if [[ $cmd == "soho" ]]; then
+        soho "$2"
     fi
 
     if [[ $cmd == "help" ]]; then
