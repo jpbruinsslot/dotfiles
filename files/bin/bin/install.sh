@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Install ...
-# big help ...
-
 # Source: http://www.davidpashley.com/articles/writing-robust-shell-scripts/
 # set -o nounset
 set -o errexit
@@ -53,6 +50,8 @@ function dir() {
 
 # Copy ssh-keys 
 function ssh() {
+    print_red ">>> Setting up ssh"
+
     print_cyan "... Create ssh directory"
     mkdir -p $HOME/.ssh
 
