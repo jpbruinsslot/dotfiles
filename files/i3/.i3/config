@@ -242,3 +242,6 @@ exec --no-startup-id gnome-sound-applet
 
 # set programs to workspaces
 exec --no-startup-id i3-msg ""
+
+# compositor
+exec --no-startup-id compton --backend glx --paint-on-overlay --glx-no-stencil --vsync opengl-swc --shadow-exclude "! name~=''" --config ~/.compton.conf -b
