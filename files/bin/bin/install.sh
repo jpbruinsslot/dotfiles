@@ -148,7 +148,11 @@ function graphics() {
 
 function python() {
     # Install: Python3 packages
-    print_cyan "... Installing Python packages"
+    print_red ">>> Installing Python packages"
+
+    sudo -H pip3 install --upgrade pip
+    sudo -H pip2 install --upgrade pip
+
     sudo -H pip3 install --upgrade pip
     sudo -H pip3 install --no-cache-dir --upgrade --force-reinstall \
         httpie \
@@ -167,13 +171,14 @@ function python() {
 
 # Install: Golang
 function golang() {
+    print_red ">>> Installing Golang"
+
     GO_VERSION=1.8
 
 	if [[ ! -z "$1" ]]; then
 		export GO_VERSION=$1
 	fi
 
-    print_cyan "... Installing Go programming language"
     # read -p "--> Please enter the version of Go you want to install: " GO_VERSION
 
     GOLANG=go$GO_VERSION.linux-amd64
@@ -186,11 +191,12 @@ function golang() {
     wget -O $GOLANG.tar.gz https://storage.googleapis.com/golang/$GOLANG.tar.gz 
     sudo tar -C /usr/local -xzf $GOLANG.tar.gz
     export PATH=$PATH:/usr/local/go/bin
+    export PATH=$PATH:$HOME/go/bin
 
     cd "$HOME"
 
     # Install: Go packages
-    print_cyan "... Installing Go packages"
+    print_cyan "... Installing Golang packages"
     go get -u \
         github.com/erroneousboat/slack-term \
         github.com/erroneousboat/dot \
@@ -201,34 +207,47 @@ function golang() {
 
 # Install: Docker
 function docker() {
-    print_cyan "... Installing docker"
+    print_red ">>> Installing docker"
+
+    # Download
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
     sudo add-apt-repository \
        "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
        $(lsb_release -cs) \
        stable"
+
+    # Install
     sudo apt-get update
     sudo apt-get install -y docker-ce
 
+    # Configure
     sudo usermod -a -G docker $USER
     sudo service docker restart
 }
 
 
 # Install: Chrome
-# (http://askubuntu.com/a/79284)
+#   - https://askubuntu.com/a/79289
 function chrome() {
+    print_red ">>> Installing chrome"
+
+    # Add the Google Chrome distribution URI as a package source
+	echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee -a /etc/apt/sources.list.d/google-chrome.list
+
+	# Import the Google Chrome public key
     cd /tmp
-    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-    dpkg -i google-chrome*.deb
-    apt-get install -f
+	curl https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+
+    # Install
+    sudo apt-get update
+    sudo apt-get install google-chrome-stable
 
     cd "$HOME"
 }
 
 # Install: Tmux
 function tmux() {
-    print_cyan "... Installing tmux"
+    print_red ">>> Installing tmux"
 
     if [[ -d /tmp/tmux ]]; then
         rm -rf /tmp/tmux
@@ -256,11 +275,13 @@ function gcloud() {
 
     GCLOUD_VERSION=146.0.0
 
+    # Download
     cd /tmp
     wget -q https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${GCLOUD_VERSION}-linux-x86_64.tar.gz
     tar -xzf google-cloud-sdk-${GCLOUD_VERSION}-linux-x86_64.tar.gz
+
+    # Install
     ./google-cloud-sdk/install.sh --usage-reporting=true --path-update=true --bash-completion=true --rc-path=/.bashrc --additional-components app-engine-java app-engine-python kubectl alpha beta gcd-emulator pubsub-emulator
-    rm google-cloud-sdk-${GCLOUD_VERSION}-linux-x86_64.tar.gz
 
     cd "$HOME"
 }
@@ -299,22 +320,24 @@ function kubeconfig() {
 function dotfiles() {
     print_red ">>> Install dotfiles"
 
-    print_cyan "... Cloning dotfiles"
-    git clone https://github.com/erroneousboat/dotfiles.git "${HOME}/dotfiles"
+    if [[ ! -d "$HOME"/dotfiles ]]; then
+        print_cyan "... Cloning dotfiles"
+        git clone https://github.com/erroneousboat/dotfiles.git "${HOME}/dotfiles"
+    else
+        cd "$HOME/dotfiles"
+        git pull origin master
+    fi
 
     print_cyan "... Syncing dotfiles"
-    # TODO
+    if [[ ! -f $HOME/.dotconfig ]]; then
+        cp $HOME/dotfiles/files/dotconfig/.dotconfig $HOME
+    fi
+
+    yes All | dot sync
 
     cd "$HOME"
 }
 
-# TODO c (valgrind)
-
-# TODO dockerconfig ?
-
-# TODO Terminfo etc.
-
-# TODO slack-term config
 
 # Install: Nerd Fonts
 # (https://github.com/ryanoasis/nerd-fonts)
@@ -333,12 +356,12 @@ function fonts() {
 
 # Install: i3
 function i3(){
-    print_cyan "... Installing i3"
+    print_red ">>> Installing i3"
     echo "deb http://debian.sur5r.net/i3/ $(lsb_release -c -s) universe" | sudo tee -a /etc/apt/sources.list
     sudo apt-get update
     sudo apt-get --allow-unauthenticated install sur5r-keyring
     sudo apt-get update
-    sudo apt-get install i3
+    sudo apt-get install -y i3
 }
 
 # Install: i3-apps
@@ -358,15 +381,15 @@ function i3apps() {
     sudo make install
 
     # Install additional apps
-    apt-get update
-    apt-get install -y --no-install-recommends \
+    sudo apt-get update
+    sudo apt-get install -y --no-install-recommends \
         alsa-utils \
         feh \
         i3lock \
         i3status \
         pulseaudio \
         rofi \
-        xbacklight \
+        xbacklight
 
     cd "$HOME"
 }
@@ -383,8 +406,8 @@ function i3setup() {
 
 # Install: Bash 4.4
 # (https://www.gnu.org/software/bash/)
-function install_bash() {
-    print_cyan "... Installing bash"
+function bash() {
+    print_red ">>> Installing bash"
 
     # Check for version argument
 	if [[ ! -z "$1" ]]; then
@@ -399,9 +422,28 @@ function install_bash() {
     tar -xzf bash-${BASH_VERSION}.tar.gz
 
     # Install
-    cd ${BASH_VERSION}
+    cd bash-${BASH_VERSION}
     ./configure && make && sudo make install
-    cp /usr/local/bin/bash /bin/bash        # not yet sure if it works
+
+    # TODO replace with system bash /bin/bash
+
+    cd "$HOME"
+}
+
+function misc() {
+    # Place installation of miscellaneous programs here
+
+    # TODO c (valgrind)
+
+    # TODO dockerconfig
+
+    # TODO Terminfo etc.
+
+    # TODO slack-term config
+
+    # Lolcat
+    sudo pip3 install --upgrade --no-cache-dir lolcat
+
 
     cd "$HOME"
 }
@@ -433,6 +475,8 @@ usage() {
 	echo "  fonts                       - setup fonts"
 	echo "  dotfiles                    - setup dotfiles"
 	echo "  gcloud                      - setup gcloud"
+	echo "  chrome                      - setup chrome"
+	echo "  tmux                        - setup tmux"
 }
 
 all() {
@@ -447,7 +491,10 @@ all() {
     docker
     i3
     fonts
+    chrome
+    tmux
     dotfiles
+    # TODO complete?
 } 
 
 main() {
@@ -484,6 +531,12 @@ main() {
         i3setup
     elif [[ $cmd == "fonts" ]]; then
         fonts
+    elif [[ $cmd == "chrome" ]]; then
+        chrome
+    elif [[ $cmd == "tmux" ]]; then
+        tmux
+    elif [[ $cmd == "dotfiles" ]]; then
+        dotfiles
     else
         usage
     fi
