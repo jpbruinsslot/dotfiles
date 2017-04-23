@@ -26,8 +26,11 @@ font pango:Hack 20
 # chose a FreeType font, such as:
 # font pango:DejaVu Sans Mono 10
 
-# no title bars on windows
+# No title bars on windows
 new_window 1pixel
+
+# Hide borders adjacent to screen edges
+hide_edge_borders both
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -179,12 +182,12 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Color Definitions
-set $text-color           #ebdbb2
+set $text-color           #ffffff
 set $inactive-text-color  #665c54
-set $bg-color             #282828
+set $bg-color             #272c33
 set $inactive-bg-color    #282828
 set $urgent-bg-color      #cc241d
-set $border               #689d6a
+set $border               #272c33
 set $indicator            #8ec07c
 
 # Window colors
@@ -206,15 +209,14 @@ bar {
     # no icons in status bar
     # tray_output none
 
-    font pango:Hack 20
+    font pango:Hack 11
 
     workspace_buttons yes
 
     colors {
-        background $bg-color
-        separator $bg-color
-        statusline $text-color
-
+        background  $bg-color
+        separator   $bg-color
+        statusline  $text-color
 
         #                   border             bg               text
         focused_workspace  $bg-color          $bg-color          $text-color
