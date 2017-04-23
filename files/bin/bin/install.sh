@@ -161,7 +161,8 @@ function python() {
         docker-compose \
         psutil \
         tmuxp \
-        flake8
+        flake8 \
+        lolcat
 
     # Install: Python2 packages
     # Needed for gsutil
@@ -335,6 +336,9 @@ function dotfiles() {
 
     yes All | dot sync
 
+    # Setup gnome terminal profile
+    ./bin/gnome-term-profile.sh
+
     cd "$HOME"
 }
 
@@ -441,11 +445,27 @@ function misc() {
 
     # TODO slack-term config
 
-    # Lolcat
-    sudo pip3 install --upgrade --no-cache-dir lolcat
-
+    # Install: asciinema
+    curl -sSL https://asciinema.org/install | sh
 
     cd "$HOME"
+}
+
+wifi() {
+	local system=$1
+
+	if [[ -z "$system" ]]; then
+		echo "You need to specify whether it's broadcom or intel"
+		exit 1
+	fi
+
+	if [[ $system == "broadcom" ]]; then
+		local pkg="broadcom-sta-dkms"
+
+		apt-get install -y "$pkg" --no-install-recommends
+	else
+		update-iwlwifi
+	fi
 }
 
 
@@ -464,6 +484,7 @@ usage() {
 	echo "Usage:"
     echo "  all                         - setup all below"
     echo "  dir                         - setup all necessary directories"
+    echo "  wifi {broadcom, intel}      - setup all necessary directories"
 	echo "  ssh                         - setup ssh & get keys"
 	echo "  sources                     - setup sources & install base pkgs"
 	echo "  graphics {laptop,desktop}   - setup graphics drivers"
@@ -513,6 +534,8 @@ main() {
 		check_is_sudo
 		sources
 		base
+    elif [[ $cmd == "wifi" ]]; then
+        wifi "$2"
     elif [[ $cmd == "ssh" ]]; then
         ssh
     elif [[ $cmd == "graphics" ]]; then
