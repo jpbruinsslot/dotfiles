@@ -1,8 +1,6 @@
 #!/bin/bash
 set -e
 
-HOUR=$(date +"%H")
-
 # Location of this script
 DIR="${HOME}/.background"
 
