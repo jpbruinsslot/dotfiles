@@ -93,6 +93,7 @@ function base() {
         automake \
         build-essential \
         ca-certificates \
+        compton \
         curl \
         dconf-tools \
         feh \
@@ -114,10 +115,14 @@ function base() {
         python3-pip \
         software-properties-common \
         sysstat \
+        tar \
         tree \
+        unzip \
         vim \
         virtualbox \
         wget \
+        xclip \
+		xcompmgr \
         zsh
 
     print_cyan "... Cleaning up"
