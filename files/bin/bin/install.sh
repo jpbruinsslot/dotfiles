@@ -181,7 +181,7 @@ function golang() {
     GO_VERSION=1.8
 
 	if [[ ! -z "$1" ]]; then
-		export GO_VERSION=$1
+		GO_VERSION=$1
 	fi
 
     # read -p "--> Please enter the version of Go you want to install: " GO_VERSION
@@ -189,15 +189,16 @@ function golang() {
     GOLANG=go$GO_VERSION.linux-amd64
 
     # Removing prior version of Go
-    sudo rm -rf /usr/local/go
+    GO_SRC=/usr/local/go
+    if [[ -d "$GO_SRC" ]]; then
+        sudo rm -rf "$GO_SRC"
+        sudo rm -rf "$GOPATH"
+    fi
 
     # Download
     cd /tmp
     wget -O $GOLANG.tar.gz https://storage.googleapis.com/golang/$GOLANG.tar.gz 
     sudo tar -C /usr/local -xzf $GOLANG.tar.gz
-    export PATH=$PATH:/usr/local/go/bin
-    export PATH=$PATH:$HOME/go/bin
-
     cd "$HOME"
 
     # Install: Go packages
@@ -338,10 +339,11 @@ function dotfiles() {
         cp $HOME/dotfiles/files/dotconfig/.dotconfig $HOME
     fi
 
+    export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
     yes All | dot sync
 
     # Setup gnome terminal profile
-    ./bin/gnome-term-profile.sh
+    source ./bin/gnome-term-profile.sh
 
     cd "$HOME"
 }
