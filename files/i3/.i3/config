@@ -44,6 +44,11 @@ bindsym $mod+c exec google-chrome
 # kill focused window
 bindsym $mod+Shift+q kill
 
+# set floating for these programs
+for_window [class="Gimp"] floating enable
+for_window [class="google-chrome"] floating enable
+for_window [class="Google-chrome"] floating enable
+
 # lock screen
 # bindsym $mod+1 exec i3lock -c 111111
 
@@ -107,34 +112,41 @@ bindsym $mod+a focus parent
 # bindsym $mod+d focus child
 
 # name workspaces
-set $tag1 "sys"
-set $tag2 "nvim"
-set $tag3 "term"
-set $tag4 "www"
+set $workspace1 "1 "
+set $workspace2 "2 "
+set $workspace3 "3 "
+set $workspace4 "4 "
+set $workspace5 "5 "
+set $workspace6 "6 "
+set $workspace7 "7 "
+set $workspace8 "8 "
+set $workspace9 "9 "
+set $workspace10 "10 "
+
 
 # switch to workspace
-bindsym $mod+1 workspace 1 $tag1
-bindsym $mod+2 workspace 2 $tag2
-bindsym $mod+3 workspace 3 $tag3
-bindsym $mod+4 workspace 4 $tag4
-bindsym $mod+5 workspace 5
-bindsym $mod+6 workspace 6
-bindsym $mod+7 workspace 7
-bindsym $mod+8 workspace 8
-bindsym $mod+9 workspace 9
-bindsym $mod+0 workspace 10
+bindsym $mod+1 workspace 1 $workspace1
+bindsym $mod+2 workspace 2 $workspace2
+bindsym $mod+3 workspace 3 $workspace3
+bindsym $mod+4 workspace 4 $workspace4
+bindsym $mod+5 workspace 5 $workspace5
+bindsym $mod+6 workspace 6 $workspace6
+bindsym $mod+7 workspace 7 $workspace7
+bindsym $mod+8 workspace 8 $workspace8
+bindsym $mod+9 workspace 9 $workspace9
+bindsym $mod+0 workspace 10 $workspace10
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace 1 $tag1
-bindsym $mod+Shift+2 move container to workspace 2 $tag2
-bindsym $mod+Shift+3 move container to workspace 3 $tag3
-bindsym $mod+Shift+4 move container to workspace 4 $tag4
-bindsym $mod+Shift+5 move container to workspace 5
-bindsym $mod+Shift+6 move container to workspace 6
-bindsym $mod+Shift+7 move container to workspace 7
-bindsym $mod+Shift+8 move container to workspace 8
-bindsym $mod+Shift+9 move container to workspace 9
-bindsym $mod+Shift+0 move container to workspace 10
+bindsym $mod+Shift+1 move container to workspace 1 $workspace1
+bindsym $mod+Shift+2 move container to workspace 2 $workspace2
+bindsym $mod+Shift+3 move container to workspace 3 $workspace3
+bindsym $mod+Shift+4 move container to workspace 4 $workspace4
+bindsym $mod+Shift+5 move container to workspace 5 $workspace5
+bindsym $mod+Shift+6 move container to workspace 6 $workspace6
+bindsym $mod+Shift+7 move container to workspace 7 $workspace7
+bindsym $mod+Shift+8 move container to workspace 8 $workspace8
+bindsym $mod+Shift+9 move container to workspace 9 $workspace9
+bindsym $mod+Shift+0 move container to workspace 10 $workspace10
 
 # audio controls
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl -- set-sink-volume 1 +5%    # increase sound volume
