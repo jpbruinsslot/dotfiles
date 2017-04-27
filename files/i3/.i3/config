@@ -115,16 +115,16 @@ bindsym $mod+a focus parent
 # bindsym $mod+d focus child
 
 # name workspaces
-set $workspace1 "0 "
-set $workspace2 "1 "
-set $workspace3 "2 "
-set $workspace4 "3 "
-set $workspace5 "4 "
-set $workspace6 "5 "
-set $workspace7 "6 "
-set $workspace8 "7 "
-set $workspace9 "8 "
-set $workspace10 "9 "
+set $workspace1 0 
+set $workspace2 1 
+set $workspace3 2 
+set $workspace4 3 
+set $workspace5 4
+set $workspace6 5
+set $workspace7 6
+set $workspace8 7
+set $workspace9 8
+set $workspace10 9
 
 
 # switch to workspace
