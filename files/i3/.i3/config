@@ -49,6 +49,9 @@ for_window [class="Gimp"] floating enable
 for_window [class="google-chrome"] floating enable
 for_window [class="Google-chrome"] floating enable
 
+# sticky window
+# bindsym $mod+Shift+s sticky toggle
+
 # lock screen
 # bindsym $mod+1 exec i3lock -c 111111
 
@@ -112,41 +115,45 @@ bindsym $mod+a focus parent
 # bindsym $mod+d focus child
 
 # name workspaces
-set $workspace1 "1 "
-set $workspace2 "2 "
-set $workspace3 "3 "
-set $workspace4 "4 "
-set $workspace5 "5 "
-set $workspace6 "6 "
-set $workspace7 "7 "
-set $workspace8 "8 "
-set $workspace9 "9 "
-set $workspace10 "10 "
+set $workspace1 "0 "
+set $workspace2 "1 "
+set $workspace3 "2 "
+set $workspace4 "3 "
+set $workspace5 "4 "
+set $workspace6 "5 "
+set $workspace7 "6 "
+set $workspace8 "7 "
+set $workspace9 "8 "
+set $workspace10 "9 "
 
 
 # switch to workspace
-bindsym $mod+1 workspace 1 $workspace1
-bindsym $mod+2 workspace 2 $workspace2
-bindsym $mod+3 workspace 3 $workspace3
-bindsym $mod+4 workspace 4 $workspace4
-bindsym $mod+5 workspace 5 $workspace5
-bindsym $mod+6 workspace 6 $workspace6
-bindsym $mod+7 workspace 7 $workspace7
-bindsym $mod+8 workspace 8 $workspace8
-bindsym $mod+9 workspace 9 $workspace9
-bindsym $mod+0 workspace 10 $workspace10
+bindsym $mod+0 workspace 1 $workspace1
+bindsym $mod+1 workspace 2 $workspace2
+bindsym $mod+2 workspace 3 $workspace3
+bindsym $mod+3 workspace 4 $workspace4
+bindsym $mod+4 workspace 5 $workspace5
+bindsym $mod+5 workspace 6 $workspace6
+bindsym $mod+6 workspace 7 $workspace7
+bindsym $mod+7 workspace 8 $workspace8
+bindsym $mod+8 workspace 9 $workspace9
+bindsym $mod+9 workspace 10 $workspace10
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace 1 $workspace1
-bindsym $mod+Shift+2 move container to workspace 2 $workspace2
-bindsym $mod+Shift+3 move container to workspace 3 $workspace3
-bindsym $mod+Shift+4 move container to workspace 4 $workspace4
-bindsym $mod+Shift+5 move container to workspace 5 $workspace5
-bindsym $mod+Shift+6 move container to workspace 6 $workspace6
-bindsym $mod+Shift+7 move container to workspace 7 $workspace7
-bindsym $mod+Shift+8 move container to workspace 8 $workspace8
-bindsym $mod+Shift+9 move container to workspace 9 $workspace9
-bindsym $mod+Shift+0 move container to workspace 10 $workspace10
+bindsym $mod+Shift+0 move container to workspace 1 $workspace1
+bindsym $mod+Shift+1 move container to workspace 2 $workspace2
+bindsym $mod+Shift+2 move container to workspace 3 $workspace3
+bindsym $mod+Shift+3 move container to workspace 4 $workspace4
+bindsym $mod+Shift+4 move container to workspace 5 $workspace5
+bindsym $mod+Shift+5 move container to workspace 6 $workspace6
+bindsym $mod+Shift+6 move container to workspace 7 $workspace7
+bindsym $mod+Shift+7 move container to workspace 8 $workspace8
+bindsym $mod+Shift+8 move container to workspace 9 $workspace9
+bindsym $mod+Shift+9 move container to workspace 10 $workspace10
+
+
+# workspace default monitors
+# worspace $workspace1 output DVI-I-2
 
 # audio controls
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl -- set-sink-volume 1 +5%    # increase sound volume
@@ -225,6 +232,8 @@ bar {
 
     workspace_buttons yes
 
+    strip_workspace_numbers yes
+
     colors {
         background  $bg-color
         separator   $bg-color
@@ -255,5 +264,9 @@ exec --no-startup-id gnome-sound-applet
 # set programs to workspaces
 exec --no-startup-id i3-msg ""
 
-# compositor
+# compton
 exec --no-startup-id compton --backend glx --paint-on-overlay --glx-no-stencil --vsync opengl-swc --shadow-exclude "! name~=''" --config ~/.compton.conf -b
+
+# startup programs
+assign [class="gnome-terminal"] $workspace1
+exec --no-startup-id gnome-terminal
