@@ -1,3 +1,4 @@
 - http://www.slackword.net/?p=733
 - https://wiki.archlinux.org/index.php/I3#Launching_programs_on_specific_workspaces
 - http://i3wm.org/docs/layout-saving.html
+- https://github.com/villasv/home/blob/master/.config/i3/config
