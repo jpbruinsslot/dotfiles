@@ -63,15 +63,25 @@ def notify(percentage):
         pass
 
 
-def check_status(metric_status):
+def check_status(metric_percentage, metric_status):
+
     if metric_status == b"Full":
-        return "✔"
+        return ""
     elif metric_status == b"Charging":
-        return "⚡"
+        return ""
     elif metric_status == b"Discharging":
-        return "⇣"
+        if metric_percentage <= 20:
+            return ""
+        elif 21 <= metric_percentage <= 40:
+            return ""
+        elif 41 <= metric_percentage <= 60:
+            return ""
+        elif 61 <= metric_percentage <= 80:
+            return ""
+        elif 81 <= metric_percentage <= 100:
+            return ""
     else:
-        return "?"
+        return ""
 
 
 def main():
@@ -86,7 +96,7 @@ def main():
 
     # There is no battery and probably on a power supply
     if b"No support" in console_output or console_output == "":
-        print("🔌")
+        print("")
         return
 
     # Format will be:
@@ -96,9 +106,15 @@ def main():
     metric_status = list_metrics[0].split(b":")[-1].strip()
     metric_percentage = int(re.match(b'\d+', list_metrics[1]).group())
 
+    # Send notification when necessary
     notify(metric_percentage)
 
-    print("%s %s%%" % (check_status(metric_status), metric_percentage))
+    print(
+        "{icon} {percentage}%".format(
+            icon=check_status(metric_percentage, metric_status),
+            percentage=metric_percentage
+        )
+    )
 
 
 if __name__ == '__main__':
