@@ -118,14 +118,13 @@ bindsym $mod+a focus parent
 set $workspace1 0 
 set $workspace2 1 
 set $workspace3 2 
-set $workspace4 3 
-set $workspace5 4
+set $workspace4 3  
+set $workspace5 4 
 set $workspace6 5
 set $workspace7 6
 set $workspace8 7
 set $workspace9 8
 set $workspace10 9
-
 
 # switch to workspace
 bindsym $mod+0 workspace 1 $workspace1
@@ -150,7 +149,6 @@ bindsym $mod+Shift+6 move container to workspace 7 $workspace7
 bindsym $mod+Shift+7 move container to workspace 8 $workspace8
 bindsym $mod+Shift+8 move container to workspace 9 $workspace9
 bindsym $mod+Shift+9 move container to workspace 10 $workspace10
-
 
 # workspace default monitors
 # worspace $workspace1 output DVI-I-2
@@ -266,7 +264,3 @@ exec --no-startup-id i3-msg ""
 
 # compton
 exec --no-startup-id compton --backend glx --paint-on-overlay --glx-no-stencil --vsync opengl-swc --shadow-exclude "! name~=''" --config ~/.compton.conf -b
-
-# startup programs
-assign [class="gnome-terminal"] $workspace1
-exec --no-startup-id gnome-terminal
