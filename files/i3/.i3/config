@@ -153,9 +153,6 @@ bindsym $mod+Shift+7 move container to workspace 8 $workspace8
 bindsym $mod+Shift+8 move container to workspace 9 $workspace9
 bindsym $mod+Shift+9 move container to workspace 10 $workspace10
 
-# switch to next workspace
-bindsym $mod+Tab
-
 # workspace default for monitors
 # worspace $workspace1 output DVI-I-2
 
