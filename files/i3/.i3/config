@@ -264,3 +264,6 @@ exec --no-startup-id i3-msg ""
 
 # compton
 exec --no-startup-id compton --backend glx --paint-on-overlay --glx-no-stencil --vsync opengl-swc --shadow-exclude "! name~=''" --config ~/.compton.conf -b
+
+# workspace layout
+exec --no-startup-id i3-msg 'workspace $workspace0; exec gnome-terminal -e glances'
