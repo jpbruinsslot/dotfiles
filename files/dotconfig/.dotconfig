@@ -12,6 +12,7 @@
 		"dockerfunc": "/.dockerfunc",
 		"dotconfig": "/.dotconfig",
 		"env": "/.env",
+		"fonts": "/.fonts",
 		"functions": "/.functions",
 		"gitconfig": "/.gitconfig",
 		"gtk": "/.config/gtk-3.0/gtk.css",
