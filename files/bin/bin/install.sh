@@ -349,50 +349,6 @@ function dotfiles() {
 }
 
 
-function fonts() {
-    print_cyan "... Configuring fonts"
-
-cat <<EOF > /etc/fonts/local.conf
-<?xml version='1.0'?>
-<!DOCTYPE fontconfig SYSTEM 'fonts.dtd'>
-<fontconfig>
-    <match target="font">
-        <edit mode="assign" name="rgba">
-            <const>rgb</const>
-        </edit>
-    </match>
-    <match target="font">
-        <edit mode="assign" name="hinting">
-            <bool>true</bool>
-        </edit>
-    </match>
-    <match target="font">
-        <edit mode="assign" name="hintstyle">
-            <const>hintslight</const>
-        </edit>
-    </match>
-    <match target="font">
-        <edit mode="assign" name="antialias">
-            <bool>true</bool>
-        </edit>
-    </match>
-    <match target="font">
-        <edit mode="assign" name="lcdfilter">
-            <const>lcddefault</const>
-        </edit>
-    </match>
-</fontconfig>
-EOF
-
-	echo "Fonts file setup successfully now run:"
-	echo "	dpkg-reconfigure fontconfig-config"
-	echo "with settings: "
-	echo "	Autohinter, Automatic, No."
-	echo "Run: "
-	echo "	dpkg-reconfigure fontconfig"
-
-}
-
 # Install: i3
 function i3(){
     print_red ">>> Installing i3"
@@ -528,7 +484,6 @@ usage() {
 	echo "  golang [version]            - setup golang language and packages"
 	echo "  docker                      - setup docker"
 	echo "  i3                          - setup i3"
-	echo "  fonts                       - setup fonts"
 	echo "  dotfiles                    - setup dotfiles"
 	echo "  gcloud                      - setup gcloud"
 	echo "  chrome                      - setup chrome"
@@ -546,11 +501,9 @@ all() {
     golang
     docker
     i3
-    fonts
     chrome
     tmux
     dotfiles
-    # TODO complete?
 } 
 
 main() {
@@ -587,8 +540,6 @@ main() {
         i3
         i3apps
         i3setup
-    elif [[ $cmd == "fonts" ]]; then
-        fonts
     elif [[ $cmd == "chrome" ]]; then
         chrome
     elif [[ $cmd == "tmux" ]]; then
