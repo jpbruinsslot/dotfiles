@@ -95,7 +95,7 @@ def main():
             "acpi not found please install with sudo apt-get install acpi")
 
     # There is no battery and probably on a power supply
-    if b"No support" in console_output or console_output == "":
+    if b"No support" in console_output or console_output == b"":
         print("")
         return
 
