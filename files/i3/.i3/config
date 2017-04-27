@@ -59,8 +59,8 @@ for_window [class="Google-chrome"] floating enable
 # bindsym $mod+1 exec i3lock -c 111111
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run -fn 'Hack-12'
-bindsym $mod+Shift+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -fn 'Hack-12'"
+# bindsym $mod+d exec dmenu_run -fn 'Hack-12'
+# bindsym $mod+Shift+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -fn 'Hack-12'"
 
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
@@ -228,6 +228,10 @@ client.urgent           $urgent-bg-color   $urgent-bg-color   $text-color       
 bar {
     status_command i3blocks -c ~/.i3/i3blocks.conf
 
+    font pango:Hack, FontAwesome 11
+
+    strip_workspace_numbers yes
+
     colors {
         background  $bg-color
         separator   $bg-color
@@ -259,5 +263,5 @@ exec --no-startup-id gnome-sound-applet
 exec --no-startup-id compton --backend glx --paint-on-overlay --glx-no-stencil --vsync opengl-swc --shadow-exclude "! name~=''" --config ~/.compton.conf -b
 
 # workspace layout
-exec --no-startup-id "i3-msg 'workspace $workspace1; append_layout ~/.i3/workspaces/workspace_1.json'"
-exec --no-startup-id i3-sensible-terminal -name "glances" -e glances
+# exec --no-startup-id "i3-msg 'workspace $workspace1; append_layout ~/.i3/workspaces/workspace_1.json'"
+# exec --no-startup-id i3-sensible-terminal -name "glances" -e glances
