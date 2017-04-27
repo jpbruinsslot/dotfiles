@@ -1,6 +1,27 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+##############################################################################
+#
+# battery
+# -------
+#
+# This script will output a specific icon based on the charge of a laptop
+# battery. When the script is run on a system without a battery it will
+# output an icon accordingly.
+#
+# Additionally the script will send a notification to disconnect or connect
+# the charger when it's above 80% or below 40%.
+# (https://superuser.com/a/427108)
+#
+# Dependencies: python3, acpi, notify-send, font-awesome
+#
+# :authors: J.P.H. Bruins Slot
+# :date:    24-04-2017
+# :version: 0.1.0
+#
+##############################################################################
+
 import os
 import re
 import sys
@@ -64,7 +85,7 @@ def main():
             "acpi not found please install with sudo apt-get install acpi")
 
     # There is no battery and probably on a power supply
-    if b"No support" in console_output or b"" in console_output:
+    if b"No support" in console_output or console_output == "":
         print("🔌")
         return
 
@@ -78,6 +99,7 @@ def main():
     notify(metric_percentage)
 
     print("%s %s%%" % (check_status(metric_status), metric_percentage))
+
 
 if __name__ == '__main__':
     main()
