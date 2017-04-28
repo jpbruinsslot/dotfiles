@@ -31,6 +31,7 @@ new_window 1pixel
 
 # Hide borders adjacent to screen edges
 hide_edge_borders both
+for_window [class="^.*"] border pixel 1
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -60,7 +61,7 @@ for_window [class="Google-chrome"] floating enable
 
 # start dmenu (a program launcher)
 # bindsym $mod+d exec dmenu_run -fn 'Hack-12'
-# bindsym $mod+Shift+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -fn 'Hack-12'"
+bindsym $mod+Shift+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -fn 'Hack-11'"
 
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
@@ -123,11 +124,11 @@ set $workspace2 1 
 set $workspace3 2 
 set $workspace4 3 
 set $workspace5 4 
-set $workspace6 5
-set $workspace7 6
-set $workspace8 7
-set $workspace9 8
-set $workspace10 9
+set $workspace6 5 
+set $workspace7 6 
+set $workspace8 7 
+set $workspace9 8 
+set $workspace10 9 
 
 # switch to workspace
 bindsym $mod+0 workspace 1 $workspace1
@@ -177,6 +178,19 @@ bindsym $mod+Shift+r restart
 
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+# mode "Exit (L)ock, (S)ignout, (R)eboot, (P)oweroff" {
+#     bindsym $mod+l exec ~/.config/i3/scripts/lock
+#     bindsym $mod+r exec systemctl reboot
+#     bindsym $mod+s exit
+#     bindsym $mod+p exec systemctl shutdown
+#
+#     # back to normal: Enter or Escape
+#     bindsym Return mode "default"
+#     bindsym Escape mode "default"
+# }
+#
+# bindsym $mod+Shift+e mode "Exit (L)ock, (S)ignout, (R)eboot, (P)oweroff"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -261,4 +275,8 @@ exec --no-startup-id compton --backend glx --paint-on-overlay --glx-no-stencil -
 
 # workspace layout
 # exec --no-startup-id "i3-msg 'workspace $workspace1; append_layout ~/.i3/workspaces/workspace_1.json'"
-# exec --no-startup-id i3-sensible-terminal -name "glances" -e glances
+exec --no-startup-id i3-msg 'workspace 1 $workspace1; exec i3-sensible-terminal -name "glances" -e glances'
+exec --no-startup-id i3-msg 'workspace 2 $workspace2; exec i3-sensible-terminal -name "code"'
+exec --no-startup-id i3-msg 'workspace 3 $workspace3; exec i3-sensible-terminal -name "term"'
+exec --no-startup-id i3-msg 'workspace 4 $workspace4; exec i3-sensible-terminal -name "slack" -e slack-term'
+exec --no-startup-id i3-msg 'workspace 5 $workspace5; exec google-chrome -name "chrome"'
