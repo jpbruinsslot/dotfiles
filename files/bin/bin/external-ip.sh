@@ -25,7 +25,7 @@ INTERFACE="wlan0"
 IP=$(dig +short myip.opendns.com @resolver1.opendns.com)
 
 if [ -z "$IP" ]; then
-    IP=""
+    IP="x.x.x.x"
 fi
 
 if [ ! -d /sys/class/net/${INTERFACE}/wireless ] || [ "$(cat /sys/class/net/${INTERFACE}/operstate)" = 'down' ]; then
