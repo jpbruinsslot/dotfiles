@@ -71,15 +71,15 @@ def check_status(metric_percentage, metric_status):
         return ""
     elif metric_status == b"Discharging":
         if metric_percentage <= 20:
-            return ""
+            return " "
         elif 21 <= metric_percentage <= 40:
-            return ""
+            return " "
         elif 41 <= metric_percentage <= 60:
-            return ""
+            return " "
         elif 61 <= metric_percentage <= 80:
-            return ""
+            return " "
         elif 81 <= metric_percentage <= 100:
-            return ""
+            return " "
     else:
         return ""
 
@@ -110,7 +110,7 @@ def main():
     notify(metric_percentage)
 
     print(
-        "{icon}  {percentage}%".format(
+        "{icon} {percentage}%".format(
             icon=check_status(metric_percentage, metric_status),
             percentage=metric_percentage
         )
