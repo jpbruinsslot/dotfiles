@@ -110,7 +110,7 @@ def main():
     notify(metric_percentage)
 
     print(
-        "{icon} {percentage}%".format(
+        "{icon}  {percentage}%".format(
             icon=check_status(metric_percentage, metric_status),
             percentage=metric_percentage
         )
