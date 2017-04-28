@@ -1,14 +1,14 @@
 session_name: dev
 windows:
-- window_name: sys
+- window_name: 
   panes:
     - glances
-- window_name: nvim
+- window_name:  
   shell_command_before:
     - cd ~/Projects
   panes:
     - nvim
-- window_name: dev
+- window_name: 
   shell_command_before:
     - cd ~/Projects
   panes:

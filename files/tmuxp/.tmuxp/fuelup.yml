@@ -1,19 +1,19 @@
 session_name: fuelup
 windows:
-- window_name: sys
+- window_name: 
   panes:
     - glances
-- window_name: nvim
+- window_name:  
   shell_command_before:
     - cd ~/Projects/fuelup
   panes:
     - nvim
-- window_name: dev
+- window_name: 
   shell_command_before:
     - cd ~/Projects/fuelup
   panes:
     -
     -
-- window_name: slack
+- window_name:  
   panes:
     - slack-term
