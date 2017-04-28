@@ -29,9 +29,9 @@ if [ -z "$IP" ]; then
 fi
 
 if [ ! -d /sys/class/net/${INTERFACE}/wireless ] || [ "$(cat /sys/class/net/${INTERFACE}/operstate)" = 'down' ]; then
-    echo " ${IP}"
+    echo "  ${IP}"
 else
     QUALITY=$(grep $INTERFACE /proc/net/wireless | awk '{ print int($3 * 100 / 70) }')
 
-    echo " ${IP}"
+    echo "  ${IP}"
 fi
