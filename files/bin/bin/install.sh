@@ -118,6 +118,7 @@ function base() {
         tar \
         tree \
         unzip \
+        urlview \
         vim \
         virtualbox \
         wget \
