@@ -5,7 +5,7 @@
 set -o errexit
 set -o pipefail
 
-# Colors
+# Colours
 NC='\033[0m'
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -37,7 +37,6 @@ function print_cyan {
 function print_blue {
     printf "${BLUE}${B}$1${N}${NC}\n"
 }
-
 
 
 # Make necessary directories
@@ -114,6 +113,7 @@ function base() {
         python3-dev \
         python3-pip \
         software-properties-common \
+        rofi \
         sysstat \
         tar \
         tree \
@@ -126,9 +126,9 @@ function base() {
         zsh
 
     print_cyan "... Cleaning up"
-    sudo apt-get autoremove
-    sudo apt-get autoclean
-    sudo apt-get clean
+    sudo apt-get -y autoremove
+    sudo apt-get -y autoclean
+    sudo apt-get -y clean
 }
 
 # Install: graphics drivers
@@ -159,14 +159,14 @@ function python() {
 
     sudo -H pip3 install --upgrade pip
     sudo -H pip3 install --no-cache-dir --upgrade --force-reinstall \
-        httpie \
-        neovim \
-        glances \
         docker-compose \
-        psutil \
-        tmuxp \
         flake8 \
-        lolcat
+        glances \
+        httpie \
+        lolcat \
+        neovim \
+        psutil \
+        tmuxp
 
     # Install: Python2 packages
     # Needed for gsutil
@@ -233,7 +233,7 @@ function docker() {
 
 
 # Install: Chrome
-#   - https://askubuntu.com/a/79289
+# - https://askubuntu.com/a/79289
 function chrome() {
     print_red ">>> Installing chrome"
 
@@ -312,7 +312,7 @@ function minikube() {
 }
 
 # Install: kubernetes config
-function kubeconfig() {
+function kubeconf() {
     print_red ">>> Install kubernetes configuration"
     read -p "--> Copy kubernetes config from remote host? [y/n] " -n 1 -r
     echo
@@ -341,6 +341,8 @@ function dotfiles() {
 
     export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
     yes All | dot sync
+
+    # For extra setup based on dotfiles, add below:
 
     # Setup gnome terminal profile
     source ./bin/gnome-term-profile.sh
@@ -383,7 +385,6 @@ function i3apps() {
         i3lock \
         i3status \
         pulseaudio \
-        rofi \
         xbacklight
 
     cd "$HOME"
@@ -399,7 +400,7 @@ function i3setup() {
 }
 
 
-# Install: Bash 4.4
+# Install: Bash
 # (https://www.gnu.org/software/bash/)
 function bash() {
     print_red ">>> Installing bash"
@@ -420,7 +421,9 @@ function bash() {
     cd bash-${BASH_VERSION}
     ./configure && make && sudo make install
 
-    # TODO replace with system bash /bin/bash
+    # Replace old version with new one
+    sudo cp /bin/bash /bin/bash.old
+    sudo cp -f /usr/local/bin/bash /bin/bash
 
     cd "$HOME"
 }
@@ -442,7 +445,7 @@ function misc() {
     cd "$HOME"
 }
 
-wifi() {
+function wifi() {
 	local system=$1
 
 	if [[ -z "$system" ]]; then
@@ -488,6 +491,7 @@ usage() {
 	echo "  gcloud                      - setup gcloud"
 	echo "  chrome                      - setup chrome"
 	echo "  tmux                        - setup tmux"
+    echo "  k8s                         - setup kubernetes"
 }
 
 all() {
@@ -501,9 +505,11 @@ all() {
     golang
     docker
     i3
+    gcloud
     chrome
     tmux
     dotfiles
+    k8s
 } 
 
 main() {
@@ -540,12 +546,17 @@ main() {
         i3
         i3apps
         i3setup
+    elif [[ $cmd == "gcloud" ]]; then
+        gcloud
     elif [[ $cmd == "chrome" ]]; then
         chrome
     elif [[ $cmd == "tmux" ]]; then
         tmux
     elif [[ $cmd == "dotfiles" ]]; then
         dotfiles
+    elif [[ $cmd == "k8s" ]]; then
+        kubeconf
+        minikube
     else
         usage
     fi
