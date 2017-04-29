@@ -62,18 +62,6 @@ undwht=$under$white
 #    ಠ╭╮ಠ ( return value: 1 )
 #   [Jan 01 13:37] [user@hostname ~]$
 
-# get current branch in git repo
-function parse_git_branch() {
-	BRANCH=`git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
-	if [ ! "${BRANCH}" == "" ]
-	then
-        STATUS=$(parse_git_dirty)
-		echo " $bldgrn(${BRANCH}$bldred${STATUS}$bldgrn)"
-	else
-		echo ""
-	fi
-}
-
 # get state of branch
 function parse_git_dirty {
     STATUS=$(git status 2> /dev/null | tail -n1)
@@ -82,4 +70,14 @@ function parse_git_dirty {
     fi
 }
 
-export PS1="\[$bldblu\]\w\$(parse_git_branch) \[$bldblu\]$ \[$reset\]"
+set_bash_prompt() {
+	BRANCH=`git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
+	if [ ! "${BRANCH}" == "" ]; then
+        STATUS=$(parse_git_dirty)
+        export PS1="\[$bldblu\]\w \[$bldgrn\](${BRANCH}\[$bldred\]${STATUS}\[$bldgrn\]) \[$bldblu\]$ \[$reset\]"
+	else
+        export PS1="\[$bldblu\]\w \[$bldblu\]$ \[$reset\]"
+	fi
+}
+
+PROMPT_COMMAND=set_bash_prompt
