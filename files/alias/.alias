@@ -1,24 +1,5 @@
 #!/bin/bash
 
-# A shortcut for tmuxinator
-alias mux="tmuxp load"
-
-# A shortcut for docker-compose
-alias compose=docker-compose
-
-# A shortcut for ccat
-alias cat=ccat
-
-# Source: http://homeonrails.com/2016/05/truecolor-in-gnome-terminal-tmux-and-neovim/
-# See: ~/.terminfo/xterm-256color-italic.terminfo
-# alias tmux="env TERM=xterm-256color tmux"
-
-# A shortcut for kubernetes kubectl
-alias kube=kubectl
-
-# Show mouse pointer again
-# See: https://ask.fedoraproject.org/en/question/31186/my-mouse-cursor-dissapears-when-using-gnome3/?answer=49702#post-id-49702
-alias mouse='dconf write /org/gnome/settings-daemon/plugins/cursor/active false'
 
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
@@ -74,11 +55,17 @@ alias rdy='notify-send "Task is done"'
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-# Quickly get into fuelup folder
+# Kill all the tabs in Chrome to free up memory
+# [C] explained: http://www.commandlinefu.com/commands/view/402/exclude-grep-from-your-grepped-output-of-ps-alias-included-in-description
+alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
+
+# Renames
+alias mux="tmuxp load"
+alias compose=docker-compose
+alias cat=ccat
+alias kube=kubectl
+alias gti='git'                         # Yeah I know, don't judge me!
+
+# Shortcuts
 alias fu='cd ~/Projects/fuelup'
-
-# Quickly get into Projects folder
 alias pro='cd ~/Projects'
-
-# Yeah I know, don't judge me!
-alias gti='git'
