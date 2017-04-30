@@ -114,6 +114,7 @@ function base() {
         python3-pip \
         software-properties-common \
         rofi \
+        silversearcher-ag \
         sysstat \
         tar \
         tree \
