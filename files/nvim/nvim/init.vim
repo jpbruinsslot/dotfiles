@@ -36,36 +36,38 @@ set autoread
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.config/nvim/plugged')
 
+" Interface
 Plug 'https://github.com/erroneousboat/molokai.git', {'branch': 'dev'}
-Plug 'https://github.com/erroneousboat/python-mode.git'
 Plug 'https://github.com/itchyny/lightline.vim.git'
 Plug 'https://github.com/scrooloose/nerdtree.git'
-Plug 'https://github.com/ctrlpvim/ctrlp.vim.git'
-Plug 'https://github.com/majutsushi/tagbar.git'
-Plug 'https://github.com/tomtom/tcomment_vim'
-Plug 'https://github.com/airblade/vim-gitgutter.git'
-Plug 'https://github.com/tpope/vim-surround.git'
-Plug 'https://github.com/fatih/vim-go.git'
+Plug 'https://github.com/Xuyuanp/nerdtree-git-plugin.git'
 Plug 'https://github.com/myusuf3/numbers.vim.git'
-Plug 'https://github.com/Lokaltog/vim-easymotion.git'
-Plug 'https://github.com/Yggdroot/indentLine.git'
-Plug 'https://github.com/leshill/vim-json.git'
-Plug 'https://github.com/tpope/vim-fugitive.git'
 Plug 'https://github.com/mhinz/vim-startify.git'
+Plug 'https://github.com/airblade/vim-gitgutter.git'
+Plug 'https://github.com/ryanoasis/vim-devicons'
+Plug 'https://github.com/majutsushi/tagbar.git'
+Plug 'https://github.com/ctrlpvim/ctrlp.vim.git'
+
+" Productivity
+Plug 'https://github.com/tomtom/tcomment_vim'
+Plug 'https://github.com/tpope/vim-surround.git'
+Plug 'https://github.com/Yggdroot/indentLine.git'
+Plug 'https://github.com/tpope/vim-fugitive.git'
 Plug 'https://github.com/Raimondi/delimitMate'
 Plug 'https://github.com/valloric/MatchTagAlways'
-Plug 'https://github.com/ryanoasis/vim-devicons'
 Plug 'https://github.com/benekastah/neomake.git'
-Plug 'https://github.com/sjl/gundo.vim'
-Plug 'https://github.com/rking/ag.vim'
-Plug 'https://github.com/crosbymichael/vim-cfmt.git'
-Plug 'https://github.com/Xuyuanp/nerdtree-git-plugin.git'
 Plug 'https://github.com/Shougo/deoplete.nvim'
+
+" Programming languages specific plugins
+Plug 'https://github.com/fatih/vim-go.git'
+Plug 'https://github.com/erroneousboat/python-mode.git'
+Plug 'https://github.com/crosbymichael/vim-cfmt.git'
 Plug 'https://github.com/zchee/deoplete-go.git', {'do': 'make'}
 
-" filetype plugins
+" Filetype plugins
 Plug 'https://github.com/ekalinin/Dockerfile.vim.git'
 Plug 'https://github.com/mxw/vim-jsx.git'
+Plug 'https://github.com/leshill/vim-json.git'
 
 call plug#end()
 
@@ -82,6 +84,9 @@ set nocompatible
 " cursorline
 set cursorline
 hi CursorLine cterm=NONE ctermbg=8 ctermfg=NONE
+
+" disable cursor styling
+set guicursor=
 
 " line seperator character
 set fillchars+=vert:│
@@ -240,12 +245,6 @@ map <C-n> :NERDTreeToggle<CR>
 
 " Tagbar
 nmap <F8> :TagbarToggle<CR>
-
-" Gundo
-nnoremap <leader>u :GundoToggle<CR>
-
-" ag.vim
-nnoremap <leader>a :Ag
 
 " Smart way to move between windows
 map <C-j> <C-W>j
@@ -461,9 +460,6 @@ else
     let &t_SI = "\<Esc>]50;CursorShape=1\x7"
     let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
-
-" easymotion
-let g:EasyMotion_leader_key = '<leader><leader>'
 
 " startify, used figlet -f slant erroneousboat for ascii text
 let g:startify_session_dir = '~/.vim/sessions'
