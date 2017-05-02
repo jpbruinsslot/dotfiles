@@ -4,6 +4,7 @@
 # set -o nounset
 set -o errexit
 set -o pipefail
+set +x
 
 # Colours
 NC='\033[0m'
@@ -161,6 +162,7 @@ function python() {
 
     sudo -H pip3 install --upgrade pip
     sudo -H pip3 install --no-cache-dir --upgrade --force-reinstall \
+        asciinema \
         docker-compose \
         flake8 \
         glances \
@@ -431,6 +433,8 @@ function bash() {
 }
 
 function misc() {
+    cd /tmp
+
     # Place installation of miscellaneous programs here
 
     # TODO c (valgrind)
@@ -441,8 +445,11 @@ function misc() {
 
     # TODO slack-term config
 
-    # Install: asciinema
-    curl -sSL https://asciinema.org/install | sh
+    # Install: icdiff
+	curl -sSL https://raw.githubusercontent.com/jeffkaufman/icdiff/master/icdiff > /usr/local/bin/icdiff
+	curl -sSL https://raw.githubusercontent.com/jeffkaufman/icdiff/master/git-icdiff > /usr/local/bin/git-icdiff
+	chmod +x /usr/local/bin/icdiff
+	chmod +x /usr/local/bin/git-icdiff
 
     cd "$HOME"
 }
@@ -480,7 +487,7 @@ usage() {
 	echo "Usage:"
     echo "  all                         - setup all below"
     echo "  dir                         - setup all necessary directories"
-    echo "  wifi {broadcom, intel}      - setup all necessary directories"
+    echo "  wifi {broadcom, intel}      - setup wifi drivers"
 	echo "  ssh                         - setup ssh & get keys"
 	echo "  sources                     - setup sources & install base pkgs"
 	echo "  graphics {laptop,desktop}   - setup graphics drivers"
@@ -494,6 +501,7 @@ usage() {
 	echo "  chrome                      - setup chrome"
 	echo "  tmux                        - setup tmux"
     echo "  k8s                         - setup kubernetes"
+    echo "  misc                        - setup miscellaneous programs"
 }
 
 all() {
@@ -559,6 +567,9 @@ main() {
     elif [[ $cmd == "k8s" ]]; then
         kubeconf
         minikube
+    elif [[ $cmd == "misc" ]]; then
+		check_is_sudo
+        misc
     else
         usage
     fi

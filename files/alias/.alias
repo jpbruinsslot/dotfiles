@@ -61,12 +61,16 @@ alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v exten
 # Serve current directory tree with ngrok
 alias share="python -m SimpleHTTPServer | ngrok http 8000"
 
+# Different kind of hackertyper
+alias busy="cat /dev/urandom | hexdump -C | grep 'ca fe'"
+
 # Renames
 alias mux="tmuxp load"
 alias compose=docker-compose
 alias cat=ccat
 alias kube=kubectl
-alias gti='git'                         # Yeah I know, don't judge me!
+alias diff=icdiff
+alias gti="git"                         # Yeah I know, don't judge me!
 
 # Shortcuts
 alias fu='cd ~/Projects/fuelup'
