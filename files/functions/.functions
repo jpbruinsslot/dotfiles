@@ -180,3 +180,12 @@ function extract() {
     fi
 fi
 }
+
+# A bit more convenient history lookup
+function hist() {
+    if [[ -n "$@" ]]; then
+        history | grep "$@"
+    else
+        history | less
+    fi
+}
