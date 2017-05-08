@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Rofi
+Exec=rofi -key-run control+space -lines 3 -eh 2 -bw 0 -font "System Hack 14"
+Terminal=false
+Icon=rofi
+Hidden=false

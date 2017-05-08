@@ -22,6 +22,7 @@
 		"nvim": "/.config/nvim",
 		"ohmyzsh_theme": "/.oh-my-zsh/custom/erroneousboat.zsh-theme",
 		"path": "/.path",
+		"rofi": "/.config/autostart/rofi.desktop",
 		"terminfo": "/.terminfo",
 		"tmux": "/.tmux.conf",
 		"tmuxp": "/.tmuxp",
