@@ -189,3 +189,32 @@ function hist() {
         history | less
     fi
 }
+
+# Some shortcuts for kubectl commands I use alot:
+#
+# Show all pods on namespace
+# $ \kube [prod/test]
+#
+# Attach to logs for pod
+# $ \kube [prod/test] [pod-name]
+function kube() {
+    if [[ -n "$@" ]]; then
+        local ns
+
+        if [[ "$1" == "prod" ]]; then
+            ns="production" 
+        elif [[ "$1" == "test" ]]; then
+            ns="testing"
+        fi
+
+        if [[ -n "$2" ]]; then
+            kubectl logs -f "$2" "$3" --namespace=$ns
+        elif [[ -z "$2" ]]; then
+            kubectl get pods --namespace=$ns
+        else
+            kubectl "$@"
+        fi
+    else
+        kubectl
+    fi
+}
