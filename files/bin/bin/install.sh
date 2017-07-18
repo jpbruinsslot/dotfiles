@@ -278,6 +278,8 @@ function tmux() {
 function gcloud() {
     print_cyan "... Installing gcloud"
 
+    cd "$HOME"
+
     # Check for version argument
 	if [[ ! -z "$1" ]]; then
 		export GCLOUD_VERSION=$1
@@ -286,14 +288,11 @@ function gcloud() {
     GCLOUD_VERSION=146.0.0
 
     # Download
-    cd /tmp
     wget -q https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${GCLOUD_VERSION}-linux-x86_64.tar.gz
     tar -xzf google-cloud-sdk-${GCLOUD_VERSION}-linux-x86_64.tar.gz
 
     # Install
     ./google-cloud-sdk/install.sh --usage-reporting=true --path-update=true --bash-completion=true --rc-path=/.bashrc --additional-components app-engine-java app-engine-python kubectl alpha beta gcd-emulator pubsub-emulator
-
-    cd "$HOME"
 }
 
 
