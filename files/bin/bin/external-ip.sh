@@ -21,7 +21,7 @@
 #
 ##############################################################################
 
-INTERFACE="wlan0"
+INTERFACE="wl*"
 IP=$(dig +short myip.opendns.com @resolver1.opendns.com)
 
 if [ -z "$IP" ]; then
