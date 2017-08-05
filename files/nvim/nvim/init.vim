@@ -33,11 +33,14 @@ set autoread
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins 
 " :PlugInstall
+"
+" To get a specific branch:
+" Plug 'https://github.com/erroneousboat/molokai.git', {'branch': 'dev'}
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.config/nvim/plugged')
 
 " Interface
-Plug 'https://github.com/erroneousboat/molokai.git', {'branch': 'dev'}
+Plug 'https://github.com/erroneousboat/molokai.git'
 Plug 'https://github.com/itchyny/lightline.vim.git'
 Plug 'https://github.com/scrooloose/nerdtree.git'
 Plug 'https://github.com/Xuyuanp/nerdtree-git-plugin.git'
@@ -202,6 +205,7 @@ highlight Comment gui=italic
 set t_ZH=^[[3m
 set t_ZR=^[[23m
 
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files, backups and undo
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -314,6 +318,10 @@ noremap <C-u> <C-u>zz
 " Do not show q: window
 map q: :q
 
+" Use 'j' and 'k' for scrolling in complete menu
+inoremap <expr> j ((pumvisible())?("\<C-n>"):("j"))
+inoremap <expr> k ((pumvisible())?("\<C-p>"):("k"))
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -345,9 +353,16 @@ call NERDTreeHighlightFile('jsx', 'cyan', 'none', '#00d8ff', 'none')
 call NERDTreeHighlightFile('css', 'blue', 'none', '#1C70B0', 'none')
 call NERDTreeHighlightFile('scss', 'cyan', 'none', '#C6538C', 'none')
 
-hi NERDTreeDir guifg=#A6E22E
-hi NERDTreeOpenable guifg=#F92672
-hi NERDTreeClosable guifg=#F92672
+" Set colors
+hi NERDTreeDir          guifg=#F9F9F8
+hi NERDTreeOpenable     guifg=#7E8E91
+hi NERDTreeClosable     guifg=#7E8E91
+hi NERDTreeDirSlash     guifg=#7E8E91
+hi NERDTreeCWD          guifg=#7E8E91
+
+" Remove folder arrow indicator
+let g:NERDTreeDirArrowExpandable = ''
+let g:NERDTreeDirArrowCollapsible = ''
 
 " pymode
 let g:pymode_rope_complete_on_dot = 0
@@ -402,7 +417,7 @@ function! MyReadonly()
     if &filetype == "help"
         return ""
     elseif &readonly
-        return "❌"
+        return ""
     else
         return ""
     endif
@@ -412,7 +427,7 @@ endfunction
 function! MyFugitive()
     if exists("*fugitive#head")
         let _ = fugitive#head()
-        return strlen(_) ? '⎇  '._ : ''
+        return strlen(_) ? ' '._ : ''
     endif
     return ''
 endfunction
@@ -471,15 +486,26 @@ let g:startify_bookmarks = [
     \ '~/Projects',
     \ ]
 let g:startify_custom_header = [
-    \ '                                                      __                __ ',
-    \ '    ___  ______________  ____  ___  ____  __  _______/ /_  ____  ____ _/ /_',
-    \ '   / _ \/ ___/ ___/ __ \/ __ \/ _ \/ __ \/ / / / ___/ __ \/ __ \/ __ `/ __/',
-    \ '  /  __/ /  / /  / /_/ / / / /  __/ /_/ / /_/ (__  ) /_/ / /_/ / /_/ / /_  ',
-    \ '  \___/_/  /_/   \____/_/ /_/\___/\____/\__,_/____/_.___/\____/\__,_/\__/  ',
+     \ '     ____       __ __        __________  ',
+     \ '    / __ \_  __/ // / ____ _/ ____/ __ \ ',
+     \ '   / / / / |/_/ // /_/ __ `/___ \/ / / / ',
+     \ '  / /_/ />  </__  __/ /_/ /___/ / /_/ /  ',
+     \ '  \____/_/|_|  /_/  \__,_/_____/\____/   ',
     \ '',
-    \ '  =========================================================================',
+    \ '  ======================================',
     \ '',
     \ ]
+
+hi StartifyBracket  guifg=#585858 ctermfg=240 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
+hi StartifyFile     guifg=#eeeeee ctermfg=255 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
+hi StartifyFooter   guifg=#585858 ctermfg=240 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
+hi StartifyHeader   guifg=#87df87 ctermfg=114 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
+hi StartifyNumber   guifg=#ffaf5f ctermfg=215 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
+hi StartifyPath     guifg=#8a8a8a ctermfg=245 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
+hi StartifySection  guifg=#dfafaf ctermfg=181 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
+hi StartifySelect   guifg=#5fdfff ctermfg=81 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
+hi StartifySlash    guifg=#585858 ctermfg=240 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
+hi StartifySpecial  guifg=#585858 ctermfg=240 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
 
 " indent line
 let g:indentLine_char = '│'
@@ -519,11 +545,11 @@ highlight ErrorSign ctermbg=black ctermfg=red
 highlight ErrorSign guibg=none guifg=red
 
 let g:neomake_error_sign = {
-            \ 'text': '✗',
+            \ 'text': '',
             \ 'texthl': 'ErrorSign',
             \ }
 let g:neomake_warning_sign = {
-            \ 'text': '⚠',
+            \ 'text': '',
             \ 'texthl': 'ErrorSign',
             \ }
 
