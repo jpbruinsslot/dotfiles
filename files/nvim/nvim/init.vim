@@ -355,14 +355,16 @@ call NERDTreeHighlightFile('scss', 'cyan', 'none', '#C6538C', 'none')
 
 " Set colors
 hi NERDTreeDir          guifg=#F9F9F8
-hi NERDTreeOpenable     guifg=#7E8E91
-hi NERDTreeClosable     guifg=#7E8E91
+hi NERDTreeOpenable     guifg=#E7B563
+hi NERDTreeClosable     guifg=#E7B563
 hi NERDTreeDirSlash     guifg=#7E8E91
 hi NERDTreeCWD          guifg=#7E8E91
 
 " Replace folder arrow indicator
-let g:NERDTreeDirArrowExpandable = ''
-let g:NERDTreeDirArrowCollapsible = ''
+let g:NERDTreeDirArrowExpandable = ''
+let g:NERDTreeDirArrowCollapsible = ''
+" let g:NERDTreeDirArrowExpandable = ''
+" let g:NERDTreeDirArrowCollapsible = ''
 
 " pymode
 let g:pymode_rope_complete_on_dot = 0
@@ -499,7 +501,7 @@ let g:startify_custom_header = [
 hi StartifyBracket  guifg=#585858 ctermfg=240 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
 hi StartifyFile     guifg=#eeeeee ctermfg=255 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
 hi StartifyFooter   guifg=#585858 ctermfg=240 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
-hi StartifyHeader   guifg=#e6db74 ctermfg=114 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
+hi StartifyHeader   guifg=#E7B563 ctermfg=114 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
 hi StartifyNumber   guifg=#f8f8f2 ctermfg=215 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
 hi StartifyPath     guifg=#8a8a8a ctermfg=245 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
 hi StartifySection  guifg=#dfafaf ctermfg=181 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
