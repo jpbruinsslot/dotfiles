@@ -360,7 +360,7 @@ hi NERDTreeClosable     guifg=#7E8E91
 hi NERDTreeDirSlash     guifg=#7E8E91
 hi NERDTreeCWD          guifg=#7E8E91
 
-" Remove folder arrow indicator
+" Replace folder arrow indicator
 let g:NERDTreeDirArrowExpandable = ''
 let g:NERDTreeDirArrowCollapsible = ''
 
@@ -486,21 +486,21 @@ let g:startify_bookmarks = [
     \ '~/Projects',
     \ ]
 let g:startify_custom_header = [
-     \ '     ____       __ __        __________  ',
-     \ '    / __ \_  __/ // / ____ _/ ____/ __ \ ',
-     \ '   / / / / |/_/ // /_/ __ `/___ \/ / / / ',
-     \ '  / /_/ />  </__  __/ /_/ /___/ / /_/ /  ',
-     \ '  \____/_/|_|  /_/  \__,_/_____/\____/   ',
+     \ '      ____       __ __        __________  ',
+     \ '     / __ \_  __/ // / ____ _/ ____/ __ \ ',
+     \ '    / / / / |/_/ // /_/ __ `/___ \/ / / / ',
+     \ '   / /_/ />  </__  __/ /_/ /___/ / /_/ /  ',
+     \ '   \____/_/|_|  /_/  \__,_/_____/\____/   ',
     \ '',
-    \ '  ======================================',
+    \ '   ======================================',
     \ '',
     \ ]
 
 hi StartifyBracket  guifg=#585858 ctermfg=240 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
 hi StartifyFile     guifg=#eeeeee ctermfg=255 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
 hi StartifyFooter   guifg=#585858 ctermfg=240 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
-hi StartifyHeader   guifg=#87df87 ctermfg=114 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
-hi StartifyNumber   guifg=#ffaf5f ctermfg=215 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
+hi StartifyHeader   guifg=#e6db74 ctermfg=114 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
+hi StartifyNumber   guifg=#f8f8f2 ctermfg=215 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
 hi StartifyPath     guifg=#8a8a8a ctermfg=245 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
 hi StartifySection  guifg=#dfafaf ctermfg=181 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
 hi StartifySelect   guifg=#5fdfff ctermfg=81 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
@@ -541,16 +541,20 @@ let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 let g:neomake_python_enabled_makers = ['flake8']
 autocmd! BufWritePost * Neomake
 
-highlight ErrorSign ctermbg=black ctermfg=red
-highlight ErrorSign guibg=none guifg=red
+" Neomake set colors
+highlight ErrorSign     ctermbg=black   ctermfg=red
+highlight ErrorSign     guibg=none      guifg=red
+highlight WarningSign   ctermbg=black   ctermfg=yellow
+highlight WarningSign   guibg=none      guifg=yellow
 
 let g:neomake_error_sign = {
             \ 'text': '',
             \ 'texthl': 'ErrorSign',
             \ }
+
 let g:neomake_warning_sign = {
             \ 'text': '',
-            \ 'texthl': 'ErrorSign',
+            \ 'texthl': 'WarningSign',
             \ }
 
 " vim-cfmt
@@ -558,15 +562,15 @@ let g:cfmt_style = '-linux'
 
 " NERDTree Git Plugin
 let g:NERDTreeIndicatorMapCustom = {
-    \ "Modified"  : "✹",
-    \ "Staged"    : "✚",
-    \ "Untracked" : "✭",
-    \ "Renamed"   : "➜",
-    \ "Unmerged"  : "═",
-    \ "Deleted"   : "✖",
-    \ "Dirty"     : "✗",
-    \ "Clean"     : "✔︎",
-    \ "Unknown"   : "?"
+    \ "Modified"  : "",
+    \ "Staged"    : "",
+    \ "Untracked" : "",
+    \ "Renamed"   : "",
+    \ "Unmerged"  : "",
+    \ "Deleted"   : "",
+    \ "Dirty"     : "",
+    \ "Clean"     : "",
+    \ "Unknown"   : ""
     \ }
 
 " DelimitMate
