@@ -41,6 +41,7 @@ call plug#begin('~/.config/nvim/plugged')
 
 " Interface
 Plug 'https://github.com/erroneousboat/molokai.git'
+Plug 'https://github.com/justinmk/molokai'
 Plug 'https://github.com/itchyny/lightline.vim.git'
 Plug 'https://github.com/scrooloose/nerdtree.git'
 Plug 'https://github.com/Xuyuanp/nerdtree-git-plugin.git'
@@ -319,13 +320,13 @@ noremap <C-u> <C-u>zz
 map q: :q
 
 " Use 'j' and 'k' for scrolling in complete menu
-inoremap <expr> j ((pumvisible())?("\<C-n>"):("j"))
-inoremap <expr> k ((pumvisible())?("\<C-p>"):("k"))
+" inoremap <expr> j ((pumvisible())?("\<C-n>"):("j"))
+" inoremap <expr> k ((pumvisible())?("\<C-p>"):("k"))
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" NERDTree settings
+" NERDTree: settings
 let NERDTreeChDirMode=2
 let NERDTreeIgnore=['\.vim$', '\~$', '\.pyc$', '\.swp$']
 let NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$',  '\~$']
@@ -333,7 +334,7 @@ let NERDTreeShowBookmarks=0
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 
-" NERDTress File highlighting
+" NERDTree: File highlighting
 function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
 exec 'autocmd FileType nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
 exec 'autocmd FileType nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
@@ -353,36 +354,49 @@ call NERDTreeHighlightFile('jsx', 'cyan', 'none', '#00d8ff', 'none')
 call NERDTreeHighlightFile('css', 'blue', 'none', '#1C70B0', 'none')
 call NERDTreeHighlightFile('scss', 'cyan', 'none', '#C6538C', 'none')
 
-" Set colors
+" NERDTree: Set colors
 hi NERDTreeDir          guifg=#F9F9F8
 hi NERDTreeOpenable     guifg=#E7B563
 hi NERDTreeClosable     guifg=#E7B563
 hi NERDTreeDirSlash     guifg=#7E8E91
 hi NERDTreeCWD          guifg=#7E8E91
 
-" Replace folder arrow indicator
+" NERDTree: Replace folder arrow indicator
 let g:NERDTreeDirArrowExpandable = ''
 let g:NERDTreeDirArrowCollapsible = ''
 " let g:NERDTreeDirArrowExpandable = ''
 " let g:NERDTreeDirArrowCollapsible = ''
+"
+" NERDTree: Git Plugin
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "",
+    \ "Staged"    : "",
+    \ "Untracked" : "",
+    \ "Renamed"   : "",
+    \ "Unmerged"  : "",
+    \ "Deleted"   : "",
+    \ "Dirty"     : "",
+    \ "Clean"     : "",
+    \ "Unknown"   : ""
+    \ }
 
-" pymode
+" PyMode: configuration
 let g:pymode_rope_complete_on_dot = 0
 let g:pymode_folding=0
 let g:pymode_lint_cwindow=0
 set completeopt-=preview
 
-" vim-go: enable goimports to automatically insert import paths instead of gofmt
+" VimGo: enable goimports to automatically insert import paths instead of gofmt
 let g:go_fmt_command = "goimports"
 
-" vim-go: syntax highlighting for functions, methods and structs
+" VimGo: syntax highlighting for functions, methods and structs
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 
-" lightline.vim settings
+" LightLine: configuration
 set laststatus=2
 
 let g:lightline = {
@@ -401,7 +415,7 @@ let g:lightline = {
     \ 'subseparator': { 'left': '|', 'right': '|' }
     \ }
 
-" Will add `+` next to file name when file has changed
+" LightLine: Will add `+` next to file name when file has changed
 function! MyModified()
     if &filetype == "help"
         return ""
@@ -414,7 +428,7 @@ function! MyModified()
     endif
 endfunction
 
-" Will show ... when file is Read Only
+" LightLine: Will show `` when file is Read Only
 function! MyReadonly()
     if &filetype == "help"
         return ""
@@ -425,7 +439,7 @@ function! MyReadonly()
     endif
 endfunction
 
-" Will make use of plugin Fugitive to show branch and `⎇` icon
+" LightLine: Will make use of plugin Fugitive to show branch and `` icon
 function! MyFugitive()
     if exists("*fugitive#head")
         let _ = fugitive#head()
@@ -440,7 +454,7 @@ function! MyFilename()
         \ ('' != MyModified() ? ' ' . MyModified() : '')
 endfunction
 
-" tagbar golang settings
+" Tagbar: golang settings
 let g:tagbar_type_go = {
     \ 'ctagstype' : 'go',
     \ 'kinds'     : [
@@ -469,7 +483,7 @@ let g:tagbar_type_go = {
     \ 'ctagsargs' : '-sort -silent'
 \ }
 
-" tmux settings: allows cursor change in tmux mode
+" Tmux: allows cursor change in tmux mode
 if exists('$TMUX')
     let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
     let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
@@ -478,7 +492,7 @@ else
     let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
 
-" startify, used figlet -f slant erroneousboat for ascii text
+" Startify: configurations (used figlet -f slant [text] for ascii text)
 let g:startify_session_dir = '~/.vim/sessions'
 let g:startify_session_persistence = 1
 let g:startify_change_to_vcs_root = 1
@@ -509,10 +523,10 @@ hi StartifySelect   guifg=#5fdfff ctermfg=81 guibg=NONE ctermbg=NONE gui=NONE ct
 hi StartifySlash    guifg=#585858 ctermfg=240 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
 hi StartifySpecial  guifg=#585858 ctermfg=240 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
 
-" indent line
+" Indent Line: configuration
 let g:indentLine_char = '│'
 
-" deoplete
+" Deoplete: configuration
 let g:deoplete#enable_at_startup = 1
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 
@@ -522,12 +536,12 @@ let g:deoplete#ignore_sources._ = ['buffer', 'member', 'tag', 'file', 'neosnippe
 let g:deoplete#sources#go#sort_class = ['func', 'type', 'var', 'const']
 let g:deoplete#sources#go#align_class = 1
 
-" Use partial fuzzy matches like YouCompleteMe
+" Deoplete: Use partial fuzzy matches like YouCompleteMe
 call deoplete#custom#set('_', 'matchers', ['matcher_fuzzy'])
 call deoplete#custom#set('_', 'converters', ['converter_remove_paren'])
 call deoplete#custom#set('_', 'disabled_syntaxes', ['Comment', 'String'])
 
-" CtrlP
+" CtrlP: configuration
 let g:ctrlp_cmd = 'CtrlPMRU'
 let g:ctrlp_match_window = 'bottom,order:btt,min:10,max:10,results:10'
 let g:ctrlp_mruf_max=450 		    " number of recently opened files
@@ -539,16 +553,18 @@ let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 
-" Neomake (sudo pip3 install flake8)
+" Neomake: configuration
+" sudo pip3 install flake8
 let g:neomake_python_enabled_makers = ['flake8']
 autocmd! BufWritePost * Neomake
 
-" Neomake set colors
+" Neomake: set colors
 highlight ErrorSign     ctermbg=black   ctermfg=red
 highlight ErrorSign     guibg=none      guifg=red
 highlight WarningSign   ctermbg=black   ctermfg=yellow
 highlight WarningSign   guibg=none      guifg=yellow
 
+" Neomake: set icons
 let g:neomake_error_sign = {
             \ 'text': '',
             \ 'texthl': 'ErrorSign',
@@ -559,23 +575,10 @@ let g:neomake_warning_sign = {
             \ 'texthl': 'WarningSign',
             \ }
 
-" vim-cfmt
+" VimCfmt: configuration
 let g:cfmt_style = '-linux'
 
-" NERDTree Git Plugin
-let g:NERDTreeIndicatorMapCustom = {
-    \ "Modified"  : "",
-    \ "Staged"    : "",
-    \ "Untracked" : "",
-    \ "Renamed"   : "",
-    \ "Unmerged"  : "",
-    \ "Deleted"   : "",
-    \ "Dirty"     : "",
-    \ "Clean"     : "",
-    \ "Unknown"   : ""
-    \ }
-
-" DelimitMate
+" DelimitMate: configuration
 let g:delimitMate_expand_cr = 1		
 let g:delimitMate_expand_space = 1		
 let g:delimitMate_smart_quotes = 1		
