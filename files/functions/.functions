@@ -197,6 +197,9 @@ function hist() {
 #
 # Attach to logs for pod
 # $ \kube [prod/test] [pod-name]
+#
+# Create curl pod and issue curl command
+# $ \kube [prod/test] curl [url]
 function kube() {
     if [[ -n "$@" ]]; then
         local ns
@@ -208,7 +211,13 @@ function kube() {
         fi
 
         if [[ -n "$2" ]]; then
-            kubectl logs -f "$2" "$3" --namespace=$ns
+
+            if [[ "$2"  == "curl" ]]; then
+                kubectl run curl --rm -it --image radial/busyboxplus:curl --namespace=$ns -- curl -s "$3"
+            else
+                kubectl logs -f "$2" "$3" --namespace=$ns
+            fi
+
         elif [[ -z "$2" ]]; then
             kubectl get pods --namespace=$ns
         else
