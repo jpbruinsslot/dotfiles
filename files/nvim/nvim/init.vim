@@ -323,6 +323,12 @@ map q: :q
 " inoremap <expr> j ((pumvisible())?("\<C-n>"):("j"))
 " inoremap <expr> k ((pumvisible())?("\<C-p>"):("k"))
 
+" Running a macro
+" 1. Start recording keystrokes by typing qq
+" 2. End recording with q
+" 3. Play recorded keystrokes by hitting space
+:noremap <Space> @q
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -355,7 +361,7 @@ call NERDTreeHighlightFile('css', 'blue', 'none', '#1C70B0', 'none')
 call NERDTreeHighlightFile('scss', 'cyan', 'none', '#C6538C', 'none')
 
 " NERDTree: Set colors
-hi NERDTreeDir          guifg=#F9F9F8
+hi NERDTreeDir          guifg=#F9F9F8 gui=bold
 hi NERDTreeOpenable     guifg=#E7B563
 hi NERDTreeClosable     guifg=#E7B563
 hi NERDTreeDirSlash     guifg=#7E8E91
@@ -366,7 +372,7 @@ let g:NERDTreeDirArrowExpandable = ''
 let g:NERDTreeDirArrowCollapsible = ''
 " let g:NERDTreeDirArrowExpandable = ''
 " let g:NERDTreeDirArrowCollapsible = ''
-"
+
 " NERDTree: Git Plugin
 let g:NERDTreeIndicatorMapCustom = {
     \ "Modified"  : "",
