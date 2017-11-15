@@ -71,7 +71,9 @@ alias cat=ccat
 alias kube=kubectl
 alias diff=icdiff
 alias gti="git"                         # Yeah I know, don't judge me!
+alias gpg="gpg2"
 
 # Shortcuts
 alias fu='cd ~/Projects/fuelup'
+alias fugo="cd $GOPATH/src/github.com/fuelup"
 alias pro='cd ~/Projects'
