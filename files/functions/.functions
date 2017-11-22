@@ -227,3 +227,14 @@ function kube() {
         kubectl
     fi
 }
+
+# symlinking
+#
+# Constantly forgetting TARGET LINK_NAME paradigm
+function symlink() {
+    if [[ -n "$@" ]]; then
+        ln -s "$1" "$2"
+    else
+        echo "symlink TARGET LINK_NAME"
+    fi
+}
