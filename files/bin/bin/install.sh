@@ -1,10 +1,9 @@
 #!/bin/bash
 
 # Source: http://www.davidpashley.com/articles/writing-robust-shell-scripts/
-# set -o nounset
+set -o nounset
 set -o errexit
 set -o pipefail
-set +x
 
 # Colours
 NC='\033[0m'
@@ -18,7 +17,7 @@ CYAN='\033[0;36m'
 B=$(tput bold)
 N=$(tput sgr0)
 
-# Functions
+# Text color
 function print_green {
     printf "${GREEN}${B}$1${N}${NC}\n"
 }
@@ -71,6 +70,7 @@ function sources() {
     print_red ">>> Adding additional repositories"
     sudo add-apt-repository -y ppa:numix/ppa
     sudo add-apt-repository -y ppa:neovim-ppa/stable
+    sudo add-apt-repository -y ppa:graphics-drivers/ppa
 }
 
 function base() {
@@ -136,6 +136,7 @@ function base() {
 
 # Install: graphics drivers
 function graphics() {
+    print_red ">>> Installing graphics drivers"
 	local system=$1
 
 	if [[ -z "$system" ]]; then
@@ -147,9 +148,24 @@ function graphics() {
 
 	if [[ $system == "laptop" ]]; then
 		pkgs=( xorg xserver-xorg xserver-xorg-video-intel )
+	elif [[ $system == "desktop" ]]; then
+
+        # Install nvidia drivers, find latest version at ppa.
+        # ppa:graphics-drivers/ppa
+        #
+        # Source:
+        #   - https://askubuntu.com/a/760935
+		pkgs=( nvidia-384 )
+
+        # Update grub to solve login loop
+        #
+        # Source:
+        #   - https://askubuntu.com/a/867647
+        sed -i 's/splash//g' /etc/default/grub
+
+        update-grub2
 	fi
 
-    print_red ">>> Installing graphics drivers"
 	apt-get install -y "${pkgs[@]}" --no-install-recommends
 }
 
@@ -204,6 +220,9 @@ function golang() {
     wget -O $GOLANG.tar.gz https://storage.googleapis.com/golang/$GOLANG.tar.gz 
     sudo tar -C /usr/local -xzf $GOLANG.tar.gz
     cd "$HOME"
+
+    # Add binaries to path
+    export PATH=$PATH:/usr/local/go/bin
 
     # Install: Go packages
     print_cyan "... Installing Golang packages"
@@ -347,9 +366,6 @@ function dotfiles() {
 
     # For extra setup based on dotfiles, add below:
 
-    # Setup gnome terminal profile
-    source ./bin/gnome-term-profile.sh
-
     cd "$HOME"
 }
 
@@ -431,6 +447,26 @@ function bash() {
     cd "$HOME"
 }
 
+function gnome_molokai() {
+    print_red ">>> Monokai for gnome-terminal"
+
+    profile="b1dcc9dd-5262-4d8d-a863-c897e6d979b9"
+    palette="#1B1B1D1D1E1E:#F9F926267272:#8282B4B41414:#FDFD97971F1F:#5656C2C2D6D6:#8C8C5454FEFE:#464654545757:#CCCCCCCCC6C6:#505053535454:#FFFF59599595:#B6B6E3E35454:#FEFEEDED6C6C:#8C8CEDEDFFFF:#9E9E6F6FFEFE:#89899C9CA1A1:#F8F8F8F8F2F2"
+    bd_color="#F8F8F8F8F2F2"
+    fg_color="#F8F8F8F8F2F2"
+    bg_color="#262626262626"
+
+    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ background-color $bg_color
+    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ foreground-color $fg_color
+    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ bold-color $bd_color
+    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ palette "['#1B1B1D1D1E1E','#F9F926267272','#8282B4B41414','#FDFD97971F1F','#5656C2C2D6D6','#8C8C5454FEFE','#464654545757','#CCCCCCCCC6C6','#505053535454','#FFFF59599595','#B6B6E3E35454','#FEFEEDED6C6C','#8C8CEDEDFFFF','#9E9E6F6FFEFE','#89899C9CA1A1','#F8F8F8F8F2F2']"
+
+    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ use-theme-colors false
+    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ bold-color-same-as-fg false
+
+    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ font "Hack 11.5"
+}
+
 function misc() {
     cd /tmp
 
@@ -483,22 +519,23 @@ usage() {
     echo
     echo "This script can install and setup the following on an ubuntu based system:"
     echo
-	echo "Usage:"
+    echo "Usage:"
     echo "  all                         - setup all below"
     echo "  dir                         - setup all necessary directories"
     echo "  wifi {broadcom, intel}      - setup wifi drivers"
-	echo "  ssh                         - setup ssh & get keys"
-	echo "  sources                     - setup sources & install base pkgs"
-	echo "  graphics {laptop,desktop}   - setup graphics drivers"
+    echo "  graphics {laptop,desktop}   - setup graphics drivers"
+    echo "  ssh                         - setup ssh & get keys"
+    echo "  sources                     - setup sources & install base pkgs"
     echo "  bash [version]              - setup bash"
-	echo "  python                      - setup python packages"
-	echo "  golang [version]            - setup golang language and packages"
-	echo "  docker                      - setup docker"
-	echo "  i3                          - setup i3"
-	echo "  dotfiles                    - setup dotfiles"
-	echo "  gcloud                      - setup gcloud"
-	echo "  chrome                      - setup chrome"
-	echo "  tmux                        - setup tmux"
+    echo "  gnome-molokai               - setup molokai colors for gnome"
+    echo "  python                      - setup python packages"
+    echo "  golang [version]            - setup golang language and packages"
+    echo "  docker                      - setup docker"
+    echo "  i3                          - setup i3"
+    echo "  dotfiles                    - setup dotfiles"
+    echo "  gcloud                      - setup gcloud"
+    echo "  chrome                      - setup chrome"
+    echo "  tmux                        - setup tmux"
     echo "  k8s                         - setup kubernetes"
     echo "  misc                        - setup miscellaneous programs"
 }
@@ -545,6 +582,8 @@ main() {
         graphics
     elif [[ $cmd == "bash" ]]; then
         bash "$2"
+    elif [[ $cmd == "gnome-molokai" ]]; then
+        gnome_molokai
     elif [[ $cmd == "python" ]]; then
         python
     elif [[ $cmd == "golang" ]]; then
