@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Source: http://www.davidpashley.com/articles/writing-robust-shell-scripts/
-set -o nounset
+# set -o nounset
 set -o errexit
 set -o pipefail
 
@@ -295,7 +295,7 @@ function tmux() {
 
 # Install: GCloud
 function gcloud() {
-    print_cyan "... Installing gcloud"
+    print_cyan ">>> Installing gcloud"
 
     cd "$HOME"
 
@@ -312,6 +312,13 @@ function gcloud() {
 
     # Install
     ./google-cloud-sdk/install.sh --usage-reporting=true --path-update=true --bash-completion=true --rc-path=/.bashrc --additional-components app-engine-java app-engine-python kubectl alpha beta gcd-emulator pubsub-emulator
+
+
+    # Update components
+    glcoud components update
+
+    # Reset owner of folder
+    chown -r $user:$user $HOME/google-cloud-sdk
 }
 
 
@@ -336,6 +343,7 @@ function minikube() {
 # Install: kubernetes config
 function kubeconf() {
     print_red ">>> Install kubernetes configuration"
+
     read -p "--> Copy kubernetes config from remote host? [y/n] " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
@@ -533,7 +541,7 @@ usage() {
     echo "  docker                      - setup docker"
     echo "  i3                          - setup i3"
     echo "  dotfiles                    - setup dotfiles"
-    echo "  gcloud                      - setup gcloud"
+    echo "  gcloud [version]            - setup gcloud"
     echo "  chrome                      - setup chrome"
     echo "  tmux                        - setup tmux"
     echo "  k8s                         - setup kubernetes"
@@ -595,7 +603,8 @@ main() {
         i3apps
         i3setup
     elif [[ $cmd == "gcloud" ]]; then
-        gcloud
+		check_is_sudo
+        gcloud "$2"
     elif [[ $cmd == "chrome" ]]; then
         chrome
     elif [[ $cmd == "tmux" ]]; then
