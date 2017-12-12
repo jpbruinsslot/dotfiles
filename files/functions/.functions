@@ -130,7 +130,7 @@ function screen() {
 # What the hell did I do yesterday, will return all commits on local branches
 # in the last `n` days.
 #
-#   $ standup [days]
+#   $ standup [days/date]
 #
 # Helpful format sources:
 # - https://git-scm.com/docs/pretty-formats
@@ -139,12 +139,18 @@ function standup() {
     pwd=$(pwd)
 
     if [ -z "$1" ]; then
-        days=1
+        date="--since=$(date --date="1 day ago" +"%Y-%m-%d")"
     else
-        days="$1"
+        if [[ "$1" == *"-"* ]]; then
+            after=$(date --date="$1 -1 day" +%Y-%m-%d)
+            before=$(date --date="$1 1 day" +%Y-%m-%d)
+            date="--after=\"$after 00:00\" --before=\"$before 23:59\""
+        else
+            date="--since=$(date --date="$1 day ago" +"%Y-%m-%d")"
+        fi
     fi
 
-    fu && git log --branches --pretty=format:"%C(auto,yellow)%h %C(auto,blue)%>(12,trunc)%ad %C(auto,reset)%s%C(auto,red)% gD% D" --date=relative --author="J.P.H. Bruins Slot" --author="Jan Pieter" --author="erroneousboat" --since=$(date --date="${days} day ago" +"%Y-%m-%d") && cd ${pwd}
+    git log "$date" --all --pretty=format:"%C(auto,yellow)%h%C(auto,blue)%>(12,trunc)%ad  %C(auto,reset)%s %C(auto,red)% gD% D" --date=short --author="\(J.P.H. Bruins Slot\)\|\(Jan Pieter\)\|\(erroneousboat\)" && cd ${pwd}
 }
 
 # Useful extraction function:
