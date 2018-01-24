@@ -41,7 +41,6 @@ call plug#begin('~/.config/nvim/plugged')
 
 " Interface
 Plug 'https://github.com/erroneousboat/molokai.git'
-Plug 'https://github.com/justinmk/molokai'
 Plug 'https://github.com/itchyny/lightline.vim.git'
 Plug 'https://github.com/scrooloose/nerdtree.git'
 Plug 'https://github.com/Xuyuanp/nerdtree-git-plugin.git'
@@ -51,6 +50,8 @@ Plug 'https://github.com/airblade/vim-gitgutter.git'
 Plug 'https://github.com/ryanoasis/vim-devicons'
 Plug 'https://github.com/majutsushi/tagbar.git'
 Plug 'https://github.com/ctrlpvim/ctrlp.vim.git'
+Plug 'https://github.com/junegunn/goyo.vim.git'
+Plug 'https://github.com/gcmt/taboo.vim'
 
 " Productivity
 Plug 'https://github.com/tomtom/tcomment_vim'
@@ -61,6 +62,7 @@ Plug 'https://github.com/Raimondi/delimitMate'
 Plug 'https://github.com/valloric/MatchTagAlways'
 Plug 'https://github.com/benekastah/neomake.git'
 Plug 'https://github.com/Shougo/deoplete.nvim'
+Plug 'https://github.com/junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
 " Programming languages specific plugins
 Plug 'https://github.com/fatih/vim-go.git'
@@ -339,6 +341,7 @@ let NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$',  '\~$']
 let NERDTreeShowBookmarks=0
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
+" let NERDTreeWinSize=17
 
 " NERDTree: File highlighting
 function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
