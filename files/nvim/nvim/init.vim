@@ -63,9 +63,10 @@ Plug 'https://github.com/valloric/MatchTagAlways'
 Plug 'https://github.com/benekastah/neomake.git'
 Plug 'https://github.com/Shougo/deoplete.nvim'
 Plug 'https://github.com/junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'https://github.com/terryma/vim-multiple-cursors'
 
 " Programming languages specific plugins
-Plug 'https://github.com/fatih/vim-go.git'
+Plug 'https://github.com/fatih/vim-go.git', {'do': 'GoInstallBinaries'}
 Plug 'https://github.com/erroneousboat/python-mode.git'
 Plug 'https://github.com/crosbymichael/vim-cfmt.git'
 Plug 'https://github.com/zchee/deoplete-go.git', {'do': 'make'}
@@ -73,10 +74,9 @@ Plug 'https://github.com/zchee/deoplete-go.git', {'do': 'make'}
 " Filetype plugins
 Plug 'https://github.com/ekalinin/Dockerfile.vim.git'
 Plug 'https://github.com/mxw/vim-jsx.git'
-Plug 'https://github.com/leshill/vim-json.git'
+Plug 'https://github.com/elzr/vim-json.git'
 
 call plug#end()
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -125,8 +125,15 @@ set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%)
 "show command in bottom bar
 set showcmd
 
-" visual autocomplete for command menu
+" visual autocomplete for command menu, tab autocompletion
 set wildmenu
+set wildmode=list:full
+set wildignore+=.hg,.git,.svn                    " Version control
+set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg   " binary images
+set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest " compiled object files
+set wildignore+=*.pyc                            " Python byte code
+set wildignore+=*.spl                            " compiled spelling word lists
+set wildignore+=*.sw?                            " Vim swap files
 
 " highlight matching [{()}]
 set showmatch
@@ -139,9 +146,6 @@ set t_ut=
 
 " remove default vim mode information
 set noshowmode
-
-" ignore compiled files
-set wildignore=*.o,*~,*.pyc
 
 " return to last edit position when opening files (You want this!)
 autocmd BufReadPost *
@@ -159,7 +163,8 @@ set colorcolumn=79
 " highlight ColorColumn ctermbg=magenta
 " call matchadd('ColorColumn', '\%79v', 100)
 
-" Show syntax highlighting groups for word under cursor
+" Show syntax highlighting groups for word under cursor, this is 
+" helpful when creating/updating color schemas
 nmap <leader>p :call <SID>SynStack()<CR>
 function! <SID>SynStack()
   if !exists("*synstack")
@@ -179,6 +184,10 @@ set foldnestmax=10
 
 " fold based on indent level
 set foldmethod=indent
+
+" never do this again --> :set paste <ctrl-v> :set no paste
+let &t_SI .= "\<Esc>[?2004h"
+let &t_EI .= "\<Esc>[?2004l"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
@@ -247,11 +256,6 @@ set formatoptions=qrn1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Key mapping
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" NERDTree
-map <C-n> :NERDTreeToggle<CR>
-
-" Tagbar
-nmap <F8> :TagbarToggle<CR>
 
 " Smart way to move between windows
 map <C-j> <C-W>j
@@ -332,8 +336,22 @@ map q: :q
 :noremap <Space> @q
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Filetype settings
+" https://github.com/jessfraz/.vim/blob/8271e5f6bd4aec7a586b430c21e82c22ce90e83b/vimrc#L319
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" au BufNewFile,BufRead *.txt setlocal noet ts=4 sw=4
+" au BufNewFile,BufRead *.md setlocal spell noet ts=4 sw=4
+
+" Markdown Settings
+" autocmd BufNewFile,BufReadPost *.md setl ts=4 sw=4 sts=4 expandtab
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" NERDTree: keymapping
+nmap <C-n> :NERDTreeToggle<CR>
+
 " NERDTree: settings
 let NERDTreeChDirMode=2
 let NERDTreeIgnore=['\.vim$', '\~$', '\.pyc$', '\.swp$']
@@ -341,12 +359,13 @@ let NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$',  '\~$']
 let NERDTreeShowBookmarks=0
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
+let NERDTreeQuitOnOpen = 1
 " let NERDTreeWinSize=17
 
 " NERDTree: File highlighting
 function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
-exec 'autocmd FileType nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
-exec 'autocmd FileType nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
+    exec 'autocmd FileType nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
+    exec 'autocmd FileType nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
 endfunction
 
 call NERDTreeHighlightFile('ini', 'yellow', 'none', '#d8a235', 'none')
@@ -463,6 +482,9 @@ function! MyFilename()
         \ ('' != MyModified() ? ' ' . MyModified() : '')
 endfunction
 
+" Tagbar
+nmap <F8> :TagbarToggle<CR>
+
 " Tagbar: golang settings
 let g:tagbar_type_go = {
     \ 'ctagstype' : 'go',
@@ -551,19 +573,32 @@ call deoplete#custom#set('_', 'converters', ['converter_remove_paren'])
 call deoplete#custom#set('_', 'disabled_syntaxes', ['Comment', 'String'])
 
 " CtrlP: configuration
-let g:ctrlp_cmd = 'CtrlPMRU'
+let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_match_window = 'bottom,order:btt,min:10,max:10,results:10'
-let g:ctrlp_mruf_max=450 		    " number of recently opened files
-let g:ctrlp_switch_buffer = 'et'	" jump to a file if it's open already
-let g:ctrlp_max_files=0  		    " do not limit the number of searchable files
+" let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+
+" CtrlP: number of recently opened files
+let g:ctrlp_mruf_max=450
+
+" CtrlP: jump to a file if it's open already
+let g:ctrlp_switch_buffer = 'et'
+
+" CtrlP: do not limit the number of searchable files
+let g:ctrlp_max_files=0  		        
+
+" CtrlP: local working directory
+" n: nearest ancestor of current file, that contains one of these directories
+"    .git, .hg, .svn, .bzr
+" a: directory of the current file, unless it is a directory of the cwd
+let g:ctrlp_working_path_mode = 'ra'
+
+" CtrlP: cache
 let g:ctrlp_use_caching = 1
 let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
 let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 
 " Neomake: configuration
-" sudo pip3 install flake8
+" pip3 install flake8
 let g:neomake_python_enabled_makers = ['flake8']
 autocmd! BufWritePost * Neomake
 
@@ -585,7 +620,9 @@ let g:neomake_warning_sign = {
             \ }
 
 " VimCfmt: configuration
+" apt-get install indent
 let g:cfmt_style = '-linux'
+autocmd BufWritePre *.c,*.h Cfmt
 
 " DelimitMate: configuration
 let g:delimitMate_expand_cr = 1		
@@ -595,3 +632,76 @@ let g:delimitMate_expand_inside_quotes = 0
 let g:delimitMate_smart_matchpairs = '^\%(\w\|\$\)'		
 
 imap <expr> <CR> pumvisible() ? "\<c-y>" : "<Plug>delimitMateCR"
+
+" vim-multiple-cursors
+let g:multi_cursor_use_default_mapping=0
+let g:multi_cursor_next_key='<C-i>'
+let g:multi_cursor_prev_key='<C-y>'
+let g:multi_cursor_skip_key='<C-b>'
+let g:multi_cursor_quit_key='<Esc>'
+
+" Called once right before you start selecting multiple cursors
+function! Multiple_cursors_before()
+  if exists(':NeoCompleteLock')==2
+    exe 'NeoCompleteLock'
+  endif
+endfunction
+
+" Called once only when the multiple selection is canceled (default <Esc>)
+function! Multiple_cursors_after()
+  if exists(':NeoCompleteUnlock')==2
+    exe 'NeoCompleteUnlock'
+  endif
+endfunction
+
+" FZF
+
+" FZF: This is the default extra key bindings
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
+
+" FZF: An action can be a reference to a function that processes selected lines
+function! s:build_quickfix_list(lines)
+  call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+  copen
+  cc
+endfunction
+
+let g:fzf_action = {
+  \ 'ctrl-q': function('s:build_quickfix_list'),
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
+
+" Default fzf layout
+" - down / up / left / right
+let g:fzf_layout = { 'down': '~40%' }
+
+" You can set up fzf window using a Vim command (Neovim or latest Vim 8 required)
+" let g:fzf_layout = { 'window': 'enew' }
+" let g:fzf_layout = { 'window': '-tabnew' }
+" let g:fzf_layout = { 'window': '10split enew' }
+
+" Customize fzf colors to match your color scheme
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+" Enable per-command history.
+" CTRL-N and CTRL-P will be automatically bound to next-history and
+" previous-history instead of down and up. If you don't like the change,
+" explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
+let g:fzf_history_dir = '~/.local/share/fzf-history'
