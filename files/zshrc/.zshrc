@@ -46,3 +46,5 @@ fi
 if [ -f /home/erroneousboat/google-cloud-sdk/completion.zsh.inc ]; then
   source '/home/erroneousboat/google-cloud-sdk/completion.zsh.inc'
 fi
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
