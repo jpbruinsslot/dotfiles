@@ -29,6 +29,8 @@ filetype indent on
 " set auto read when a files is changed from the outside
 set autoread
 
+" Neovim: auto-create an undo directory
+set undofile
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins 
@@ -50,7 +52,6 @@ Plug 'https://github.com/airblade/vim-gitgutter.git'
 Plug 'https://github.com/ryanoasis/vim-devicons'
 Plug 'https://github.com/majutsushi/tagbar.git'
 Plug 'https://github.com/ctrlpvim/ctrlp.vim.git'
-Plug 'https://github.com/junegunn/goyo.vim.git'
 Plug 'https://github.com/gcmt/taboo.vim'
 
 " Productivity
@@ -75,6 +76,7 @@ Plug 'https://github.com/zchee/deoplete-go.git', {'do': 'make'}
 Plug 'https://github.com/ekalinin/Dockerfile.vim.git'
 Plug 'https://github.com/mxw/vim-jsx.git'
 Plug 'https://github.com/elzr/vim-json.git'
+Plug 'https://github.com/plasticboy/vim-markdown'
 
 call plug#end()
 
@@ -359,8 +361,12 @@ let NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$',  '\~$']
 let NERDTreeShowBookmarks=0
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
-let NERDTreeQuitOnOpen = 1
+let NERDTreeQuitOnOpen = 0
+let NERDTreeAutoDeleteBuffer = 1
 " let NERDTreeWinSize=17
+
+" NERDTree: close vim if the only window left open is a NERDTree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " NERDTree: File highlighting
 function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
@@ -607,6 +613,8 @@ highlight ErrorSign     ctermbg=black   ctermfg=red
 highlight ErrorSign     guibg=none      guifg=red
 highlight WarningSign   ctermbg=black   ctermfg=yellow
 highlight WarningSign   guibg=none      guifg=yellow
+highlight InfoSign      ctermbg=black   ctermfg=cyan
+highlight InfoSign      guibg=none      guifg=cyan
 
 " Neomake: set icons
 let g:neomake_error_sign = {
@@ -617,6 +625,11 @@ let g:neomake_error_sign = {
 let g:neomake_warning_sign = {
             \ 'text': '',
             \ 'texthl': 'WarningSign',
+            \ }
+
+let g:neomake_info_sign = {
+            \ 'text': '',
+            \ 'texthl': 'InfoSign',
             \ }
 
 " VimCfmt: configuration
@@ -675,7 +688,7 @@ let g:fzf_action = {
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'vsplit' }
 
-" Default fzf layout
+" FZF: Default fzf layout
 " - down / up / left / right
 let g:fzf_layout = { 'down': '~40%' }
 
@@ -684,7 +697,7 @@ let g:fzf_layout = { 'down': '~40%' }
 " let g:fzf_layout = { 'window': '-tabnew' }
 " let g:fzf_layout = { 'window': '10split enew' }
 
-" Customize fzf colors to match your color scheme
+" FZF: Customize fzf colors to match your color scheme
 let g:fzf_colors =
 \ { 'fg':      ['fg', 'Normal'],
   \ 'bg':      ['bg', 'Normal'],
@@ -700,8 +713,30 @@ let g:fzf_colors =
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
 
-" Enable per-command history.
+" FZF: Enable per-command history.
 " CTRL-N and CTRL-P will be automatically bound to next-history and
 " previous-history instead of down and up. If you don't like the change,
 " explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
 let g:fzf_history_dir = '~/.local/share/fzf-history'
+
+" Taboo: keymapping
+" {i}gt         go to tab in position i
+nnoremap tr :TabooRename<space>
+
+" Taboo: remember tabnames when you save the current session
+set sessionoptions+=tabpages,globals
+
+" Taboo: tab format
+" %N            tabnumber number on each tab
+" %m            modified flag
+" %f            name of the first buffer open in the tab
+let g:taboo_tab_format = ' %N %f %m '
+
+" Taboo: renamed tab format
+" %N            tabnumber number on each tab
+" %l            custom tab name
+" %m            modified flag
+let g:taboo_renamed_tab_format = ' %N %l %m '
+
+" Taboo: modified flag
+let g:taboo_modified_tab_flag = '•'
