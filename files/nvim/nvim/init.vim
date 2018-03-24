@@ -740,3 +740,6 @@ let g:taboo_renamed_tab_format = ' %N %l %m '
 
 " Taboo: modified flag
 let g:taboo_modified_tab_flag = '•'
+
+" vim-json
+let g:vim_json_syntax_conceal = 0
