@@ -1,60 +1,25 @@
 #!/bin/bash
 
-# Source: http://www.davidpashley.com/articles/writing-robust-shell-scripts/
-# set -o nounset
+# http://www.davidpashley.com/articles/writing-robust-shell-scripts/
 set -o errexit
 set -o pipefail
 
-# Colours
-NC='\033[0m'
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
-BLUE='\033[0;34m'
-CYAN='\033[0;36m'
-
-# Font weight
-B=$(tput bold)
-N=$(tput sgr0)
-
-# Text color
-function print_green {
-    printf "${GREEN}${B}$1${N}${NC}\n"
-}
-
-function print_yellow {
-    printf "${YELLOW}${B}$1${N}${NC}\n"
-}
-
-function print_red {
-    printf "${RED}${B}$1${N}${NC}\n"
-}
-
-function print_cyan {
-    printf "${CYAN}${B}$1${N}${NC}\n"
-}
-
-function print_blue {
-    printf "${BLUE}${B}$1${N}${NC}\n"
-}
-
-
 # Make necessary directories
 function dir() {
-    print_cyan "... Creating directories"
+    echo ">>> Creating directories"
     mkdir -p \
-        $HOME/Projects \
+	    $HOME/Projects \
         $HOME/Downloads
 }
 
 # Copy ssh-keys 
 function ssh() {
-    print_red ">>> Setting up ssh"
+    echo ">>> Setting up ssh"
 
-    print_cyan "... Create ssh directory"
+    echo "... Create ssh directory"
     mkdir -p $HOME/.ssh
 
-    print_cyan "... Retrieving SSH keys from remote host"
+    echo "... Retrieving SSH keys from remote host"
     read -p "--> Copy SSH keys from remote host? [y/n] " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
@@ -67,114 +32,164 @@ function ssh() {
 
 # Add additional repositories
 function sources() {
-    print_red ">>> Adding additional repositories"
-    sudo add-apt-repository -y ppa:numix/ppa
-    sudo add-apt-repository -y ppa:neovim-ppa/stable
-    sudo add-apt-repository -y ppa:graphics-drivers/ppa
+	echo ">>> Adding additional repositories"
+	apt update || true
+	apt install -y \
+		apt-transport-https \
+		ca-certificates \
+		curl \
+		dirmngr \
+		gnupg2 \
+		lsb-release \
+		--no-install-recommends
+
+	cat <<-EOF > /etc/apt/sources.list
+	deb http://httpredir.debian.org/debian stretch main contrib non-free
+	deb-src http://httpredir.debian.org/debian/ stretch main contrib non-free
+
+	deb http://httpredir.debian.org/debian/ stretch-updates main contrib non-free
+	deb-src http://httpredir.debian.org/debian/ stretch-updates main contrib non-free
+
+	deb http://security.debian.org/ stretch/updates main contrib non-free
+	deb-src http://security.debian.org/ stretch/updates main contrib non-free
+	EOF
+
+	# deb http://httpredir.debian.org/debian experimental main contrib non-free
+	# deb-src http://httpredir.debian.org/debian experimental main contrib non-free
+
+    # Neovim
+	cat <<-EOF > /etc/apt/sources.list.d/neovim.list
+	deb http://ppa.launchpad.net/neovim-ppa/unstable/ubuntu xenial main
+	deb-src http://ppa.launchpad.net/neovim-ppa/unstable/ubuntu xenial main
+	EOF
+
+    # TLP: advanced linux power management
+	echo "deb http://repo.linrunner.de/debian stretch-backports main" > /etc/apt/sources.list.d/tlp.list
+
+    # Google Chrome
+    echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
+
+    # Add the neovim ppa gpg key
+	apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 9DBB0BE9366964F134855E2255F96FCF8231B6DD
+
+    # Add the tlp apt-repo gpg key
+	apt-key adv --keyserver pool.sks-keyservers.net --recv-keys CD4E8809
+
+    # Add the google chrome public key
+    curl https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
 }
 
 function base() {
-    print_red ">>> Installing base packages"
+    echo ">>> Installing base packages"
 
-    # Synchronize package index files
-    print_cyan "... Synchronizing package index files"
-    sudo apt-get update
+    echo "... Synchronizing package index files"
+    apt update || true
 
-    # Install new versions of all packages
-    print_cyan "... Installing new versions of all packages"
-    sudo apt-get -y dist-upgrade
+    echo "... Installing new versions of all packages"
+    apt -y dist-upgrade
 
-    # Install packages
-    print_cyan "... Installing system packages"
-    sudo apt-get install -y \
-        acpi \
-        apt-transport-https \
-        autoconf \
-        automake \
-        build-essential \
+    echo "... Installing system packages"
+    # Graveyard:
+    #   autoconf \
+    #   acpi \
+    #   automake \
+    #   build-essential \
+    #   dconf-tools \
+    #   libevent-dev \
+    #   libncurses5-dev \
+    #   libncursesw5-dev \
+    #   linux-image-extra-$(uname -r) \
+    #   linux-image-extra-virtual \
+    #   sysstat \
+    #   virtualbox \
+
+    apt install -y \
+        bash-completion \
+        bc \
         ca-certificates \
-        compton \
+        coreutils \
         curl \
-        dconf-tools \
-        feh \
+        dnsutils \
+		font-hack-ttf \
         git-core \
-        gnome-do \
+        gnupg \
+        gnupg2 \
+        google-chrome-stable \
         htop \
-        libevent-dev \
-        libncurses5-dev \
-        libncursesw5-dev \
-        linux-image-extra-$(uname -r) \
-        linux-image-extra-virtual \
+        indent \
+        jq \
         neovim \
-        numix-icon-theme-circle \
         openssh-server \
         pkg-config \
         python-dev \
         python-pip \
         python3-dev \
         python3-pip \
-        software-properties-common \
         rofi \
+        rxvt-unicode-256color \
         silversearcher-ag \
-        sysstat \
+        strace \
         tar \
+        tlp \
         tree \
         unzip \
         urlview \
         vim \
-        virtualbox \
         wget \
         xclip \
-		xcompmgr \
-        zsh
+        --no-install-recommends
 
-    print_cyan "... Cleaning up"
-    sudo apt-get -y autoremove
-    sudo apt-get -y autoclean
-    sudo apt-get -y clean
+    echo "... Cleaning up"
+    apt autoremove
+    apt autoclean
+    apt clean
 }
 
 # Install: graphics drivers
 function graphics() {
-    print_red ">>> Installing graphics drivers"
+    echo ">>> Installing graphics drivers"
 	local system=$1
 
 	if [[ -z "$system" ]]; then
-		echo "You need to specify if you're installing on a laptop or desktop"
+		echo "You need to specify it's intel, geforce or optimus"
 		exit 1
 	fi
 
-	local pkgs=( nvidia-kernel-dkms bumblebee-nvidia primus )
+    local pkgs=( xorg xserver-xorg xserver-xorg-input-libinput xserver-xorg-input-synaptics )
 
-	if [[ $system == "laptop" ]]; then
-		pkgs=( xorg xserver-xorg xserver-xorg-video-intel )
-	elif [[ $system == "desktop" ]]; then
+	case $system in
+		"intel")
+			pkgs+=( xserver-xorg-video-intel )
+			;;
+		"geforce")
+			pkgs+=( nvidia-driver )
+			;;
+		"optimus")
+			pkgs+=( nvidia-kernel-dkms bumblebee-nvidia primus )
+			;;
+		*)
+			echo "You need to specify whether it's intel, geforce or optimus"
+			exit 1
+			;;
+	esac
 
-        # Install nvidia drivers, find latest version at ppa.
-        # ppa:graphics-drivers/ppa
-        #
-        # Source:
-        #   - https://askubuntu.com/a/760935
-		pkgs=( nvidia-384 )
+    # Update grub to solve login loop
+    #
+    # Source:
+    #   - https://askubuntu.com/a/867647
+    # sed -i 's/splash//g' /etc/default/grub
+    # update-grub2
 
-        # Update grub to solve login loop
-        #
-        # Source:
-        #   - https://askubuntu.com/a/867647
-        sed -i 's/splash//g' /etc/default/grub
-
-        update-grub2
-	fi
-
-	apt-get install -y "${pkgs[@]}" --no-install-recommends
+    apt update || true
+    apt -y dist-upgrade
+	apt install -y "${pkgs[@]}" --no-install-recommends
 }
 
 function python() {
     # Install: Python3 packages
-    print_red ">>> Installing Python packages"
+    echo ">>> Installing Python packages"
 
     sudo -H pip3 install --upgrade pip
-    sudo -H pip2 install --upgrade pip
 
     sudo -H pip3 install --upgrade pip
     sudo -H pip3 install --no-cache-dir --upgrade --force-reinstall \
@@ -190,13 +205,14 @@ function python() {
 
     # Install: Python2 packages
     # Needed for gsutil
+    sudo -H pip2 install --upgrade pip
     sudo -H pip2 install --no-cache-dir --upgrade --force-reinstall \
         crcmod
 }
 
 # Install: Golang
 function golang() {
-    print_red ">>> Installing Golang"
+    echo ">>> Installing Golang"
 
     GO_VERSION=1.8
 
@@ -225,7 +241,7 @@ function golang() {
     export PATH=$PATH:/usr/local/go/bin
 
     # Install: Go packages
-    print_cyan "... Installing Golang packages"
+    echo "... Installing Golang packages"
     go get -u \
         github.com/erroneousboat/slack-term \
         github.com/erroneousboat/dot \
@@ -237,47 +253,36 @@ function golang() {
 
 # Install: Docker
 function docker() {
-    print_red ">>> Installing docker"
+    echo ">>> Installing docker"
+
+    echo "... Installing prerequisites"
+    sudo apt update || true
+    sudo apt install -y \
+        apt-transport-https \
+        ca-certificates \
+        gnupg2 \
+        software-properties-common \
+        usermod \
+        --no-install-recommends
 
     # Download
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    sudo add-apt-repository \
-       "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-       $(lsb_release -cs) \
-       stable"
+    echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
+
+    # Add key
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 
     # Install
-    sudo apt-get update
-    sudo apt-get install -y docker-ce
+    sudo apt update || true
+    sudo apt install -y docker-ce
 
     # Configure
     sudo usermod -a -G docker $USER
     sudo service docker restart
 }
 
-
-# Install: Chrome
-# - https://askubuntu.com/a/79289
-function chrome() {
-    print_red ">>> Installing chrome"
-
-    # Add the Google Chrome distribution URI as a package source
-	echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee -a /etc/apt/sources.list.d/google-chrome.list
-
-	# Import the Google Chrome public key
-    cd /tmp
-	curl https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-
-    # Install
-    sudo apt-get update
-    sudo apt-get install google-chrome-stable
-
-    cd "$HOME"
-}
-
 # Install: Tmux
 function tmux() {
-    print_red ">>> Installing tmux"
+    echo ">>> Installing tmux"
 
     if [[ -d /tmp/tmux ]]; then
         rm -rf /tmp/tmux
@@ -296,7 +301,7 @@ function tmux() {
 
 # Install: GCloud
 function gcloud() {
-    print_cyan ">>> Installing gcloud"
+    echo ">>> Installing gcloud"
 
     cd "$HOME"
 
@@ -325,7 +330,7 @@ function gcloud() {
 
 # Install: Minikube
 function minikube() {
-    print_cyan ">>> Install minikube"
+    echo ">>> Install minikube"
 
     # Check for version argument
 	if [[ ! -z "$1" ]]; then
@@ -343,7 +348,7 @@ function minikube() {
 
 # Install: kubernetes config
 function kubeconf() {
-    print_red ">>> Install kubernetes configuration"
+    echo ">>> Install kubernetes configuration"
 
     read -p "--> Copy kubernetes config from remote host? [y/n] " -n 1 -r
     echo
@@ -355,17 +360,17 @@ function kubeconf() {
 
 # Install: Dotfiles
 function dotfiles() {
-    print_red ">>> Install dotfiles"
+    echo ">>> Install dotfiles"
 
     if [[ ! -d "$HOME"/dotfiles ]]; then
-        print_cyan "... Cloning dotfiles"
+        echo "... Cloning dotfiles"
         git clone https://github.com/erroneousboat/dotfiles.git "${HOME}/dotfiles"
     else
         cd "$HOME/dotfiles"
         git pull origin master
     fi
 
-    print_cyan "... Syncing dotfiles"
+    echo "... Syncing dotfiles"
     if [[ ! -f $HOME/.dotconfig ]]; then
         cp $HOME/dotfiles/files/dotconfig/.dotconfig $HOME
     fi
@@ -381,7 +386,7 @@ function dotfiles() {
 
 # Install: i3
 function i3(){
-    print_red ">>> Installing i3"
+    echo ">>> Installing i3"
     echo "deb http://debian.sur5r.net/i3/ $(lsb_release -c -s) universe" | sudo tee -a /etc/apt/sources.list
     sudo apt-get update
     sudo apt-get --allow-unauthenticated install sur5r-keyring
@@ -391,7 +396,7 @@ function i3(){
 
 # Install: i3-apps
 function i3apps() {
-    print_red ">>> Installing i3-apps"
+    echo ">>> Installing i3-apps"
 
     if [[ -d /tmp/i3blocks ]]; then
         rm -rf /tmp/i3blocks
@@ -431,7 +436,7 @@ function i3setup() {
 # Install: Bash
 # (https://www.gnu.org/software/bash/)
 function bash() {
-    print_red ">>> Installing bash"
+    echo ">>> Installing bash"
 
     # Check for version argument
 	if [[ ! -z "$1" ]]; then
@@ -457,7 +462,7 @@ function bash() {
 }
 
 function gnome_molokai() {
-    print_red ">>> Monokai for gnome-terminal"
+    echo ">>> Monokai for gnome-terminal"
 
     profile="b1dcc9dd-5262-4d8d-a863-c897e6d979b9"
     palette="#1B1B1D1D1E1E:#F9F926267272:#8282B4B41414:#FDFD97971F1F:#5656C2C2D6D6:#8C8C5454FEFE:#464654545757:#CCCCCCCCC6C6:#505053535454:#FFFF59599595:#B6B6E3E35454:#FEFEEDED6C6C:#8C8CEDEDFFFF:#9E9E6F6FFEFE:#89899C9CA1A1:#F8F8F8F8F2F2"
@@ -495,8 +500,60 @@ function misc() {
 	chmod +x /usr/local/bin/icdiff
 	chmod +x /usr/local/bin/git-icdiff
 
+	# Install: numix icons
+	rm -rf /tmp/numix-icon-theme-circle
+	git clone https://github.com/numixproject/numix-icon-theme-circle.git
+	cp -r /tmp/numix-icon-theme-circle/Numix-Circle ~/.local/share/icons
+
+	# Pretty fonts
+	# https://wiki.archlinux.org/index.php/font_configuration
+	cat <<-EOF > /etc/fonts/local.conf
+	<?xml version='1.0'?>
+	<!DOCTYPE fontconfig SYSTEM 'fonts.dtd'>
+	<fontconfig>
+    	<!-- pixel allignment, it needs to know what monitor type you're using -->
+    	<match target="font">
+        	<edit mode="assign" name="rgba">
+            	<const>rgb</const>
+        	</edit>
+    	</match>
+    	<!-- adjust the display of an outline font so that it lines up with a rasterized grid -->
+    	<match target="font">
+        	<edit mode="assign" name="hinting">
+        		<bool>true</bool>
+        	</edit>
+    	</match>
+    	<!-- amount of font reshaping done to line up to the grid -->
+    	<match target="font">
+        	<edit mode="assign" name="hintstyle">
+            	<const>hintslight</const>
+        	</edit>
+    	</match>
+    	<!-- remove jagged edges due to font rasterization -->
+    	<match target="font">
+        	<edit mode="assign" name="antialias">
+            	<bool>true</bool>
+        	</edit>
+    	</match>
+    	<!-- reduce colour fringing -->
+    	<match target="font">
+        	<edit mode="assign" name="lcdfilter">
+            	<const>lcddefault</const>
+        	</edit>
+    	</match>
+	</fontconfig>
+	EOF
+
+	echo "Fonts file setup successfully now run:"
+	echo "  (sudo) dpkg-reconfigure fontconfig-config"
+	echo "with settings: "
+	echo "  Autohinter, Automatic, No."
+	echo "Run: "
+	echo "  (sudo) dpkg-reconfigure fontconfig"
+
     cd "$HOME"
 }
+
 
 function wifi() {
 	local system=$1
@@ -526,46 +583,28 @@ check_is_sudo() {
 usage() {
     echo "install.sh"
     echo
-    echo "This script can install and setup the following on an ubuntu based system:"
+    echo "This script can install and setup the following on a debian based system:"
     echo
     echo "Usage:"
-    echo "  all                         - setup all below"
-    echo "  dir                         - setup all necessary directories"
-    echo "  wifi {broadcom, intel}      - setup wifi drivers"
-    echo "  graphics {laptop,desktop}   - setup graphics drivers"
-    echo "  ssh                         - setup ssh & get keys"
-    echo "  sources                     - setup sources & install base pkgs"
-    echo "  bash [version]              - setup bash"
-    echo "  gnome-molokai               - setup molokai colors for gnome"
-    echo "  python                      - setup python packages"
-    echo "  golang [version]            - setup golang language and packages"
-    echo "  docker                      - setup docker"
-    echo "  i3                          - setup i3"
-    echo "  dotfiles                    - setup dotfiles"
-    echo "  gcloud [version]            - setup gcloud"
-    echo "  chrome                      - setup chrome"
-    echo "  tmux                        - setup tmux"
-    echo "  k8s                         - setup kubernetes"
-    echo "  misc                        - setup miscellaneous programs"
+    echo "  sources                             - setup sources"
+    echo "  base                                - install base pkgs"
+    echo "  dir                                 - setup all necessary directories"
+    echo "  ssh                                 - setup ssh & get keys"
+    echo "  dotfiles                            - setup dotfiles"
+    echo "  wifi {broadcom, intel}              - setup wifi drivers"
+    echo "  graphics {intel, geforce, optimus}  - setup graphics drivers"
+    echo "  bash [version]                      - setup bash"
+    echo "  gnome-molokai                       - setup molokai colors for gnome"
+    echo "  python                              - setup python packages"
+    echo "  golang [version]                    - setup golang language and packages"
+    echo "  docker                              - setup docker"
+    echo "  gcloud [version]                    - setup gcloud"
+    echo "  chrome                              - setup chrome"
+    echo "  tmux                                - setup tmux"
+    echo "  k8s                                 - setup kubernetes"
+    echo "  misc                                - setup miscellaneous programs"
+    echo "  i3                                  - setup i3"
 }
-
-all() {
-    dir
-    sources
-    base
-    ssh
-    graphics
-    bash
-    python
-    golang
-    docker
-    i3
-    gcloud
-    chrome
-    tmux
-    dotfiles
-    k8s
-} 
 
 main() {
     local cmd=$1
@@ -575,13 +614,13 @@ main() {
 		exit 1
 	fi
 
-    if [[ $cmd == "all" ]]; then
-        all
-    elif [[ $cmd == "dir" ]]; then
+    if [[ $cmd == "dir" ]]; then
         dir
     elif [[ $cmd == "sources" ]]; then
 		check_is_sudo
 		sources
+    elif [[ $cmd == "base" ]]; then
+		check_is_sudo
 		base
     elif [[ $cmd == "wifi" ]]; then
         wifi "$2"
@@ -598,6 +637,7 @@ main() {
     elif [[ $cmd == "golang" ]]; then
         golang "$2"
     elif [[ $cmd == "docker" ]]; then
+        check_is_sudo
         docker
     elif [[ $cmd == "i3" ]]; then
         i3
