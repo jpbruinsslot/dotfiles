@@ -125,6 +125,7 @@ function base() {
         python-pip \
         python3-dev \
         python3-pip \
+        python3-setuptools \
         rofi \
         rxvt-unicode-256color \
         silversearcher-ag \
@@ -190,8 +191,6 @@ function python() {
     echo ">>> Installing Python packages"
 
     sudo -H pip3 install --upgrade pip
-
-    sudo -H pip3 install --upgrade pip
     sudo -H pip3 install --no-cache-dir --upgrade --force-reinstall \
         asciinema \
         docker-compose \
@@ -204,10 +203,12 @@ function python() {
         tmuxp
 
     # Install: Python2 packages
-    # Needed for gsutil
+    # crcmod: needed for gsutil
+    # neovim: needed for deoplete
     sudo -H pip2 install --upgrade pip
     sudo -H pip2 install --no-cache-dir --upgrade --force-reinstall \
-        crcmod
+        crcmod \
+        neovim
 }
 
 # Install: Golang
@@ -364,7 +365,7 @@ function dotfiles() {
 
     if [[ ! -d "$HOME"/dotfiles ]]; then
         echo "... Cloning dotfiles"
-        git clone https://github.com/erroneousboat/dotfiles.git "${HOME}/dotfiles"
+        git clone git@github.com:erroneousboat/dotfiles.git "${HOME}/dotfiles"
     else
         cd "$HOME/dotfiles"
         git pull origin master
