@@ -71,6 +71,7 @@ Plug 'https://github.com/fatih/vim-go.git', {'do': 'GoInstallBinaries'}
 Plug 'https://github.com/erroneousboat/python-mode.git'
 Plug 'https://github.com/crosbymichael/vim-cfmt.git'
 Plug 'https://github.com/zchee/deoplete-go.git', {'do': 'make'}
+Plug 'https://github.com/zchee/deoplete-jedi.git'
 
 " Filetype plugins
 Plug 'https://github.com/ekalinin/Dockerfile.vim.git'
@@ -565,18 +566,6 @@ let g:indentLine_char = '│'
 
 " Deoplete: configuration
 let g:deoplete#enable_at_startup = 1
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#ignore_sources = {}
-let g:deoplete#ignore_sources._ = ['buffer', 'member', 'tag', 'file', 'neosnippet']
-let g:deoplete#sources#go#sort_class = ['func', 'type', 'var', 'const']
-let g:deoplete#sources#go#align_class = 1
-
-" Deoplete: Use partial fuzzy matches like YouCompleteMe
-call deoplete#custom#set('_', 'matchers', ['matcher_fuzzy'])
-call deoplete#custom#set('_', 'converters', ['converter_remove_paren'])
-call deoplete#custom#set('_', 'disabled_syntaxes', ['Comment', 'String'])
 
 " CtrlP: configuration
 let g:ctrlp_cmd = 'CtrlP'
