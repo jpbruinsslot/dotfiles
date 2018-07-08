@@ -1,6 +1,7 @@
 {
 	"dot_path": "/dotfiles",
 	"files": {
+		"alacritty": "/.config/alacritty/alacritty.yml",
 		"alias": "/.alias",
 		"background": "/.background",
 		"bash_profile": "/.bash_profile",
