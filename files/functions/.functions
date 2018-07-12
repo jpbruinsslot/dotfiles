@@ -244,3 +244,10 @@ function symlink() {
         echo "symlink TARGET LINK_NAME"
     fi
 }
+
+# Create a docker container image and run it. It will use the directory name
+# as container name.
+function dr() {
+    docker build -t ${PWD##*/} .
+    docker run --net="host" -it --rm --name ${PWD##*/} ${PWD##*/} 
+}
