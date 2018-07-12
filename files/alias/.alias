@@ -11,7 +11,7 @@ alias -- -="cd -"
 colorflag="--color"
 
 # List all files colorized in long format
-alias ll="ls -lah ${colorflag}"
+alias ll="ls -lah ${colorflag} --group-directories-first"
 
 # List all files colorized in long format, including dot files
 alias la="ls -laF ${colorflag}"
