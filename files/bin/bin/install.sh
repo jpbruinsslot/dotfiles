@@ -200,7 +200,9 @@ function python() {
         lolcat \
         neovim \
         psutil \
-        tmuxp
+        tmuxp \
+        pylint \
+        yapf
 
     # Install: Python2 packages
     # crcmod: needed for gsutil
