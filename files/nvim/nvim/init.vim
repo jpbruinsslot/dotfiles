@@ -65,9 +65,10 @@ Plug 'https://github.com/benekastah/neomake.git'
 Plug 'https://github.com/Shougo/deoplete.nvim'
 Plug 'https://github.com/junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'https://github.com/terryma/vim-multiple-cursors'
+Plug 'https://github.com/sbdchd/neoformat'
 
 " Programming languages specific plugins
-Plug 'https://github.com/fatih/vim-go.git', {'do': 'GoInstallBinaries'}
+Plug 'https://github.com/fatih/vim-go.git', {'do': 'GoUpdateBinaries'}
 Plug 'https://github.com/erroneousboat/python-mode.git'
 Plug 'https://github.com/crosbymichael/vim-cfmt.git'
 Plug 'https://github.com/zchee/deoplete-go.git', {'do': 'make'}
@@ -364,6 +365,7 @@ let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 let NERDTreeQuitOnOpen = 0
 let NERDTreeAutoDeleteBuffer = 1
+let g:NERDTreeUpdateOnWrite = 0 " only done for pymode
 " let NERDTreeWinSize=17
 
 " NERDTree: close vim if the only window left open is a NERDTree
@@ -594,7 +596,8 @@ let g:ctrlp_clear_cache_on_exit = 0
 
 " Neomake: configuration
 " pip3 install flake8
-let g:neomake_python_enabled_makers = ['flake8']
+" apt install pylint
+" let g:neomake_python_enabled_makers = ['flake8', 'pylint']
 autocmd! BufWritePost * Neomake
 
 " Neomake: set colors
@@ -732,3 +735,9 @@ let g:taboo_modified_tab_flag = '•'
 
 " vim-json
 let g:vim_json_syntax_conceal = 0
+
+" Neoformat; run on save
+augroup fmt
+  autocmd!
+  autocmd BufWritePre * undojoin | Neoformat
+augroup END
