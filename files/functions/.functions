@@ -1,4 +1,4 @@
-# #!/bin/bash
+#!/bin/bash
 
 # Simple calculator
 calc() {
@@ -248,6 +248,6 @@ function symlink() {
 # Create a docker container image and run it. It will use the directory name
 # as container name.
 function dr() {
-    docker build -t ${PWD##*/} .
+    docker build --no-cache -t ${PWD##*/} .
     docker run --net="host" -it --rm --name ${PWD##*/} ${PWD##*/} 
 }
