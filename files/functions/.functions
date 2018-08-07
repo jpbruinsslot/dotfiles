@@ -251,3 +251,17 @@ function dr() {
     docker build --no-cache -t ${PWD##*/} .
     docker run --net="host" -it --rm --name ${PWD##*/} ${PWD##*/} 
 }
+
+# Execute a command n-times
+function run() {
+    local n="$1"
+    local cmd="${@:2}"
+
+    if [[ -n "$@" ]]; then
+        for i in `seq "$n"`; do
+            $cmd
+        done
+    else
+        echo "Usage: run [n-times] [command]"
+    fi
+}
