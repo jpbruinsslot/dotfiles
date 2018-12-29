@@ -8,7 +8,7 @@ set -o pipefail
 function dir() {
     echo ">>> Creating directories"
     mkdir -p \
-	    $HOME/Projects \
+        $HOME/Projects \
         $HOME/Downloads
 }
 
@@ -32,48 +32,52 @@ function ssh() {
 
 # Add additional repositories
 function sources() {
-	echo ">>> Adding additional repositories"
-	apt update || true
-	apt install -y \
-		apt-transport-https \
-		ca-certificates \
-		curl \
-		dirmngr \
-		gnupg2 \
-		lsb-release \
-		--no-install-recommends
+echo ">>> Adding additional repositories"
+    apt update || true
+    apt install -y \
+        apt-transport-https \
+        ca-certificates \
+        curl \
+        dirmngr \
+        gnupg2 \
+        lsb-release \
+        --no-install-recommends
 
-	cat <<-EOF > /etc/apt/sources.list
-	deb http://httpredir.debian.org/debian stretch main contrib non-free
-	deb-src http://httpredir.debian.org/debian/ stretch main contrib non-free
+    cat <<-EOF > /etc/apt/sources.list
+    deb http://httpredir.debian.org/debian stretch main contrib non-free
+    deb-src http://httpredir.debian.org/debian/ stretch main contrib non-free
 
-	deb http://httpredir.debian.org/debian/ stretch-updates main contrib non-free
-	deb-src http://httpredir.debian.org/debian/ stretch-updates main contrib non-free
+    deb http://httpredir.debian.org/debian/ stretch-updates main contrib non-free
+    deb-src http://httpredir.debian.org/debian/ stretch-updates main contrib non-free
 
-	deb http://security.debian.org/ stretch/updates main contrib non-free
-	deb-src http://security.debian.org/ stretch/updates main contrib non-free
-	EOF
+    deb http://security.debian.org/ stretch/updates main contrib non-free
+    deb-src http://security.debian.org/ stretch/updates main contrib non-free
+    EOF
 
-	# deb http://httpredir.debian.org/debian experimental main contrib non-free
-	# deb-src http://httpredir.debian.org/debian experimental main contrib non-free
+    # deb http://httpredir.debian.org/debian experimental main contrib non-free
+    # deb-src http://httpredir.debian.org/debian experimental main contrib non-free
 
     # Neovim
-	cat <<-EOF > /etc/apt/sources.list.d/neovim.list
-	deb http://ppa.launchpad.net/neovim-ppa/unstable/ubuntu xenial main
-	deb-src http://ppa.launchpad.net/neovim-ppa/unstable/ubuntu xenial main
-	EOF
+    cat <<-EOF > /etc/apt/sources.list.d/neovim.list
+    deb http://ppa.launchpad.net/neovim-ppa/unstable/ubuntu xenial main
+    deb-src http://ppa.launchpad.net/neovim-ppa/unstable/ubuntu xenial main
+    EOF
 
     # TLP: advanced linux power management
-	echo "deb http://repo.linrunner.de/debian stretch-backports main" > /etc/apt/sources.list.d/tlp.list
+    cat <<-EOF > /etc/apt/sources.list.d/tlp.list
+    # tlp: Advanced Linux Power Management
+    # http://linrunner.de/en/tlp/docs/tlp-linux-advanced-power-management.html
+    deb http://repo.linrunner.de/debian sid main
+    EOF
 
     # Google Chrome
     echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
 
     # Add the neovim ppa gpg key
-	apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 9DBB0BE9366964F134855E2255F96FCF8231B6DD
+    apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 9DBB0BE9366964F134855E2255F96FCF8231B6DD
 
     # Add the tlp apt-repo gpg key
-	apt-key adv --keyserver pool.sks-keyservers.net --recv-keys CD4E8809
+    apt-key adv --keyserver pool.sks-keyservers.net --recv-keys CD4E8809
 
     # Add the google chrome public key
     curl https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
@@ -104,13 +108,14 @@ function base() {
     #   virtualbox \
 
     apt install -y \
+        automake \
         bash-completion \
         bc \
         ca-certificates \
         coreutils \
         curl \
         dnsutils \
-		font-hack-ttf \
+        fonts-hack-ttf \
         git-core \
         gnupg \
         gnupg2 \
@@ -118,6 +123,8 @@ function base() {
         htop \
         indent \
         jq \
+        libevent-dev \
+        ncurses-dev \
         neovim \
         openssh-server \
         pkg-config \
@@ -178,8 +185,9 @@ function graphics() {
     #
     # Source:
     #   - https://askubuntu.com/a/867647
-    # sed -i 's/splash//g' /etc/default/grub
-    # update-grub2
+    #
+    # $ sed -i 's/splash//g' /etc/default/grub
+    # $ update-grub2
 
     apt update || true
     apt -y dist-upgrade
@@ -217,7 +225,7 @@ function python() {
 function golang() {
     echo ">>> Installing Golang"
 
-    GO_VERSION=1.8
+    GO_VERSION=1.11.4
 
 	if [[ ! -z "$1" ]]; then
 		GO_VERSION=$1
@@ -245,6 +253,7 @@ function golang() {
 
     # Install: Go packages
     echo "... Installing Golang packages"
+    (
     go get -u \
         github.com/erroneousboat/slack-term \
         github.com/erroneousboat/dot \
@@ -252,6 +261,7 @@ function golang() {
         github.com/golang/dep/... \
         github.com/kardianos/govendor \
         github.com/derekparker/delve/cmd/dlv
+    )
 }
 
 # Install: Docker
@@ -265,7 +275,6 @@ function docker() {
         ca-certificates \
         gnupg2 \
         software-properties-common \
-        usermod \
         --no-install-recommends
 
     # Download
@@ -498,61 +507,61 @@ function misc() {
     # TODO slack-term config
 
     # Install: icdiff
-	curl -sSL https://raw.githubusercontent.com/jeffkaufman/icdiff/master/icdiff > /usr/local/bin/icdiff
-	curl -sSL https://raw.githubusercontent.com/jeffkaufman/icdiff/master/git-icdiff > /usr/local/bin/git-icdiff
-	chmod +x /usr/local/bin/icdiff
-	chmod +x /usr/local/bin/git-icdiff
+    curl -sSL https://raw.githubusercontent.com/jeffkaufman/icdiff/master/icdiff > /usr/local/bin/icdiff
+    curl -sSL https://raw.githubusercontent.com/jeffkaufman/icdiff/master/git-icdiff > /usr/local/bin/git-icdiff
+    chmod +x /usr/local/bin/icdiff
+    chmod +x /usr/local/bin/git-icdiff
 
-	# Install: numix icons
-	rm -rf /tmp/numix-icon-theme-circle
-	git clone https://github.com/numixproject/numix-icon-theme-circle.git
-	cp -r /tmp/numix-icon-theme-circle/Numix-Circle ~/.local/share/icons
+    # Install: numix icons
+    rm -rf /tmp/numix-icon-theme-circle
+    git clone https://github.com/numixproject/numix-icon-theme-circle.git
+    cp -r /tmp/numix-icon-theme-circle/Numix-Circle ~/.local/share/icons
 
-	# Pretty fonts
-	# https://wiki.archlinux.org/index.php/font_configuration
-	cat <<-EOF > /etc/fonts/local.conf
-	<?xml version='1.0'?>
-	<!DOCTYPE fontconfig SYSTEM 'fonts.dtd'>
-	<fontconfig>
-    	<!-- pixel allignment, it needs to know what monitor type you're using -->
-    	<match target="font">
-        	<edit mode="assign" name="rgba">
-            	<const>rgb</const>
-        	</edit>
-    	</match>
-    	<!-- adjust the display of an outline font so that it lines up with a rasterized grid -->
-    	<match target="font">
-        	<edit mode="assign" name="hinting">
-        		<bool>true</bool>
-        	</edit>
-    	</match>
-    	<!-- amount of font reshaping done to line up to the grid -->
-    	<match target="font">
-        	<edit mode="assign" name="hintstyle">
-            	<const>hintslight</const>
-        	</edit>
-    	</match>
-    	<!-- remove jagged edges due to font rasterization -->
-    	<match target="font">
-        	<edit mode="assign" name="antialias">
-            	<bool>true</bool>
-        	</edit>
-    	</match>
-    	<!-- reduce colour fringing -->
-    	<match target="font">
-        	<edit mode="assign" name="lcdfilter">
-            	<const>lcddefault</const>
-        	</edit>
-    	</match>
-	</fontconfig>
-	EOF
+    # Pretty fonts
+    # https://wiki.archlinux.org/index.php/font_configuration
+    cat <<-EOF > /etc/fonts/local.conf
+    <?xml version='1.0'?>
+    <!DOCTYPE fontconfig SYSTEM 'fonts.dtd'>
+    <fontconfig>
+        <!-- pixel allignment, it needs to know what monitor type you're using -->
+        <match target="font">
+            <edit mode="assign" name="rgba">
+                <const>rgb</const>
+            </edit>
+        </match>
+        <!-- adjust the display of an outline font so that it lines up with a rasterized grid -->
+        <match target="font">
+            <edit mode="assign" name="hinting">
+                <bool>true</bool>
+            </edit>
+        </match>
+        <!-- amount of font reshaping done to line up to the grid -->
+        <match target="font">
+            <edit mode="assign" name="hintstyle">
+                <const>hintslight</const>
+            </edit>
+        </match>
+        <!-- remove jagged edges due to font rasterization -->
+        <match target="font">
+            <edit mode="assign" name="antialias">
+                <bool>true</bool>
+            </edit>
+        </match>
+        <!-- reduce colour fringing -->
+        <match target="font">
+            <edit mode="assign" name="lcdfilter">
+                <const>lcddefault</const>
+            </edit>
+        </match>
+    </fontconfig>
+    EOF
 
-	echo "Fonts file setup successfully now run:"
-	echo "  (sudo) dpkg-reconfigure fontconfig-config"
-	echo "with settings: "
-	echo "  Autohinter, Automatic, No."
-	echo "Run: "
-	echo "  (sudo) dpkg-reconfigure fontconfig"
+    echo "Fonts file setup successfully now run:"
+    echo "  (sudo) dpkg-reconfigure fontconfig-config"
+    echo "with settings: "
+    echo "  Autohinter, Automatic, No."
+    echo "Run: "
+    echo "  (sudo) dpkg-reconfigure fontconfig"
 
     cd "$HOME"
 }
@@ -647,6 +656,7 @@ main() {
         i3apps
         i3setup
     elif [[ $cmd == "gcloud" ]]; then
+        check_is_sudo
         gcloud "$2"
     elif [[ $cmd == "chrome" ]]; then
         chrome
