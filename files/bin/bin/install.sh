@@ -32,7 +32,7 @@ function ssh() {
 
 # Add additional repositories
 function sources() {
-echo ">>> Adding additional repositories"
+    echo ">>> Adding additional repositories"
     apt update || true
     apt install -y \
         apt-transport-https \
@@ -44,31 +44,31 @@ echo ">>> Adding additional repositories"
         --no-install-recommends
 
     cat <<-EOF > /etc/apt/sources.list
-    deb http://httpredir.debian.org/debian stretch main contrib non-free
-    deb-src http://httpredir.debian.org/debian/ stretch main contrib non-free
+deb http://httpredir.debian.org/debian stretch main contrib non-free
+deb-src http://httpredir.debian.org/debian/ stretch main contrib non-free
 
-    deb http://httpredir.debian.org/debian/ stretch-updates main contrib non-free
-    deb-src http://httpredir.debian.org/debian/ stretch-updates main contrib non-free
+deb http://httpredir.debian.org/debian/ stretch-updates main contrib non-free
+deb-src http://httpredir.debian.org/debian/ stretch-updates main contrib non-free
 
-    deb http://security.debian.org/ stretch/updates main contrib non-free
-    deb-src http://security.debian.org/ stretch/updates main contrib non-free
-    EOF
+deb http://security.debian.org/ stretch/updates main contrib non-free
+deb-src http://security.debian.org/ stretch/updates main contrib non-free
+EOF
 
     # deb http://httpredir.debian.org/debian experimental main contrib non-free
     # deb-src http://httpredir.debian.org/debian experimental main contrib non-free
 
     # Neovim
     cat <<-EOF > /etc/apt/sources.list.d/neovim.list
-    deb http://ppa.launchpad.net/neovim-ppa/unstable/ubuntu xenial main
-    deb-src http://ppa.launchpad.net/neovim-ppa/unstable/ubuntu xenial main
-    EOF
+deb http://ppa.launchpad.net/neovim-ppa/unstable/ubuntu xenial main
+deb-src http://ppa.launchpad.net/neovim-ppa/unstable/ubuntu xenial main
+EOF
 
     # TLP: advanced linux power management
     cat <<-EOF > /etc/apt/sources.list.d/tlp.list
-    # tlp: Advanced Linux Power Management
-    # http://linrunner.de/en/tlp/docs/tlp-linux-advanced-power-management.html
-    deb http://repo.linrunner.de/debian sid main
-    EOF
+# tlp: Advanced Linux Power Management
+# http://linrunner.de/en/tlp/docs/tlp-linux-advanced-power-management.html
+deb http://repo.linrunner.de/debian sid main
+EOF
 
     # Google Chrome
     echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
@@ -395,13 +395,9 @@ function dotfiles() {
     cd "$HOME"
 }
 
-
 # Install: i3
-function i3(){
+function i3() {
     echo ">>> Installing i3"
-    echo "deb http://debian.sur5r.net/i3/ $(lsb_release -c -s) universe" | sudo tee -a /etc/apt/sources.list
-    sudo apt-get update
-    sudo apt-get --allow-unauthenticated install sur5r-keyring
     sudo apt-get update
     sudo apt-get install -y i3
 }
@@ -419,7 +415,9 @@ function i3apps() {
 
     # Install: i3blocks
     cd /tmp/i3blocks
-    make clean all
+    ./autogen.sh
+    ./configure
+    make
     sudo make install
 
     # Install additional apps
@@ -520,41 +518,41 @@ function misc() {
     # Pretty fonts
     # https://wiki.archlinux.org/index.php/font_configuration
     cat <<-EOF > /etc/fonts/local.conf
-    <?xml version='1.0'?>
-    <!DOCTYPE fontconfig SYSTEM 'fonts.dtd'>
-    <fontconfig>
-        <!-- pixel allignment, it needs to know what monitor type you're using -->
-        <match target="font">
-            <edit mode="assign" name="rgba">
-                <const>rgb</const>
-            </edit>
-        </match>
-        <!-- adjust the display of an outline font so that it lines up with a rasterized grid -->
-        <match target="font">
-            <edit mode="assign" name="hinting">
-                <bool>true</bool>
-            </edit>
-        </match>
-        <!-- amount of font reshaping done to line up to the grid -->
-        <match target="font">
-            <edit mode="assign" name="hintstyle">
-                <const>hintslight</const>
-            </edit>
-        </match>
-        <!-- remove jagged edges due to font rasterization -->
-        <match target="font">
-            <edit mode="assign" name="antialias">
-                <bool>true</bool>
-            </edit>
-        </match>
-        <!-- reduce colour fringing -->
-        <match target="font">
-            <edit mode="assign" name="lcdfilter">
-                <const>lcddefault</const>
-            </edit>
-        </match>
-    </fontconfig>
-    EOF
+<?xml version='1.0'?>
+<!DOCTYPE fontconfig SYSTEM 'fonts.dtd'>
+<fontconfig>
+    <!-- pixel allignment, it needs to know what monitor type you're using -->
+    <match target="font">
+        <edit mode="assign" name="rgba">
+            <const>rgb</const>
+        </edit>
+    </match>
+    <!-- adjust the display of an outline font so that it lines up with a rasterized grid -->
+    <match target="font">
+        <edit mode="assign" name="hinting">
+            <bool>true</bool>
+        </edit>
+    </match>
+    <!-- amount of font reshaping done to line up to the grid -->
+    <match target="font">
+        <edit mode="assign" name="hintstyle">
+            <const>hintslight</const>
+        </edit>
+    </match>
+    <!-- remove jagged edges due to font rasterization -->
+    <match target="font">
+        <edit mode="assign" name="antialias">
+            <bool>true</bool>
+        </edit>
+    </match>
+    <!-- reduce colour fringing -->
+    <match target="font">
+        <edit mode="assign" name="lcdfilter">
+            <const>lcddefault</const>
+        </edit>
+    </match>
+</fontconfig>
+EOF
 
     echo "Fonts file setup successfully now run:"
     echo "  (sudo) dpkg-reconfigure fontconfig-config"
