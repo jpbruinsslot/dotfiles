@@ -324,7 +324,7 @@ function gcloud() {
 
 
     # Update components
-    glcoud components update
+    gcloud components update
 
     # Reset owner of folder
     chown -r $user:$user $HOME/google-cloud-sdk
@@ -647,7 +647,6 @@ main() {
         i3apps
         i3setup
     elif [[ $cmd == "gcloud" ]]; then
-		check_is_sudo
         gcloud "$2"
     elif [[ $cmd == "chrome" ]]; then
         chrome
