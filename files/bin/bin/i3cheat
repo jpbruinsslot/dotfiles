@@ -1,55 +1,60 @@
 #!/bin/bash
-(
-    echo "i3 reference card" 
-    echo
-    echo "Basics"
-    echo "---------------------------------------------------"
-    echo "mod+enter             - open new terminal"
-    echo "mod+h                 - focus left"
-    echo "mod+j                 - focus down"
-    echo "mod+k                 - focus up"
-    echo "mod+l                 - focus right"
-    echo "mod+space             - toggle focus mode"
-    echo
-    echo "Moving windows"
-    echo "---------------------------------------------------"
-    echo "mod+shift+h           - move window left"
-    echo "mod+shift+j           - move window down"
-    echo "mod+shift+k           - move window up"
-    echo "mod+shift+l           - move window right"
-    echo
-    echo "Modifying windows"
-    echo "---------------------------------------------------"
-    echo "mod+f                 - toggle fullscreen"
-    echo "mod+s                 - split a window vertically"
-    echo "mod+v                 - split a window horizontally"
-    echo "mod+r                 - resize mode"
-    echo
-    echo "Changing container layout"
-    echo "---------------------------------------------------"
-    echo "mod+e                 - toggle split"
-    echo "mod+s                 - stacked"
-    echo "mod+w                 - tabbed"
-    echo "mod+a                 - focus parent"
-    echo
-    echo "Floating"
-    echo "---------------------------------------------------"
-    echo "mod+shift+space       - toggle floating"
-    echo "mod+mouse             - drag floating"
-    echo
-    echo "Using workspaces"
-    echo "---------------------------------------------------"
-    echo "mod+0-9               - switch to another workspace"
-    echo "mod+shift+0-9         - move window to a workspace"
-    echo
-    echo "Opening applications / Closing windows"
-    echo "---------------------------------------------------"
-    echo "mod+d                 - open app launcher"
-    echo "mod+shift+q           - kill a window"
-    echo
-    echo "Resart / Exit"
-    echo "---------------------------------------------------"
-    echo "mod+shift+c           - reload config file"
-    echo "mod+shift+r           - restart i3 inplace"
-    echo "mod+shift+e           - exit i3"
-) | less
+cat <<-EOF | less -
+i3 reference card 
+===================================================
+
+Basics
+---------------------------------------------------
+mod+enter             - open new terminal
+mod+h                 - focus left
+mod+j                 - focus down
+mod+k                 - focus up
+mod+l                 - focus right
+mod+space             - toggle focus mode
+
+Moving windows
+---------------------------------------------------
+mod+shift+h           - move window left
+mod+shift+j           - move window down
+mod+shift+k           - move window up
+mod+shift+l           - move window right
+
+Modifying windows
+---------------------------------------------------
+mod+f                 - toggle fullscreen
+mod+s                 - split a window vertically
+mod+v                 - split a window horizontally
+mod+r                 - resize mode
+
+Changing container layout
+---------------------------------------------------
+mod+e                 - toggle split
+mod+s                 - stacked
+mod+w                 - tabbed
+mod+a                 - focus parent
+
+Floating
+---------------------------------------------------
+mod+shift+space       - toggle floating
+mod+mouse             - drag floating
+
+Using workspaces
+---------------------------------------------------
+mod+tab               - next workspace
+mod+shift+tab         - previous workspace
+mod+0-9               - switch to another workspace
+mod+shift+0-9         - move window to a workspace
+
+Opening applications / Closing windows
+---------------------------------------------------
+mod+d                 - open app launcher
+mod+c                 - open chrome
+mod+q                 - kill focused window
+mod+shift+q           - kill all windows
+
+Restart / Exit
+---------------------------------------------------
+mod+shift+c           - reload config file
+mod+shift+r           - restart i3 inplace
+mod+shift+e           - exit i3
+EOF
