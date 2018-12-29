@@ -10,6 +10,9 @@
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
 set $mod Mod1
+set $term alacritty
+set $menu rofi -show
+set $lock i3lock
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below. ISO 10646 = Unicode
@@ -37,16 +40,19 @@ for_window [class="^.*"] border pixel 1
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec $term
 
 # start a browser
 bindsym $mod+c exec google-chrome
 
 # start rofi
-bindsym $mod+d exec rofi -show run -lines 3 -eh 2 -width 100 -padding 800 -opacity "85" -bw 0 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "System San Francisco Display 18"
+bindsym $mod+d exec $menu
 
 # kill focused window
-bindsym $mod+Shift+q kill
+bindsym $mod+q kill
+
+# close all windows on all workspaces (any class string)
+bindsym $mod+Shift+q [class=”.*”] kill
 
 # set floating for these programs
 for_window [class="Gimp"] floating enable
@@ -57,11 +63,11 @@ for_window [class="Google-chrome"] floating enable
 # bindsym $mod+Shift+s sticky toggle
 
 # lock screen
-# bindsym $mod+1 exec i3lock -c 111111
+bindsym $mod+semicolon exec $lock -c 111111
 
 # start dmenu (a program launcher)
 # bindsym $mod+d exec dmenu_run -fn 'Hack-12'
-bindsym $mod+Shift+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -fn 'Hack-11'"
+# bindsym $mod+Shift+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -fn 'Hack-11'"
 
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
@@ -118,41 +124,50 @@ bindsym $mod+a focus parent
 # focus the child container
 # bindsym $mod+d focus child
 
+# switch between workspaces
+
+# option 1
+# bindsym $mod+Tab exec --no-startup-id rofi -modi combi -combi-modi window -show combi
+
+# option 2
+bindsym $mod+Tab workspace next
+bindsym $mod+Shift+Tab workspace prev
+
 # name workspaces
-set $workspace1 0 
-set $workspace2 1 
-set $workspace3 2 
-set $workspace4 3 
-set $workspace5 4 
-set $workspace6 5 
-set $workspace7 6 
-set $workspace8 7 
-set $workspace9 8 
-set $workspace10 9 
+set $workspace1 1 
+set $workspace2 2 
+set $workspace3 3 
+set $workspace4 4 
+set $workspace5 5 
+set $workspace6 6 
+set $workspace7 7 
+set $workspace8 8 
+set $workspace9 9 
+set $workspace0 0 
 
 # switch to workspace
-bindsym $mod+0 workspace 1 $workspace1
-bindsym $mod+1 workspace 2 $workspace2
-bindsym $mod+2 workspace 3 $workspace3
-bindsym $mod+3 workspace 4 $workspace4
-bindsym $mod+4 workspace 5 $workspace5
-bindsym $mod+5 workspace 6 $workspace6
-bindsym $mod+6 workspace 7 $workspace7
-bindsym $mod+7 workspace 8 $workspace8
-bindsym $mod+8 workspace 9 $workspace9
-bindsym $mod+9 workspace 10 $workspace10
+bindsym $mod+1 workspace 1 $workspace1
+bindsym $mod+2 workspace 2 $workspace2
+bindsym $mod+3 workspace 3 $workspace3
+bindsym $mod+4 workspace 4 $workspace4
+bindsym $mod+5 workspace 5 $workspace5
+bindsym $mod+6 workspace 6 $workspace6
+bindsym $mod+7 workspace 7 $workspace7
+bindsym $mod+8 workspace 8 $workspace8
+bindsym $mod+9 workspace 9 $workspace9
+bindsym $mod+0 workspace 0 $workspace0
 
 # move focused container to workspace
-bindsym $mod+Shift+0 move container to workspace 1 $workspace1
-bindsym $mod+Shift+1 move container to workspace 2 $workspace2
-bindsym $mod+Shift+2 move container to workspace 3 $workspace3
-bindsym $mod+Shift+3 move container to workspace 4 $workspace4
-bindsym $mod+Shift+4 move container to workspace 5 $workspace5
-bindsym $mod+Shift+5 move container to workspace 6 $workspace6
-bindsym $mod+Shift+6 move container to workspace 7 $workspace7
-bindsym $mod+Shift+7 move container to workspace 8 $workspace8
-bindsym $mod+Shift+8 move container to workspace 9 $workspace9
-bindsym $mod+Shift+9 move container to workspace 10 $workspace10
+bindsym $mod+Shift+1 move container to workspace 1 $workspace1
+bindsym $mod+Shift+2 move container to workspace 2 $workspace2
+bindsym $mod+Shift+3 move container to workspace 3 $workspace3
+bindsym $mod+Shift+4 move container to workspace 4 $workspace4
+bindsym $mod+Shift+5 move container to workspace 5 $workspace5
+bindsym $mod+Shift+6 move container to workspace 6 $workspace6
+bindsym $mod+Shift+7 move container to workspace 7 $workspace7
+bindsym $mod+Shift+8 move container to workspace 8 $workspace8
+bindsym $mod+Shift+9 move container to workspace 9 $workspace9
+bindsym $mod+Shift+0 move container to workspace 0 $workspace0
 
 # workspace default for monitors
 # worspace $workspace1 output DVI-I-2
@@ -164,7 +179,7 @@ bindsym $mod+Shift+9 move container to workspace 10 $workspace10
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl -- set-sink-volume 1 +5%    # increase sound volume
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl -- set-sink-volume 1 -5%    # increase sound volume
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 1 toggle             # mute sound
-# bindsym XF86AudioMicMute exec amixer set Capture toggle # mute mic
+bindsym XF86AudioMicMute exec amixer set Capture toggle                             # mute mic
 
 # screen brightness controls
 bindsym XF86MonBrightnessUp exec xbacklight -inc 20    # increase screen brightness
@@ -177,20 +192,23 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
-# mode "Exit (L)ock, (S)ignout, (R)eboot, (P)oweroff" {
-#     bindsym $mod+l exec ~/.config/i3/scripts/lock
-#     bindsym $mod+r exec systemctl reboot
-#     bindsym $mod+s exit
-#     bindsym $mod+p exec systemctl shutdown
-#
-#     # back to normal: Enter or Escape
-#     bindsym Return mode "default"
-#     bindsym Escape mode "default"
-# }
-#
-# bindsym $mod+Shift+e mode "Exit (L)ock, (S)ignout, (R)eboot, (P)oweroff"
+# option 1
+# bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+# option 2
+mode "Exit (L)ock, (S)ignout, (R)eboot, (P)oweroff" {
+    bindsym $mod+l exec $lock -c 111111
+    bindsym $mod+r exec systemctl reboot
+    bindsym $mod+s exit
+    bindsym $mod+p exec systemctl shutdown
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+Shift+e mode "Exit (L)ock, (S)ignout, (R)eboot, (P)oweroff"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -239,9 +257,11 @@ client.urgent           $urgent-bg-color   $urgent-bg-color   $text-color       
 bar {
     status_command i3blocks -c ~/.i3/i3blocks.conf
 
-    font pango:Hack, FontAwesome 11
-
-    strip_workspace_numbers yes
+    position                    top
+    font                        pango:Hack, FontAwesome 11
+    workspace_buttons           yes
+    tray_output                 none
+    strip_workspace_numbers     yes
 
     colors {
         background  $bg-color
@@ -275,8 +295,5 @@ exec --no-startup-id compton --backend glx --paint-on-overlay --glx-no-stencil -
 
 # workspace layout
 # exec --no-startup-id "i3-msg 'workspace $workspace1; append_layout ~/.i3/workspaces/workspace_1.json'"
-exec --no-startup-id i3-msg 'workspace 1 $workspace1; exec i3-sensible-terminal -name "glances" -e glances'
-exec --no-startup-id i3-msg 'workspace 2 $workspace2; exec i3-sensible-terminal -name "code"'
-exec --no-startup-id i3-msg 'workspace 3 $workspace3; exec i3-sensible-terminal -name "term"'
-exec --no-startup-id i3-msg 'workspace 4 $workspace4; exec i3-sensible-terminal -name "slack" -e slack-term'
-exec --no-startup-id i3-msg 'workspace 5 $workspace5; exec google-chrome -name "chrome"'
+exec --no-startup-id i3-msg 'workspace 1 $workspace1; exec alacritty -name "term"'
+exec --no-startup-id i3-msg 'workspace 2 $workspace2; exec google-chrome -name "chrome"'
