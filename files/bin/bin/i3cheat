@@ -57,4 +57,9 @@ Restart / Exit
 mod+shift+c           - reload config file
 mod+shift+r           - restart i3 inplace
 mod+shift+e           - exit i3
+
+Misc
+---------------------------------------------------
+nmcli dev wifi                  - find wifi ap's
+nmcli device wifi connect [ap]  - connect to ap
 EOF
