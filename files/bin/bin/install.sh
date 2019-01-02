@@ -133,6 +133,7 @@ function base() {
         python3-dev \
         python3-pip \
         python3-setuptools \
+        ranger \
         rofi \
         rxvt-unicode-256color \
         silversearcher-ag \
@@ -205,11 +206,12 @@ function python() {
         flake8 \
         glances \
         httpie \
+        jedi \
         lolcat \
         neovim \
         psutil \
-        tmuxp \
         pylint \
+        tmuxp \
         yapf
 
     # Install: Python2 packages
@@ -514,6 +516,10 @@ function misc() {
     rm -rf /tmp/numix-icon-theme-circle
     git clone https://github.com/numixproject/numix-icon-theme-circle.git
     cp -r /tmp/numix-icon-theme-circle/Numix-Circle ~/.local/share/icons
+
+    # Install: nerd fonts
+    git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git
+    sh /tmp/nerd-fonts/install.sh Hack
 
     # Pretty fonts
     # https://wiki.archlinux.org/index.php/font_configuration
