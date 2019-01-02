@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# $ ..
+#
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
 alias ...="cd ../.."
@@ -10,70 +12,143 @@ alias -- -="cd -"
 
 colorflag="--color"
 
+# $ ll
+#
 # List all files colorized in long format
 alias ll="ls -lah ${colorflag} --group-directories-first"
 
+# $ la
+#
 # List all files colorized in long format, including dot files
 alias la="ls -laF ${colorflag}"
 
+# $ lsd
+#
 # List only directories
 alias lsd="ls -lF ${colorflag} | grep --color=never '^d'"
 
+# $ ls
+#
 # Always use color output for `ls`
 alias ls="command ls ${colorflag}"
 
+# $ grep
+#
 # Always enable colored `grep` output
 alias grep='grep --color=auto '
 
+# $ fgrep
+#
 # Always enable colored `fgrep` output (grep -F)
 alias fgrep='fgrep --color=auto'
 
+# $ egrep
+#
 # Always enable colored `egrep` output (grep -E)
 alias egrep='egrep --color=auto'
 
+# $ sudo
+#
 # Enable aliases to be sudo’ed
 alias sudo='sudo '
 
+# $ cp
+#
 # Copy file interactive
 alias cp='cp -i'
 
+# $ mv
+#
 # Move file interactive
 alias mv='mv -i'
 
+# $ untar
+#
 # Untar
 alias untar='tar xvf'
 
+# $ tar
+#
 # Tar
 alias targz='tar -czvf'
 
+# $ rdy
+#
 # Emit message when task is done
+#
 # Usage: docker-compose build --no-cache && compose up && rdy
 alias rdy='notify-send "Task is done"'
 
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
+# $ alert
+#
+# Add an "alert" alias for long running command.
+#
+# Usage: sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
+# $ chromekill
+#
 # Kill all the tabs in Chrome to free up memory
+#
 # [C] explained: http://www.commandlinefu.com/commands/view/402/exclude-grep-from-your-grepped-output-of-ps-alias-included-in-description
 alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
 
+# $ share
+#
 # Serve current directory tree with ngrok
 alias share="python -m SimpleHTTPServer | ngrok http 8000"
 
+# $ busy
+#
 # Different kind of hackertyper
 alias busy="cat /dev/urandom | hexdump -C | grep 'ca fe'"
 
-# Renames
+# $ mux
+#
+# Alias for tmuxp
 alias mux="tmuxp load"
+
+# $ compose
+#
+# Alias for docker-compose
 alias compose=docker-compose
+
+# $ cat
+#
+# Alias for ccat
 alias cat=ccat
+
+# $ kube
+#
+# Alias for kubectl
 alias kube=kubectl
+
+# $ diff
+#
+# Alias for icdiff
 alias diff=icdiff
-alias gti="git"                         # Yeah I know, don't judge me!
+
+# $ gti
+#
+# Alias for git
+alias gti="git"  # Yeah I know, don't judge me!
+
+# $ gpg
+#
+# Alias for gpg2
 alias gpg="gpg2"
 
-# Shortcuts
+# $ fu
+#
+# Shortcut for fuelup project folder
 alias fu='cd ~/Projects/fuelup'
+
+# $ fugo
+#
+# Shortcut for fuelup golang folder
 alias fugo="cd $GOPATH/src/github.com/fuelup"
+
+# $ pro
+#
+# Shortcut for Projects folder
 alias pro='cd ~/Projects'

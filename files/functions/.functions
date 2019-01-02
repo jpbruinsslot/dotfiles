@@ -1,13 +1,13 @@
 #!/bin/bash
 
+# $ calc
+#
 # Simple calculator
 calc() {
     local result=""
-    result="$(printf "scale=10;$*\n" | bc --mathlib | tr -d '\\\n')"
-    #                       └─ default (when `--mathlib` is used) is 20
+    result="$(printf "scale=10;$*\n" | bc --mathlib | tr -d '\\\n')"  # scale 10: default (when `--mathlib` is used) is 20
 
-    if [[ "$result" == *.* ]]; then
-        # improve the output for decimal numbers
+    if [[ "$result" == *.* ]]; then  # improve the output for decimal numbers
         printf "$result" |
         sed -e 's/^\./0./'        `# add "0" for cases like ".5"` \
             -e 's/^-\./-0./'      `# add "0" for cases like "-.5"`\
@@ -18,6 +18,8 @@ calc() {
     printf "\n"
 }
 
+# $ fs
+#
 # Determine size of a file or total size of a directory
 fs() {
     if du -b /dev/null > /dev/null 2>&1; then
@@ -32,13 +34,16 @@ fs() {
     fi
 }
 
+# $ dig
+#
 # Run `dig` and display the most useful info
 function digga() {
     dig +nocmd "$1" any +multiline +noall +answer;
 }
 
-# Show all the names (CNs and SANs) listed in the SSL certificate
-# for a given domain
+# $ getcertnames
+#
+# Show all the CNs and SANs listed in the SSL certificate for a given domain
 function getcertnames() {
     if [ -z "${1}" ]; then
         echo "ERROR: No domain specified.";
@@ -71,6 +76,8 @@ function getcertnames() {
     fi;
 }
 
+# $ tre
+#
 # `tre` is a shorthand for `tree` with hidden files and color enabled, ignoring
 # the `.git` directory, listing directories first. The output gets piped into
 # `less` with options to preserve color and line numbers, unless the output is
@@ -79,6 +86,8 @@ function tre() {
     tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
 }
 
+# $ gitio
+#
 # Create a git.io short URL
 gitio() {
     if [ -z "${1}" -o -z "${2}" ]; then
@@ -88,6 +97,8 @@ gitio() {
     curl -i http://git.io/ -F "url=${2}" -F "code=${1}"
 }
 
+# $ man
+#
 # Get colors in manual pages
 man() {
     env \
@@ -102,7 +113,9 @@ man() {
 }
 
 
-# check if uri is up
+# $ isup
+#
+# Check if uri is up
 isup() {
     local uri=$1
     if curl -s --head  --request GET "$uri" | grep "200 OK" > /dev/null ; then
@@ -112,8 +125,10 @@ isup() {
     fi
 }
 
-# `n` with no arguments opens the current directory in NeoVim, otherwise opens the
-# given location
+# $ v
+#
+# `n` with no arguments opens the current directory in NeoVim, otherwise opens
+# the given location
 function v() {
     if [ $# -eq 0 ]; then
         nvim .;
@@ -122,15 +137,18 @@ function v() {
     fi;
 }
 
+# $ screen
+#
 # Setup resolutions and scaling when attached to external monitor
 function screen() {
     xrandr --output eDP1 --scale 1x1 --pos 3840x0 ; xrandr --output DP1 --scale 2x2 --mode 1920x1080 --fb 7680x2160 --pos 0x0
 }
 
+# $ standup [days/date]
+#
 # What the hell did I do yesterday, will return all commits on local branches
 # in the last `n` days.
 #
-#   $ standup [days/date]
 #
 # Helpful format sources:
 # - https://git-scm.com/docs/pretty-formats
@@ -153,8 +171,9 @@ function standup() {
     git log "$date" --all --pretty=format:"%C(auto,yellow)%h%C(auto,blue)%>(12,trunc)%ad  %C(auto,reset)%s %C(auto,red)% gD% D" --date=short --author="\(J.P.H. Bruins Slot\)\|\(Jan Pieter\)\|\(erroneousboat\)" && cd ${pwd}
 }
 
-# Useful extraction function:
-# Source: https://github.com/xvoland/Extract
+# $ extract
+#
+# Useful extraction function (https://github.com/xvoland/Extract)
 function extract() {
  if [ -z "$1" ]; then
     # display usage if no parameters given
@@ -187,6 +206,8 @@ function extract() {
 fi
 }
 
+# $ hist
+#
 # A bit more convenient history lookup
 function hist() {
     if [[ -n "$@" ]]; then
@@ -196,16 +217,20 @@ function hist() {
     fi
 }
 
+# $ \kube
+#
 # Some shortcuts for kubectl commands I use alot:
 #
-# Show all pods on namespace
-# $ \kube [prod/test]
+# Examples:
 #
-# Attach to logs for pod
-# $ \kube [prod/test] [pod-name]
+#   Show all pods on namespace
+#   $ \kube [prod/test]
 #
-# Create curl pod and issue curl command
-# $ \kube [prod/test] curl [url]
+#   Attach to logs for pod
+#   $ \kube [prod/test] [pod-name]
+#
+#   Create curl pod and issue curl command
+#   $ \kube [prod/test] curl [url]
 function kube() {
     if [[ -n "$@" ]]; then
         local ns
@@ -234,7 +259,7 @@ function kube() {
     fi
 }
 
-# symlinking
+# $ symlink
 #
 # Constantly forgetting TARGET LINK_NAME paradigm
 function symlink() {
@@ -245,6 +270,8 @@ function symlink() {
     fi
 }
 
+# $ dr
+#
 # Create a docker container image and run it. It will use the directory name
 # as container name.
 function dr() {
@@ -252,6 +279,8 @@ function dr() {
     docker run --net="host" -it --rm --name ${PWD##*/} ${PWD##*/} 
 }
 
+# $ run [n-times] [command]
+#
 # Execute a command n-times
 function run() {
     local n="$1"
@@ -263,5 +292,23 @@ function run() {
         done
     else
         echo "Usage: run [n-times] [command]"
+    fi
+}
+
+# $ headphones [mac-address]
+#
+# Connect bluetooth headphones
+#
+# References:
+#
+#   https://wiki.archlinux.org/index.php/bluetooth
+#   https://wiki.archlinux.org/index.php/Bluetooth_headset
+function headphones() {
+    local mac="$1"
+
+    if [[ -n "$@" ]]; then
+        echo -e "power on\npair $mac\nconnect $mac\ntrust $mac\nexit" | bluetoothctl
+    else
+        echo "Usage: bl [mac-address]"
     fi
 }
