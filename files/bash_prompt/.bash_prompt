@@ -65,7 +65,7 @@ undwht=$under$white
 # get state of branch
 function parse_git_dirty {
     STATUS=$(git status 2> /dev/null | tail -n1)
-    if [ "${STATUS}" != "nothing to commit, working directory clean" ]; then
+    if [ "${STATUS}" != "nothing to commit, working tree clean" ]; then
         echo "*"
     fi
 }
