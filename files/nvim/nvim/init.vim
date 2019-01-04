@@ -37,12 +37,12 @@ set undofile
 " :PlugInstall
 "
 " To get a specific branch:
-" Plug 'https://github.com/erroneousboat/molokai.git', {'branch': 'dev'}
+" Plug 'https://github.com/erroneousboat/neokai.git', {'branch': 'dev'}
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.config/nvim/plugged')
 
 " Interface
-Plug 'https://github.com/erroneousboat/molokai.git'
+Plug 'https://github.com/erroneousboat/neokai.git'
 Plug 'https://github.com/itchyny/lightline.vim.git'
 Plug 'https://github.com/scrooloose/nerdtree.git'
 Plug 'https://github.com/Xuyuanp/nerdtree-git-plugin.git'
@@ -68,7 +68,7 @@ Plug 'https://github.com/terryma/vim-multiple-cursors'
 Plug 'https://github.com/sbdchd/neoformat'
 
 " Programming languages specific plugins
-Plug 'https://github.com/fatih/vim-go.git', {'do': 'GoUpdateBinaries'}
+Plug 'https://github.com/fatih/vim-go.git', {'do': 'GoInstallBinaries'}
 Plug 'https://github.com/erroneousboat/python-mode.git'
 Plug 'https://github.com/crosbymichael/vim-cfmt.git'
 Plug 'https://github.com/zchee/deoplete-go.git', {'do': 'make'}
@@ -93,12 +93,11 @@ set nocompatible
 
 " cursorline
 set cursorline
-hi CursorLine cterm=NONE ctermbg=8 ctermfg=NONE
 
 " disable cursor styling
 set guicursor=
 
-" line seperator character
+" line separator character
 set fillchars+=vert:│
 
 " ignore when searching
@@ -208,7 +207,7 @@ syntax on
 set background=dark
 
 " colorscheme
-colorscheme molokai
+colorscheme neokai
 
 " neovim true color now requires
 set termguicolors
