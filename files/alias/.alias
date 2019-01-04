@@ -103,11 +103,6 @@ alias share="python -m SimpleHTTPServer | ngrok http 8000"
 # Different kind of hackertyper
 alias busy="cat /dev/urandom | hexdump -C | grep 'ca fe'"
 
-# $ mux
-#
-# Alias for tmuxp
-alias mux="tmuxp load"
-
 # $ compose
 #
 # Alias for docker-compose
