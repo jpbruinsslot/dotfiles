@@ -19,14 +19,17 @@ function session_work() {
 }
 
 function session_dev() {
+    local sid="dev"
+
     tmux start-server
-    tmux new-session -d -s "dev"
+    tmux new-session -d -s "$sid"
 
-    window_dashboard dev 0
-    window_code 1
-    window_command 2 "$HOME/Projects"
+    window_dashboard "$sid" 0
+    window_code "$sid" 1
+    window_command "$sid" 2 "$HOME/Projects"
 
-    tmux select-window -t "work:0"
+    tmux select-window -t "$sid:0"
+    tmux a -t $sid
 }
 
 function window_dashboard() {
@@ -117,6 +120,9 @@ function main() {
         session_work
     elif [[ $cmd == "dev" ]]; then
         session_dev
+    else
+        echo "ERROR: unknown session name"
+        exit 1
     fi
 }
 
