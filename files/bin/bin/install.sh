@@ -283,7 +283,8 @@ function docker() {
     echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
 
     # Add key
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+    # curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+    curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
 
     # Install
     sudo apt update || true
@@ -292,6 +293,8 @@ function docker() {
     # Configure
     sudo usermod -a -G docker $USER
     sudo service docker restart
+
+    echo "Remember to logout for this to take effect"
 }
 
 # Install: Tmux
