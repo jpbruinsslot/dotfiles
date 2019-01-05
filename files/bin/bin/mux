@@ -10,7 +10,7 @@ function session_work() {
     tmux new-session -d -s "$sid"
 
     window_dashboard "$sid" 0
-    window_code "$sid" 1
+    window_code "$sid" 1 "$HOME/Projects/fuelup"
     window_command "$sid" 2 "$HOME/Projects/fuelup"
     window_slack "$sid" 3
 
@@ -25,7 +25,7 @@ function session_dev() {
     tmux new-session -d -s "$sid"
 
     window_dashboard "$sid" 0
-    window_code "$sid" 1
+    window_code "$sid" 1 "$HOME/Projects"
     window_command "$sid" 2 "$HOME/Projects"
 
     tmux select-window -t "$sid:0"
@@ -54,6 +54,7 @@ function window_dashboard() {
 function window_code() {
     local sid=$1
     local wid=$2
+    local dir=$3
 
     if [[ $wid == 0 ]]; then
         tmux rename-window ""
@@ -61,7 +62,7 @@ function window_code() {
         tmux new-window -t "$sid:$wid" -n ""
     fi
     
-    tmux send-keys "cd $HOME/Projects/fuelup && nvim" C-m
+    tmux send-keys "cd $dir && nvim" C-m
 }
 
 function window_command() {
