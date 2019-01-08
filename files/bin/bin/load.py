@@ -16,9 +16,10 @@ def get_mem_load():
 
 def main():
     try:
-        print(" %5s%% %4s%%" % (get_cpu_load(), get_mem_load()))
+        print(" %5s%% %4s%%" % (get_cpu_load(), get_mem_load()))
     except:
         sys.exit("psutil not found, please install it (pip install psutil)")
+
 
 if __name__ == '__main__':
     main()
