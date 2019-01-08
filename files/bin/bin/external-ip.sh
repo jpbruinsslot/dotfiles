@@ -10,14 +10,14 @@
 # whether the host machine is connected by wifi or wire.
 #
 #
-# Dependencies: dig, font-awesome
+# Dependencies: dig, nerd-fonts
 #
 # Credits:
 # - https://github.com/vivien/i3blocks/blob/master/scripts/wifi
 #
 # :authors: J.P.H. Bruins Slot
-# :date:    27-04-2017
-# :version: 0.1.0
+# :date:    07-01-2019
+# :version: 0.1.1
 #
 ##############################################################################
 
@@ -29,7 +29,7 @@ if [ -z "$IP" ]; then
 fi
 
 if [ ! -d /sys/class/net/${INTERFACE}/wireless ] || [ "$(cat /sys/class/net/${INTERFACE}/operstate)" = 'down' ]; then
-    echo "  ${IP}"
+    echo " ${IP}"
 else
     QUALITY=$(grep $INTERFACE /proc/net/wireless | awk '{ print int($3 * 100 / 70) }')
 
