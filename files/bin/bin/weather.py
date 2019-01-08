@@ -27,7 +27,7 @@ API = "https://api.darksky.net/forecast/{key}/{geocode}?units=auto"
 
 def weather(path):
 
-    weather = "{icon}  {temp}°C"
+    weather = "{rain}{pad}{icon}  {temp}°C"
 
     try:
         with open(path) as f:
@@ -45,6 +45,8 @@ def weather(path):
 
     if call_allowed(config) is False:
         return weather.format(
+            rain=config.get("rain", ""),
+            pad=config.get("rain", "") and " ",
             temp=config.get("temp", "0"),
             icon=config.get("icon", ""),
         )
@@ -64,9 +66,11 @@ def weather(path):
     if resp_json is None:
         sys.exit("api response is empty")
 
-    icon = get_icon(resp_json.get("currently").get("icon"))
+    icon = get_icon(resp_json)
     if icon is None:
         sys.exit("icon not found in response")
+
+    rain = get_rain(resp_json)
 
     temp = int(resp_json.get("currently").get("temperature"))
     if temp is None:
@@ -75,17 +79,33 @@ def weather(path):
     # Update config
     config["icon"] = icon
     config["temp"] = temp
+    config["rain"] = rain
     config["last_check"] = datetime.datetime.now().timestamp()
 
     with open(path, "w") as f:
         json.dump(config, f)
 
-    return weather.format(temp=temp, icon=icon)
+    return weather.format(
+        rain=rain,
+        pad=rain and " ",
+        temp=temp,
+        icon=icon,
+    )
 
 
-def get_icon(icon):
+def get_rain(resp_json):
+    if resp_json.get("hourly").get("icon") is "rain":
+        return ""
+
+    return ""
+
+
+def get_icon(resp_json):
     night = True if (datetime.datetime.now().hour / 18) >= 1.0 else False
+    cloudy = True if resp_json.get("currently").get(
+        "cloudCover") >= 0.5 else False
 
+    icon = resp_json.get("currently").get("icon")
     if icon == "clear-day":
         return ""
     elif icon == "clear-night":
@@ -93,27 +113,37 @@ def get_icon(icon):
     elif icon == "rain":
         if night:
             return ""
-        return ""
+        else:
+            return ""
     elif icon == "snow":
         if night:
             return ""
-        return ""
+        else:
+            return ""
     elif icon == "sleet":
         if night:
             return ""
-        return ""
+        else:
+            return ""
     elif icon == "wind":
-        if night:
+        if night and cloudy:
             return ""
-        return ""
+        elif night and not cloudy:
+            return ""
+        elif not night and cloudy:
+            return ""
+        elif not night and not cloudy:
+            return ""
     elif icon == "fog":
         if night:
             return ""
-        return ""
+        else:
+            return ""
     elif icon == "cloudy":
         if night:
             return ""
-        return ""
+        else:
+            return ""
     elif icon == "partly-cloudy-day":
         return ""
     elif icon == "partly-cloudy-night":
@@ -140,6 +170,7 @@ def create_config(path):
         "geocode": "",
         "key": "",
         "icon": "",
+        "rain": "",
         "last_check": datetime.datetime.now().timestamp(),
     }
 
