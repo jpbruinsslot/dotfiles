@@ -10,5 +10,9 @@ else
     esac 
 
     # local
-    echo ""
+    if [ -d /sys/module/battery ]; then
+        echo ""
+    else
+        echo "ﲾ"
+    fi
 fi
