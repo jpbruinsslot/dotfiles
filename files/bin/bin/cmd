@@ -1,4 +1,21 @@
 #!/bin/bash
+
+##############################################################################
+#
+# cmd
+# ---
+#
+# This script gives and overview of the defined bash aliases and functions.
+# It assumes that those are defined in the `.alias` and `.functions` files.
+#
+# Dependencies:
+#
+# :authors: J.P.H. Bruins Slot
+# :date:    07-01-2019
+# :version: 0.1.0
+#
+##############################################################################
+
 function alias() {
     echo -e "Overview of .alias commands:"
     while read -r line; do
