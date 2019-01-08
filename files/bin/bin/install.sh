@@ -454,12 +454,12 @@ function i3setup() {
 function bash() {
     echo ">>> Installing bash"
 
+    BASH_VERSION=5.0
+
     # Check for version argument
 	if [[ ! -z "$1" ]]; then
 		export BASH_VERSION=$1
 	fi
-
-    BASH_VERSION=4.4
 
     # Download
     cd /tmp
