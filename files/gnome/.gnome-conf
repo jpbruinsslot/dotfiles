@@ -1,0 +1,177 @@
+[org/gnome/settings-daemon/plugins/media-keys]
+custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']
+screensaver='<Primary><Alt>l'
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0]
+binding='<Primary>space'
+command='rofi -show'
+name='rofi'
+
+[org/gnome/settings-daemon/plugins/xsettings]
+overrides={'Gtk/ShellShowsAppMenu': <0>}
+
+[org/gnome/settings-daemon/peripherals/keyboard]
+numlock-state='off'
+
+[org/gnome/shell]
+command-history=['r']
+enabled-extensions=['alternate-tab@gnome-shell-extensions.gcampax.github.com', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com', 'activities-config@nls1729']
+had-bluetooth-devices-setup=true
+favorite-apps=['google-chrome.desktop', 'org.gnome.Nautilus.desktop', 'gnome-control-center.desktop', 'gnome-tweak-tool.desktop']
+
+[org/gnome/shell/extensions/activities-config]
+activities-icon-padding=8
+activities-config-button-no-icon=true
+activities-config-button-icon-path='/home/jp/.local/share/gnome-shell/extensions/activities-config@nls1729/face-smile-3.svg'
+panel-shadow-color-hex-rgb='#000000'
+panel-shadow-vertical-length=1
+original-activities-button-text='Activities'
+pointer-barriers-supported=true
+panel-hide-rounded-corners=true
+activities-text-padding=0
+override-theme=false
+panel-background-color-hex-rgb='#232729'
+shell-theme-id='null<|>user'
+activities-config-button-text='...'
+first-enable=false
+
+[org/gnome/shell/overrides]
+dynamic-workspaces=false
+workspaces-only-on-primary=false
+
+[org/gnome/shell/window-switcher]
+app-icon-mode='app-icon-only'
+
+[org/gnome/gedit/preferences/ui]
+show-tabs-mode='auto'
+
+[org/gnome/gedit/plugins/filebrowser]
+virtual-root='file:///home/jp/Downloads'
+tree-view=true
+root='file:///'
+
+[org/gnome/gedit/plugins]
+active-plugins=['spell', 'docinfo', 'time', 'filebrowser', 'modelines']
+
+[org/gnome/gedit/state/window]
+size=(900, 700)
+state=128
+bottom-panel-size=140
+side-panel-size=200
+side-panel-active-page='GeditWindowDocumentsPanel'
+
+[org/gnome/nautilus/preferences]
+default-folder-viewer='icon-view'
+search-filter-time-type='last_modified'
+
+[org/gnome/nautilus/window-state]
+sidebar-width=225
+geometry='890x550+38+159'
+maximized=false
+
+[org/gnome/file-roller/listing]
+sort-method='name'
+name-column-width=250
+sort-type='ascending'
+list-mode='as-folder'
+show-path=false
+
+[org/gnome/file-roller/ui]
+sidebar-width=200
+window-height=480
+window-width=600
+
+[org/gnome/evolution-data-server]
+network-monitor-gio-name=''
+migrated=true
+
+[org/gnome/desktop/app-folders]
+folder-children=['Utilities', 'Sundry']
+
+[org/gnome/desktop/app-folders/folders/Utilities]
+translate=true
+categories=['X-GNOME-Utilities']
+apps=['org.gnome.baobab.desktop', 'deja-dup-preferences.desktop', 'eog.desktop', 'evince.desktop', 'org.gnome.FileRoller.desktop', 'gnome-calculator.desktop', 'gnome-dictionary.desktop', 'org.gnome.Characters.desktop', 'org.gnome.DiskUtility.desktop', 'org.gnome.font-viewer.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.Screenshot.desktop', 'gnome-system-log.desktop', 'gnome-system-monitor.desktop', 'gnome-tweak-tool.desktop', 'gucharmap.desktop', 'seahorse.desktop', 'vinagre.desktop', 'yelp.desktop']
+name='X-GNOME-Utilities.directory'
+
+[org/gnome/desktop/app-folders/folders/Sundry]
+translate=true
+categories=['X-GNOME-Sundry']
+apps=['alacarte.desktop', 'authconfig.desktop', 'ca.desrt.dconf-editor.desktop', 'fedora-release-notes.desktop', 'firewall-config.desktop', 'flash-player-properties.desktop', 'gconf-editor.desktop', 'gnome-abrt.desktop', 'gnome-power-statistics.desktop', 'ibus-setup-anthy.desktop', 'ibus-setup.desktop', 'ibus-setup-hangul.desktop', 'ibus-setup-libbopomofo.desktop', 'ibus-setup-libpinyin.desktop', 'ibus-setup-m17n.desktop', 'ibus-setup-typing-booster.desktop', 'im-chooser.desktop', 'itweb-settings.desktop', 'jhbuild.desktop', 'javaws.desktop', 'java-1.7.0-openjdk-jconsole.desktop', 'java-1.7.0-openjdk-policytool.desktop', 'log4j-chainsaw.desktop', 'log4j-logfactor5.desktop', 'nm-connection-editor.desktop', 'orca.desktop', 'setroubleshoot.desktop', 'system-config-date.desktop', 'system-config-firewall.desktop', 'system-config-keyboard.desktop', 'system-config-language.desktop', 'system-config-printer.desktop', 'system-config-users.desktop', 'vino-preferences.desktop']
+name='X-GNOME-Sundry.directory'
+
+[org/gnome/desktop/notifications]
+application-children=['org-gnome-nautilus', 'org-gnome-software']
+
+[org/gnome/desktop/notifications/application/org-gnome-nautilus]
+application-id='org.gnome.Nautilus.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-software]
+application-id='org.gnome.Software.desktop'
+
+[org/gnome/desktop/peripherals/touchpad]
+natural-scroll=true
+send-events='enabled'
+
+[org/gnome/desktop/calendar]
+show-weekdate=true
+
+[org/gnome/desktop/input-sources]
+sources=[('xkb', 'us')]
+xkb-options=['caps:escape']
+
+[org/gnome/desktop/wm/keybindings]
+switch-to-workspace-1=['<Alt>1']
+switch-to-workspace-2=['<Alt>2']
+switch-to-workspace-3=['<Alt>3']
+move-to-workspace-1=['<Primary><Alt>1']
+move-to-workspace-2=['<Primary><Alt>2']
+move-to-workspace-3=['<Primary><Alt>3']
+move-to-workspace-4=['<Primary><Alt>4']
+switch-to-workspace-4=['<Alt>4']
+
+[org/gnome/desktop/interface]
+clock-show-date=true
+gtk-im-module='gtk-im-context-simple'
+clock-show-seconds=false
+icon-theme='Numix-Circle'
+toolkit-accessibility=false
+
+[org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9]
+background-color='#262626262626'
+use-theme-colors=false
+palette=['#1B1B1D1D1E1E', '#F9F926267272', '#8282B4B41414', '#FDFD97971F1F', '#5656C2C2D6D6', '#8C8C5454FEFE', '#464654545757', '#CCCCCCCCC6C6', '#505053535454', '#FFFF59599595', '#B6B6E3E35454', '#FEFEEDED6C6C', '#8C8CEDEDFFFF', '#9E9E6F6FFEFE', '#89899C9CA1A1', '#F8F8F8F8F2F2']
+bold-color-same-as-fg=false
+bold-color='#F8F8F8F8F2F2'
+foreground-color='#F8F8F8F8F2F2'
+font='Hack 11.5'
+
+[org/gnome/terminal/legacy]
+schema-version=uint32 3
+
+[org/gnome/nm-applet/eap/4023c234-ab03-4533-a8aa-085b35dd8ab7]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[org/gnome/software]
+check-timestamp=int64 1547107246
+
+[org/gtk/settings/file-chooser]
+sort-column='name'
+sidebar-width=155
+window-position=(359, 74)
+show-size-column=true
+show-hidden=false
+window-size=(1203, 1006)
+sort-directories-first=false
+date-format='regular'
+sort-order='ascending'
+location-mode='path-bar'
+
+[org/gtk/settings/color-chooser]
+selected-color=(true, 0.13725490196078433, 0.15294117647058825, 0.16078431372549021, 1.0)
+custom-colors=[(0.13725490196078433, 0.15294117647058825, 0.16078431372549021, 1.0)]
+
+[desktop/ibus/general]
+preload-engines=['xkb:us::eng', 'xkb:us::eng']
+version='1.5.14'
