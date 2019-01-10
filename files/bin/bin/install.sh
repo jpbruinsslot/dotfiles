@@ -212,7 +212,6 @@ function python() {
         neovim \
         psutil \
         pylint \
-        tmuxp \
         yapf
 
     # Install: Python2 packages
