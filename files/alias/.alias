@@ -113,11 +113,6 @@ alias compose=docker-compose
 # Alias for ccat
 alias cat=ccat
 
-# $ kube
-#
-# Alias for kubectl
-alias kube=kubectl
-
 # $ diff
 #
 # Alias for icdiff

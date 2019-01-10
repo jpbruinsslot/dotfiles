@@ -1,0 +1,62 @@
+#!/bin/bash
+
+##############################################################################
+#
+# kube
+# ----
+#
+# Some shortcuts for kubectl commands I use alot:
+#
+# Examples:
+#
+#   Show all pods on namespace
+#   $ \kube [prod/test]
+#
+#   Attach to logs for pod
+#   $ \kube [prod/test] [pod-name]
+#
+#   Create curl pod and issue curl command
+#   $ \kube [prod/test] curl [url]
+#
+#
+# :authors: J.P.H. Bruins Slot
+# :date:    10-01-2019
+# :version: 0.1.0
+#
+##############################################################################
+
+function main() {
+    local arg1=$1
+    local arg2=$2
+    local arg3=$3
+
+    if [[ -z "$arg1" ]]; then
+        kubectl
+        exit
+    fi
+
+    # When arg1 is used
+    local ns
+    if [[ $arg1 == "prod" ]]; then
+        ns="production"
+    elif [[ $arg1 ==  "test" ]]; then
+        ns="testing"
+    else
+        kubectl "$@"
+        exit
+    fi
+
+    # When arg2 is used
+    if [[ -n "$arg2" ]]; then
+        if [[ "$arg2" == "curl" ]]; then
+            kubectl run curl --rm -it --image radial/busyboxplus:curl --namespace=$ns -- curl -s "$arg3"
+        else
+            kubectl logs -f "$arg2" "$arg3" --namespace="$ns"
+        fi
+    elif [[ -z "$arg2" ]]; then
+        kubectl get pods --namespace="$ns"
+    fi
+
+}
+
+main "$@"

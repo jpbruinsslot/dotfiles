@@ -59,7 +59,6 @@ function usage() {
     echo "  all             - show all"
     echo "  alias           - show alias"
     echo "  functions       - show functions"
-
 }
 
 function main() {
