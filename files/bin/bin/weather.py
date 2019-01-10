@@ -4,7 +4,8 @@
 weather
 -------
 
-This script prints an icon representation of the time of day.
+This script returns the weather information with an icon, the temperature,
+and potential rain indicator.
 
 Powered by: https://darksky.net/poweredby/
 
