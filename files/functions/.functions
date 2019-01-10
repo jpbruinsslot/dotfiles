@@ -312,3 +312,17 @@ function headphones() {
         echo "Usage: bl [mac-address]"
     fi
 }
+
+# $ gconf_dump
+#
+# Dump gnome configuration
+function gconf_dump() {
+    dconf dump / > $HOME/.gnome-conf
+}
+
+# $ gconf_load
+#
+# Load gnome configuration
+function gconf_load() {
+    cat $HOME/.gnome-conf > dconf load
+}
