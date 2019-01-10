@@ -142,3 +142,8 @@ alias fugo="cd $GOPATH/src/github.com/fuelup"
 #
 # Shortcut for Projects folder
 alias pro='cd ~/Projects'
+
+# $ cl
+#
+# Shortcut for clear command
+alias cl='clear'
