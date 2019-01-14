@@ -6,6 +6,11 @@
 function session_work() {
     local sid="work"
 
+    if tmux has-session -t "$id"; then
+        tmux new-session -A -s "$sid"
+        exit
+    fi
+
     tmux start-server
     tmux new-session -d -s "$sid"
 
@@ -20,6 +25,11 @@ function session_work() {
 
 function session_dev() {
     local sid="dev"
+
+    if tmux has-session -t "$id"; then
+        tmux new-session -A -s "$sid"
+        exit
+    fi
 
     tmux start-server
     tmux new-session -d -s "$sid"
