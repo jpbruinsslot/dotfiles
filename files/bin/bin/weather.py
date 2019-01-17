@@ -95,7 +95,12 @@ def weather(path):
 
 
 def get_rain(resp_json):
-    if resp_json.get("hourly").get("icon") is "rain":
+    if resp_json.get("hourly").get("data") is None:
+        return ""
+
+    next_hour = resp_json.get("hourly").get("data")[0]
+    if (next_hour.get("precipType") == "rain"
+            and next_hour.get("precipProbability") > 0.20):
         return ""
 
     return ""
