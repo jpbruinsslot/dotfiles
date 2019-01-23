@@ -212,7 +212,8 @@ function python() {
         neovim \
         psutil \
         pylint \
-        yapf
+        yapf \
+        youtube-dl
 
     # Install: Python2 packages
     # crcmod: needed for gsutil
