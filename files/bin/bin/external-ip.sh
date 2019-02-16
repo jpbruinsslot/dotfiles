@@ -16,15 +16,16 @@
 # - https://github.com/vivien/i3blocks/blob/master/scripts/wifi
 #
 # :authors: J.P.H. Bruins Slot
-# :date:    14-02-2019
+# :date:    16-02-2019
 # :version: 0.1.2
 #
 ##############################################################################
 
 INTERFACE="wl*"
 IP=$(dig +short myip.opendns.com @resolver1.opendns.com)
+ERR="$?"
 
-if [ -z "$IP" ] || [ "$?" -ne "0" ]; then
+if [ -z "$IP" ] || [ "$ERR" -ne 0 ]; then
     IP="x.x.x.x"
 fi
 
