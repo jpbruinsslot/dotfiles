@@ -267,6 +267,42 @@ function golang() {
     )
 }
 
+# Install: Node
+function node() {
+    echo ">>> Installing Node"
+
+    NODE_VERSION=11.12.0
+
+	if [[ ! -z "$1" ]]; then
+		NODE_VERSION=$1
+	fi
+
+    NODE_SRC=/usr/local/lib/node
+    if [[ -d "$NODE_SRC" ]]; then
+        sudo rm -rf "$NODE_SRC"
+    fi
+
+    cd /tmp
+    wget -O node-v$NODE_VERSION-linux-x64.tar.xz https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz
+    sudo mkdir -p /usr/local/lib/node
+    sudo tar -C /usr/local/lib/node -xJvf node-v$NODE_VERSION-linux-x64.tar.xz --strip-components=1
+    cd "$HOME"
+
+    # Create symlinks to use sudo
+    sudo ln -s /usr/local/lib/node/bin/node /usr/local/bin/node
+    sudo ln -s /usr/local/lib/node/bin/npm /usr/local/bin/npm
+    sudo ln -s /usr/local/lib/node/bin/npx /usr/local/bin/npx
+
+    # Install: NPM packages
+    echo "... Installing NPM packages"
+    sudo npm -g install \
+        eslint \
+        eslint-plugin-import \
+        eslint-config-airbnb \
+        eslint-plugin-jsx-a11y \
+        eslint-plugin-react
+}
+
 # Install: Docker
 function docker() {
     echo ">>> Installing docker"
@@ -617,6 +653,7 @@ usage() {
     echo "  gnome-molokai                       - setup molokai colors for gnome"
     echo "  python                              - setup python packages"
     echo "  golang [version]                    - setup golang language and packages"
+    echo "  node [version]                      - setup node and packages"
     echo "  docker                              - setup docker"
     echo "  gcloud [version]                    - setup gcloud"
     echo "  chrome                              - setup chrome"
@@ -656,6 +693,8 @@ main() {
         python
     elif [[ $cmd == "golang" ]]; then
         golang "$2"
+    elif [[ $cmd == "node" ]]; then
+        node "$2"
     elif [[ $cmd == "docker" ]]; then
         check_is_sudo
         docker
