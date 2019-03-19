@@ -12,5 +12,8 @@ export PATH=/usr/local/go/bin:$PATH
 export GOPATH=$HOME/go
 export PATH=$GOPATH/bin:$PATH
 
+# Node
+export PATH=/usr/local/lib/node/bin:$PATH
+
 # GCloud
 export PATH=$HOME/google-cloud-sdk/bin:$PATH
