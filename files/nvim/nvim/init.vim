@@ -257,6 +257,12 @@ set wrap "Wrap lines
 set textwidth=79
 set formatoptions=qrn1
 
+" filetype specific tabs
+" ts    number of spaces
+" sts   number of spaces 'tab' uses
+" sw    number of spaces to use for (auto) indent step
+autocmd FileType javascript setlocal ts=2 sts=2 sw=2
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Key mapping
@@ -271,6 +277,7 @@ map <C-l> <C-W>l
 " Quickly resize windows with a vertical split
 map - <C-W>-
 map + <C-W>+
+
 
 " Useful mappings for managing tabs
 nnoremap tn :tabnew<cr>
@@ -599,6 +606,7 @@ let g:ctrlp_clear_cache_on_exit = 0
 " pip3 install flake8
 " apt install pylint
 " let g:neomake_python_enabled_makers = ['flake8', 'pylint']
+let g:neomake_javascript_enabled_makers = ['eslint']
 autocmd! BufWritePost * Neomake
 
 " Neomake: set colors
