@@ -53,8 +53,7 @@ Plug 'https://github.com/ryanoasis/vim-devicons'
 Plug 'https://github.com/majutsushi/tagbar.git'
 Plug 'https://github.com/ctrlpvim/ctrlp.vim.git'
 Plug 'https://github.com/gcmt/taboo.vim'
-Plug 'https://github.com/merlinrebrovic/focus.vim'
-
+Plug 'https://github.com/junegunn/goyo.vim'
 
 " Productivity
 Plug 'https://github.com/tomtom/tcomment_vim'
@@ -80,7 +79,7 @@ Plug 'https://github.com/zchee/deoplete-jedi.git'
 Plug 'https://github.com/ekalinin/Dockerfile.vim.git'
 Plug 'https://github.com/mxw/vim-jsx.git'
 Plug 'https://github.com/elzr/vim-json.git'
-Plug 'https://github.com/plasticboy/vim-markdown'
+Plug 'https://github.com/vim-pandoc/vim-pandoc-syntax'
 
 call plug#end()
 
