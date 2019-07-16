@@ -128,16 +128,6 @@ alias gti="git"  # Yeah I know, don't judge me!
 # Alias for gpg2
 alias gpg="gpg2"
 
-# $ fu
-#
-# Shortcut for fuelup project folder
-alias fu='cd ~/Projects/fuelup'
-
-# $ fugo
-#
-# Shortcut for fuelup golang folder
-alias fugo="cd $GOPATH/src/github.com/fuelup"
-
 # $ pro
 #
 # Shortcut for Projects folder
