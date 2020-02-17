@@ -35,6 +35,8 @@ def weather(path):
             config = json.load(f)
     except FileNotFoundError:
         config = create_config(path)
+    except:
+        sys.exit("not able to load config file")
 
     key = config.get("key")
     if key is "" or key is None:
@@ -59,6 +61,7 @@ def weather(path):
         ),
         timeout=10,
     )
+
     if resp.status_code != 200:
         sys.exit("not able to reach api endpoint")
 
@@ -194,6 +197,7 @@ if __name__ == "__main__":
         '-c',
         dest='configuration',
         metavar="FILE",
+        default=".weather",
         help="Configuration file to use",
     )
 
