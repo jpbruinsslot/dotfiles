@@ -80,6 +80,7 @@ Plug 'https://github.com/zchee/deoplete-jedi.git'
 Plug 'https://github.com/ekalinin/Dockerfile.vim.git'
 Plug 'https://github.com/mxw/vim-jsx.git'
 Plug 'https://github.com/elzr/vim-json.git'
+Plug 'https://github.com/vim-pandoc/vim-pandoc'
 Plug 'https://github.com/vim-pandoc/vim-pandoc-syntax'
 
 call plug#end()
@@ -750,3 +751,8 @@ augroup fmt
   autocmd!
   autocmd BufWritePre * undojoin | Neoformat
 augroup END
+
+" Pandoc; remove folding column
+let g:pandoc#folding#fdc = 0
+let g:pandoc#syntax#conceal#use = 0
+let g:pandoc#syntax#codeblocks#embeds#langs = ["go", "python", "c", "cpp", "rust", "javascript"]
