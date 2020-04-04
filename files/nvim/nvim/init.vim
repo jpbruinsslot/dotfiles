@@ -55,6 +55,7 @@ Plug 'https://github.com/ctrlpvim/ctrlp.vim.git'
 Plug 'https://github.com/gcmt/taboo.vim'
 Plug 'https://github.com/junegunn/goyo.vim'
 Plug 'https://github.com/wesq3/vim-windowswap'
+Plug 'https://github.com/psliwka/vim-smoothie'
 
 " Productivity
 Plug 'https://github.com/tomtom/tcomment_vim'
