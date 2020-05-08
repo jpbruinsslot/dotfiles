@@ -15,8 +15,8 @@ function session_work() {
     tmux new-session -d -s "$sid"
 
     window_dashboard "$sid" 0
-    window_code "$sid" 1 "$HOME/Projects"
-    window_command "$sid" 2 "$HOME/Projects"
+    window_code "$sid" 1 "$HOME/Projects/deeptrace"
+    window_command "$sid" 2 "$HOME/Projects/deeptrace"
     window_slack "$sid" 3
 
     tmux select-window -t "$sid:0"
