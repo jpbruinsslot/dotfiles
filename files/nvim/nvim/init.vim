@@ -56,6 +56,7 @@ Plug 'https://github.com/gcmt/taboo.vim'
 Plug 'https://github.com/junegunn/goyo.vim'
 Plug 'https://github.com/wesq3/vim-windowswap'
 Plug 'https://github.com/psliwka/vim-smoothie'
+Plug 'https://github.com/mattn/vim-xxdcursor'
 
 " Productivity
 Plug 'https://github.com/tomtom/tcomment_vim'
@@ -69,6 +70,7 @@ Plug 'https://github.com/Shougo/deoplete.nvim'
 Plug 'https://github.com/junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'https://github.com/terryma/vim-multiple-cursors'
 Plug 'https://github.com/sbdchd/neoformat'
+Plug 'https://github.com/rhysd/vim-grammarous'
 
 " Programming languages specific plugins
 Plug 'https://github.com/fatih/vim-go.git', {'do': 'GoInstallBinaries'}
@@ -195,6 +197,12 @@ set foldmethod=indent
 " never do this again --> :set paste <ctrl-v> :set no paste
 let &t_SI .= "\<Esc>[?2004h"
 let &t_EI .= "\<Esc>[?2004l"
+
+" cursor can move freely
+set virtualedit=all
+
+" always use the clipboard for all operations
+" set clipboard+=unnamedplus
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
@@ -757,3 +765,10 @@ augroup END
 let g:pandoc#folding#fdc = 0
 let g:pandoc#syntax#conceal#use = 0
 let g:pandoc#syntax#codeblocks#embeds#langs = ["go", "python", "c", "cpp", "rust", "javascript"]
+
+" vim-grammarous
+"
+" Download LanguageTool
+nmap <F5> :GrammarousCheck<CR>
+nmap <F6> <Plug>(grammarous-move-to-next-error)<CR>
+let g:grammarous#languagetool_cmd = 'docker run -t --entrypoint java -v $HOME/.config/nvim/plugged/vim-grammarous/misc/LanguageTool-4.9:/LanguageTool -v /tmp:/tmp openjdk:8-jre-alpine -jar /LanguageTool/languagetool-commandline.jar $@'
