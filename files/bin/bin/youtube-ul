@@ -1,5 +1,20 @@
 #!/bin/bash
 
+
+##############################################################################
+#
+# youtube-ul
+# ----------
+#
+# Download and upload youtube video to personal youtube account for archiving
+#
+# Dependencies: youtubeuploader, youtube-dl, jq
+#
+# :authors: J.P.H. Bruins Slot
+# :version: 0.1.0
+#
+##############################################################################
+
 # Source: http://www.davidpashley.com/articles/writing-robust-shell-scripts/
 set -o errexit
 set -o pipefail
