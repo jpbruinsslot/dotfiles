@@ -1,0 +1,110 @@
+#!/bin/bash
+
+# Source: http://www.davidpashley.com/articles/writing-robust-shell-scripts/
+set -o errexit
+set -o pipefail
+
+function check_tools() {
+    UPLOAD=$(which youtubeuploader)
+    if [ -z $UPLOAD  ]; then
+        echo "ERROR: could not find 'youtubeuploader', is it installed?"
+        exit 1
+    fi
+
+    DOWNLOAD=$(which youtube-dl)
+    if [ -z $DOWNLOAD ]; then
+        echo "ERROR: could not find 'youtube-dl', is it installed?"
+        exit 1
+    fi
+    
+    JQ=$(which jq)
+    if [ -z $JQ ]; then
+        echo "ERROR: could not find 'jq', is it installed?"
+        exit 1
+    fi
+}
+
+function download() {
+    local url
+    local pl
+
+    if [[ -z "$2" ]]; then
+        url=$1
+    else
+        pl=$1
+        url=$2
+    fi
+
+    resp=$(youtube-dl -j --no-check-certificate ${url})
+
+    if [[ -z "$pl" ]]; then
+        pl=$(echo $(jq -r '.playlist' <<< "${resp}"))
+        if [[ $pl == "null" ]]; then
+            pl=""
+        fi
+    fi
+
+    title=$(echo $(jq -r '.title' <<< "${resp}"))
+
+    tmp_dir=$(mktemp -d -t yul-XXXXXXXXXX)
+    youtube-dl --no-check-certificate -o ${tmp_dir}"/%(id)s.%(ext)s" ${url}
+
+    if [[ ! -z "$pl" ]]; then
+        plt="\"playlistTitles\":  [\"${pl}\"],"
+    fi
+
+    tmp_file=$(mktemp -t yul-XXXXXXXXXX)
+    cat > $tmp_file <<-EOF
+{
+  ${plt}
+  "title": "${title}",
+  "privacyStatus": "private"
+}
+EOF
+
+    files=$(ls $tmp_dir/*)
+    for file in $files; do
+        echo $file
+        youtubeuploader -filename "${file}" -metaJSON $tmp_file
+    done
+}
+
+usage() {
+    echo "youtube-ul [options] [url]"
+    echo ""
+    echo "-p, --playlist        - set playlist"
+}
+
+main() {
+
+    check_tools
+
+    POSITIONAL=()
+    while [[ $# -gt 0 ]]; do
+        key="$1"
+
+        case $key in
+        -p|--playlist)
+            PLAYLIST="$2"
+            shift # past argument
+            shift # past value
+            ;;
+        *)    # unknown option
+            POSITIONAL+=("$1") # save it in an array for later
+            shift # past argument
+            ;;
+        esac
+    done
+
+    set -- "${POSITIONAL[@]}" # restore positional parameters
+
+    URL=$1
+    if [[ -z "$URL" ]]; then
+        usage
+        exit 1
+    fi
+
+    download $PLAYLIST $URL
+}
+
+main "$@"
