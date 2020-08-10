@@ -284,3 +284,12 @@ function gconf_dump() {
 function gconf_load() {
     cat $HOME/.gnome-conf > dconf load
 }
+
+# $ deb [file-name]
+#
+# Install a *.deb package
+function deb() {
+    local file="$1"
+    sudo dpkg -i $file
+    sudo apt-get install -f
+}
