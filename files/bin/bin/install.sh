@@ -218,10 +218,10 @@ function python() {
     # Install: Python2 packages
     # crcmod: needed for gsutil
     # neovim: needed for deoplete
-    sudo -H pip2 install --upgrade pip
-    sudo -H pip2 install --no-cache-dir --upgrade --force-reinstall \
-        crcmod \
-        neovim
+    # sudo -H pip2 install --upgrade pip
+    # sudo -H pip2 install --no-cache-dir --upgrade --force-reinstall \
+    #     crcmod \
+    #     neovim
 }
 
 # Install: Golang
