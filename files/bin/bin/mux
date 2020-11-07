@@ -57,8 +57,10 @@ function window_dashboard() {
     tmux select-pane -t 0
     tmux send-keys "bpytop" C-m
 
+    # NOTE: view without sudo
+    # sudo usermod -aG adm $USER
     tmux select-pane -t 1
-    tmux send-keys "sudo tail -f /var/log/syslog" C-m
+    tmux send-keys "multitail /var/log/syslog" C-m
 }
 
 function window_code() {

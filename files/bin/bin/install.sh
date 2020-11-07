@@ -125,6 +125,7 @@ function base() {
         indent \
         jq \
         libevent-dev \
+        multitail \
         ncurses-dev \
         neovim \
         openssh-server \
