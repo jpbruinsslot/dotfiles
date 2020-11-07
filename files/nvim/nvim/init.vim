@@ -49,7 +49,7 @@ Plug 'https://github.com/Xuyuanp/nerdtree-git-plugin.git'
 Plug 'https://github.com/myusuf3/numbers.vim.git'
 Plug 'https://github.com/mhinz/vim-startify.git'
 Plug 'https://github.com/airblade/vim-gitgutter.git'
-Plug 'https://github.com/ryanoasis/vim-devicons'
+" Plug 'https://github.com/ryanoasis/vim-devicons'
 Plug 'https://github.com/majutsushi/tagbar.git'
 Plug 'https://github.com/ctrlpvim/ctrlp.vim.git'
 Plug 'https://github.com/gcmt/taboo.vim'
@@ -267,13 +267,6 @@ set wrap "Wrap lines
 set textwidth=79
 set formatoptions=qrn1
 
-" filetype specific tabs
-" ts    number of spaces
-" sts   number of spaces 'tab' uses
-" sw    number of spaces to use for (auto) indent step
-autocmd FileType javascript setlocal ts=2 sts=2 sw=2
-
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Key mapping
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -368,6 +361,12 @@ map q: :q
 " Markdown Settings
 " autocmd BufNewFile,BufReadPost *.md setl ts=4 sw=4 sts=4 expandtab
 
+" filetype specific tabs
+" ts    number of spaces
+" sts   number of spaces 'tab' uses
+" sw    number of spaces to use for (auto) indent step
+autocmd FileType javascript setlocal ts=2 sts=2 sw=2
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -383,7 +382,6 @@ let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 let NERDTreeQuitOnOpen = 0
 let NERDTreeAutoDeleteBuffer = 1
-let g:NERDTreeUpdateOnWrite = 0 " only done for pymode
 " let NERDTreeWinSize=17
 
 " NERDTree: close vim if the only window left open is a NERDTree
@@ -423,10 +421,11 @@ let g:NERDTreeDirArrowCollapsible = ''
 " let g:NERDTreeDirArrowCollapsible = ''
 
 " NERDTree: Git Plugin
-let g:NERDTreeIndicatorMapCustom = {
+let g:NERDTreeGitStatusUseNerdFonts = 1
+let g:NERDTreeGitStatusIndicatorMapCustom = {
     \ "Modified"  : "",
     \ "Staged"    : "",
-    \ "Untracked" : "",
+    \ "Untracked" : "*",
     \ "Renamed"   : "",
     \ "Unmerged"  : "",
     \ "Deleted"   : "",
@@ -434,6 +433,17 @@ let g:NERDTreeIndicatorMapCustom = {
     \ "Clean"     : "",
     \ "Unknown"   : ""
     \ }
+
+" NERDTREE: remove brackets from around files
+" https://github.com/preservim/nerdtree/issues/815
+augroup nerdtreeconcealbrackets
+    autocmd!
+    autocmd FileType nerdtree syntax clear NERDTreeFlags
+    autocmd FileType nerdtree syntax match hideBracketsInNerdTree "\]" contained conceal containedin=ALL
+    autocmd FileType nerdtree syntax match hideBracketsInNerdTree "\[" contained conceal containedin=ALL
+    autocmd FileType nerdtree setlocal conceallevel=3
+    autocmd FileType nerdtree setlocal concealcursor=nvic
+augroup END
 
 " PyMode: configuration
 let g:pymode_rope_complete_on_dot = 0
@@ -772,3 +782,30 @@ let g:pandoc#syntax#codeblocks#embeds#langs = ["go", "python", "c", "cpp", "rust
 nmap <F5> :GrammarousCheck<CR>
 nmap <F6> <Plug>(grammarous-move-to-next-error)<CR>
 let g:grammarous#languagetool_cmd = 'docker run -t --entrypoint java -v $HOME/.config/nvim/plugged/vim-grammarous/misc/LanguageTool-4.9:/LanguageTool -v /tmp:/tmp openjdk:8-jre-alpine -jar /LanguageTool/languagetool-commandline.jar $@'
+
+" vim-gitgutter
+set signcolumn=yes
+
+highlight SignColumn      guibg=#2a2a2a
+highlight GitGutterAdd    guifg=#A6E22E
+highlight GitGutterChange guifg=#FD971F  gui=bold
+highlight GitGutterDelete guifg=#F92672  gui=bold
+
+let g:gitgutter_sign_added = '✚'
+let g:gitgutter_sign_modified = '~'
+let g:gitgutter_sign_removed = '━'
+" let g:gitgutter_sign_removed_first_line = '^^'
+" let g:gitgutter_sign_removed_above_and_below = '{'
+" let g:gitgutter_sign_modified_removed = 'ww'
+
+" vim-devicons
+" get rid of [  ] around icons in NerdTree, put this at the bottom of vimrc
+let g:WebDevIcons_conceal_nerdtree_brackets = 1
+let g:WebDevIconsNerdTreeAfterGlyphPadding = ' '
+let g:WebDevIconsNerdTreeGitPluginForceVAlign = 0
+let g:WebDevIconsUnicodeDecorateFolderNodes = 0
+let g:WebDevIconsUnicodeDecorateFileNodes = 0
+" syntax enable
+if exists("g:loaded_webdevicons")
+	call webdevicons#refresh()
+endif
