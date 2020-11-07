@@ -8,7 +8,13 @@
 #
 # Download and upload youtube video to personal youtube account for archiving
 #
-# Dependencies: youtubeuploader, youtube-dl, jq
+# Install the following:
+#   * youtubeuploader https://github.com/porjo/youtubeuploader,
+#   * youtube-dl      
+#   * jq
+#
+# Do the following:
+#  * https://github.com/porjo/youtubeuploader#youtube-api
 #
 # :authors: J.P.H. Bruins Slot
 # :version: 0.1.0
