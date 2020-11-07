@@ -15,8 +15,8 @@ function session_work() {
     tmux new-session -d -s "$sid"
 
     window_dashboard "$sid" 0
-    window_code "$sid" 1 "$HOME/Projects/deeptrace"
-    window_command "$sid" 2 "$HOME/Projects/deeptrace"
+    window_code "$sid" 1 "$HOME/Projects/"
+    window_command "$sid" 2 "$HOME/Projects/"
     window_slack "$sid" 3
 
     tmux select-window -t "$sid:0"
@@ -55,7 +55,7 @@ function window_dashboard() {
     tmux split-window -v
     
     tmux select-pane -t 0
-    tmux send-keys "glances" C-m
+    tmux send-keys "bpytop" C-m
 
     tmux select-pane -t 1
     tmux send-keys "sudo tail -f /var/log/syslog" C-m

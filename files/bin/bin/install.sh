@@ -205,7 +205,7 @@ function python() {
         asciinema \
         docker-compose \
         flake8 \
-        glances \
+        bpytop \
         httpie \
         jedi \
         lolcat \
