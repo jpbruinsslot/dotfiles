@@ -13,6 +13,7 @@
 		"dockerfunc": "/.dockerfunc",
 		"dotconfig": "/.dotconfig",
 		"env": "/.env",
+		"eslint": "/.eslintrc",
 		"fonts": "/.fonts",
 		"functions": "/.functions",
 		"gitconfig": "/.gitconfig",
