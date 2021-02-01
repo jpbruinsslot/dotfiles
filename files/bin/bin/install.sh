@@ -201,9 +201,24 @@ function python() {
     # Install: Python3 packages
     echo ">>> Installing Python packages"
 
+    PYTHON_VERSION=3.9.1
+
+	if [[ ! -z "$1" ]]; then
+		PYTHON_VERSION=$1
+	fi
+
+    cd /tmp
+    wget https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tgz
+    sudo tar -xvf Python-$PYTHON_VERSION
+    cd Python-$PYTHON_VERSION
+    ./configure
+    sudo make install
+    cd "$HOME"
+
     sudo -H pip3 install --upgrade pip
     sudo -H pip3 install --no-cache-dir --upgrade --force-reinstall \
         asciinema \
+        bpytop \
         docker-compose \
         flake8 \
         bpytop \
