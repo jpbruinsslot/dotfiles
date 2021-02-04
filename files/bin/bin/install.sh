@@ -573,6 +573,11 @@ function misc() {
     git clone https://github.com/numixproject/numix-icon-theme-circle.git
     cp -r /tmp/numix-icon-theme-circle/Numix-Circle ~/.local/share/icons
 
+}
+
+function fonts() {
+    cd /tmp
+
     # Install: nerd fonts
     git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git
     sh /tmp/nerd-fonts/install.sh Hack
@@ -675,6 +680,7 @@ usage() {
     echo "  chrome                              - setup chrome"
     echo "  tmux                                - setup tmux"
     echo "  k8s                                 - setup kubernetes"
+    echo "  fonts                               - setup fonts"
     echo "  misc                                - setup miscellaneous programs"
     echo "  i3                                  - setup i3"
 }
@@ -730,6 +736,9 @@ main() {
     elif [[ $cmd == "k8s" ]]; then
         kubeconf
         minikube
+    elif [[ $cmd == "fonts" ]]; then
+		check_is_sudo
+        fonts
     elif [[ $cmd == "misc" ]]; then
 		check_is_sudo
         misc
