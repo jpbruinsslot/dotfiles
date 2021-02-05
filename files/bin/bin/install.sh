@@ -279,7 +279,8 @@ function golang() {
         github.com/jingweno/ccat \
         github.com/golang/dep/... \
         github.com/kardianos/govendor \
-        github.com/derekparker/delve/cmd/dlv
+        github.com/derekparker/delve/cmd/dlv \
+        github.com/junegunn/fzf
     )
 }
 
