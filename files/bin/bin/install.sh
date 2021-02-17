@@ -44,18 +44,9 @@ function sources() {
         --no-install-recommends
 
     cat <<-EOF > /etc/apt/sources.list
-deb http://httpredir.debian.org/debian stretch main contrib non-free
-deb-src http://httpredir.debian.org/debian/ stretch main contrib non-free
-
-deb http://httpredir.debian.org/debian/ stretch-updates main contrib non-free
-deb-src http://httpredir.debian.org/debian/ stretch-updates main contrib non-free
-
-deb http://security.debian.org/ stretch/updates main contrib non-free
-deb-src http://security.debian.org/ stretch/updates main contrib non-free
+deb http://httpredir.debian.org/debian buster main contrib non-free
+deb-src http://httpredir.debian.org/debian/ buster main contrib non-free
 EOF
-
-    # deb http://httpredir.debian.org/debian experimental main contrib non-free
-    # deb-src http://httpredir.debian.org/debian experimental main contrib non-free
 
     # Neovim
     cat <<-EOF > /etc/apt/sources.list.d/neovim.list
@@ -63,15 +54,24 @@ deb http://ppa.launchpad.net/neovim-ppa/unstable/ubuntu xenial main
 deb-src http://ppa.launchpad.net/neovim-ppa/unstable/ubuntu xenial main
 EOF
 
-    # TLP: advanced linux power management
-    cat <<-EOF > /etc/apt/sources.list.d/tlp.list
-# tlp: Advanced Linux Power Management
-# http://linrunner.de/en/tlp/docs/tlp-linux-advanced-power-management.html
-deb http://repo.linrunner.de/debian sid main
-EOF
-
     # Google Chrome
     echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
+
+    # Add the Cloud SDK distribution URI as a package source
+	cat <<-EOF > /etc/apt/sources.list.d/google-cloud-sdk.list
+deb https://packages.cloud.google.com/apt cloud-sdk main
+EOF
+
+	# Add the Google Chrome distribution URI as a package source
+	cat <<-EOF > /etc/apt/sources.list.d/google-chrome.list
+deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
+EOF
+
+	# Import the Google Chrome public key
+	curl https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
+
+	# Import the Google Cloud Platform public key
+	curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 
     # Add the neovim ppa gpg key
     apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 9DBB0BE9366964F134855E2255F96FCF8231B6DD
@@ -209,10 +209,10 @@ function python() {
 
     cd /tmp
     wget https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tgz
-    sudo tar -xvf Python-$PYTHON_VERSION
+    sudo tar -xvf Python-$PYTHON_VERSION.tgz
     cd Python-$PYTHON_VERSION
-    ./configure
-    sudo make install
+    ./configure --enable-optimizations 
+    sudo make altinstall
     cd "$HOME"
 
     sudo -H pip3 install --upgrade pip
@@ -225,6 +225,7 @@ function python() {
         httpie \
         jedi \
         lolcat \
+        mypy \
         neovim \
         psutil \
         pylint \
@@ -354,6 +355,11 @@ function docker() {
 # Install: Tmux
 function tmux() {
     echo ">>> Installing tmux"
+    sudo apt update || true
+    sudo apt install -y \
+        bison \
+        --no-install-recommends
+
 
     if [[ -d /tmp/tmux ]]; then
         rm -rf /tmp/tmux

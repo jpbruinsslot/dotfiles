@@ -34,14 +34,22 @@ set undofile
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins 
-" :PlugInstall
+"
+" Using vim-plug for plugin management:
+" https://github.com/junegunn/vim-plug
+"
+" Common commands
+" :PlugInstall      install new plugins
+" :PlugUpdate       update current plugins
+" :PlugClean        remove unused plugins
+" :PlugUpgrade      update vim-plug itself
 "
 " To get a specific branch:
 " Plug 'https://github.com/erroneousboat/neokai.git', {'branch': 'dev'}
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.config/nvim/plugged')
 
-" Interface
+" -> Interface
 Plug 'https://github.com/erroneousboat/neokai.git'
 Plug 'https://github.com/itchyny/lightline.vim.git'
 Plug 'https://github.com/scrooloose/nerdtree.git'
@@ -49,7 +57,7 @@ Plug 'https://github.com/Xuyuanp/nerdtree-git-plugin.git'
 Plug 'https://github.com/myusuf3/numbers.vim.git'
 Plug 'https://github.com/mhinz/vim-startify.git'
 Plug 'https://github.com/airblade/vim-gitgutter.git'
-" Plug 'https://github.com/ryanoasis/vim-devicons'
+Plug 'https://github.com/ryanoasis/vim-devicons'
 Plug 'https://github.com/majutsushi/tagbar.git'
 Plug 'https://github.com/ctrlpvim/ctrlp.vim.git'
 Plug 'https://github.com/gcmt/taboo.vim'
@@ -58,7 +66,7 @@ Plug 'https://github.com/wesq3/vim-windowswap'
 Plug 'https://github.com/psliwka/vim-smoothie'
 Plug 'https://github.com/mattn/vim-xxdcursor'
 
-" Productivity
+" -> Productivity
 Plug 'https://github.com/tomtom/tcomment_vim'
 Plug 'https://github.com/tpope/vim-surround.git'
 Plug 'https://github.com/Yggdroot/indentLine.git'
@@ -74,7 +82,6 @@ Plug 'https://github.com/rhysd/vim-grammarous'
 
 " Programming languages specific plugins
 Plug 'https://github.com/fatih/vim-go.git', {'do': 'GoInstallBinaries'}
-Plug 'https://github.com/erroneousboat/python-mode.git'
 Plug 'https://github.com/crosbymichael/vim-cfmt.git'
 Plug 'https://github.com/zchee/deoplete-go.git', {'do': 'make'}
 Plug 'https://github.com/zchee/deoplete-jedi.git'
@@ -623,9 +630,8 @@ let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
 let g:ctrlp_clear_cache_on_exit = 0
 
 " Neomake: configuration
-" pip3 install flake8
-" apt install pylint
-" let g:neomake_python_enabled_makers = ['flake8', 'pylint']
+" https://github.com/neomake/neomake/wiki/Makers
+let g:neomake_python_enabled_makers = ['flake8', 'pylint', 'mypy']
 let g:neomake_javascript_enabled_makers = ['eslint']
 autocmd! BufWritePost * Neomake
 
