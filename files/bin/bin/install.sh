@@ -229,6 +229,7 @@ function python() {
         neovim \
         psutil \
         pylint \
+        vulture \
         yapf \
         youtube-dl
 
