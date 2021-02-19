@@ -53,11 +53,12 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'https://github.com/erroneousboat/neokai.git'
 Plug 'https://github.com/itchyny/lightline.vim.git'
 Plug 'https://github.com/scrooloose/nerdtree.git'
-Plug 'https://github.com/Xuyuanp/nerdtree-git-plugin.git'
+" Plug 'https://github.com/Xuyuanp/nerdtree-git-plugin.git'
+" Plug 'https://github.com/tiagofumo/vim-nerdtree-syntax-highlight.git'
+" Plug 'https://github.com/ryanoasis/vim-devicons'
 Plug 'https://github.com/myusuf3/numbers.vim.git'
 Plug 'https://github.com/mhinz/vim-startify.git'
 Plug 'https://github.com/airblade/vim-gitgutter.git'
-Plug 'https://github.com/ryanoasis/vim-devicons'
 Plug 'https://github.com/majutsushi/tagbar.git'
 Plug 'https://github.com/ctrlpvim/ctrlp.vim.git'
 Plug 'https://github.com/gcmt/taboo.vim'
@@ -85,8 +86,10 @@ Plug 'https://github.com/fatih/vim-go.git', {'do': 'GoInstallBinaries'}
 Plug 'https://github.com/crosbymichael/vim-cfmt.git'
 Plug 'https://github.com/zchee/deoplete-go.git', {'do': 'make'}
 Plug 'https://github.com/zchee/deoplete-jedi.git'
+Plug 'https://github.com/stsewd/isort.nvim', { 'do': ':UpdateRemotePlugins' }
 
 " Filetype plugins
+Plug 'https://github.com/sheerun/vim-polyglot'
 Plug 'https://github.com/ekalinin/Dockerfile.vim.git'
 Plug 'https://github.com/mxw/vim-jsx.git'
 Plug 'https://github.com/elzr/vim-json.git'
@@ -386,7 +389,7 @@ let NERDTreeIgnore=['\.vim$', '\~$', '\.pyc$', '\.swp$']
 let NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$',  '\~$']
 let NERDTreeShowBookmarks=0
 let NERDTreeMinimalUI = 1
-let NERDTreeDirArrows = 1
+let NERDTreeDirArrows = 0
 let NERDTreeQuitOnOpen = 0
 let NERDTreeAutoDeleteBuffer = 1
 " let NERDTreeWinSize=17
@@ -395,24 +398,25 @@ let NERDTreeAutoDeleteBuffer = 1
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " NERDTree: File highlighting
-function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
-    exec 'autocmd FileType nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
-    exec 'autocmd FileType nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
-endfunction
+" function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
+"     exec 'autocmd FileType nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
+"     exec 'autocmd FileType nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
+" endfunction
 
-call NERDTreeHighlightFile('ini', 'yellow', 'none', '#d8a235', 'none')
-call NERDTreeHighlightFile('yml', 'yellow', 'none', '#d8a235', 'none')
-call NERDTreeHighlightFile('conf', 'yellow', 'none', '#d8a235', 'none')
-call NERDTreeHighlightFile('json', 'green', 'none', '#d8a235', 'none')
-call NERDTreeHighlightFile('js', 'yellow', 'none', '#F8DC3D', 'none')
-call NERDTreeHighlightFile('py', 'blue', 'none', '#376F9D', 'none')
-call NERDTreeHighlightFile('md', 'blue', 'none', '#679EB5', 'none')
-call NERDTreeHighlightFile('sh', 'blue', 'none', '#AB74A0', 'none')
-call NERDTreeHighlightFile('go', 'blue', 'none', '#6AD7E5', 'none')
-call NERDTreeHighlightFile('html', 'red', 'none', '#E44D26', 'none')
-call NERDTreeHighlightFile('jsx', 'cyan', 'none', '#00d8ff', 'none')
-call NERDTreeHighlightFile('css', 'blue', 'none', '#1C70B0', 'none')
-call NERDTreeHighlightFile('scss', 'cyan', 'none', '#C6538C', 'none')
+" call NERDTreeHighlightFile('ini', 'yellow', 'none', '#d8a235', 'none')
+" call NERDTreeHighlightFile('yml', 'yellow', 'none', '#d8a235', 'none')
+" call NERDTreeHighlightFile('conf', 'yellow', 'none', '#d8a235', 'none')
+" call NERDTreeHighlightFile('json', 'green', 'none', '#d8a235', 'none')
+" call NERDTreeHighlightFile('js', 'yellow', 'none', '#F8DC3D', 'none')
+" call NERDTreeHighlightFile('py', 'blue', 'none', '#376F9D', 'none')
+" call NERDTreeHighlightFile('md', 'blue', 'none', '#679EB5', 'none')
+" call NERDTreeHighlightFile('sh', 'blue', 'none', '#AB74A0', 'none')
+" call NERDTreeHighlightFile('go', 'blue', 'none', '#6AD7E5', 'none')
+" call NERDTreeHighlightFile('html', 'red', 'none', '#E44D26', 'none')
+" call NERDTreeHighlightFile('jsx', 'cyan', 'none', '#00d8ff', 'none')
+" call NERDTreeHighlightFile('css', 'blue', 'none', '#1C70B0', 'none')
+" call NERDTreeHighlightFile('scss', 'cyan', 'none', '#C6538C', 'none')
+
 
 " NERDTree: Set colors
 hi NERDTreeDir          guifg=#F9F9F8 gui=bold
@@ -424,21 +428,34 @@ hi NERDTreeCWD          guifg=#7E8E91
 " NERDTree: Replace folder arrow indicator
 let g:NERDTreeDirArrowExpandable = ''
 let g:NERDTreeDirArrowCollapsible = ''
-" let g:NERDTreeDirArrowExpandable = ''
-" let g:NERDTreeDirArrowCollapsible = ''
+let g:NERDTreeDirArrowExpandable = ''
+let g:NERDTreeDirArrowCollapsible = ''
 
 " NERDTree: Git Plugin
 let g:NERDTreeGitStatusUseNerdFonts = 1
+" let g:NERDTreeGitStatusIndicatorMapCustom = {
+"     \ "Modified"  : "",
+"     \ "Staged"    : "",
+"     \ "Untracked" : "*",
+"     \ "Renamed"   : "",
+"     \ "Unmerged"  : "",
+"     \ "Deleted"   : "",
+"     \ "Dirty"     : " ",
+"     \ "Clean"     : "",
+"     \ "Unknown"   : ""
+"     \ }
+
 let g:NERDTreeGitStatusIndicatorMapCustom = {
-    \ "Modified"  : "",
-    \ "Staged"    : "",
-    \ "Untracked" : "*",
-    \ "Renamed"   : "",
-    \ "Unmerged"  : "",
-    \ "Deleted"   : "",
-    \ "Dirty"     : "",
-    \ "Clean"     : "",
-    \ "Unknown"   : ""
+    \ 'Modified'  :'✹',
+    \ 'Staged'    :'✚',
+    \ 'Untracked' :'*',
+    \ 'Renamed'   :'➜',
+    \ 'Unmerged'  :'═',
+    \ 'Deleted'   :'✖',
+    \ 'Dirty'     :'✗',
+    \ 'Ignored'   :'☒',
+    \ 'Clean'     :'✔︎',
+    \ 'Unknown'   :'?',
     \ }
 
 " NERDTREE: remove brackets from around files
@@ -453,10 +470,10 @@ augroup nerdtreeconcealbrackets
 augroup END
 
 " PyMode: configuration
-let g:pymode_rope_complete_on_dot = 0
-let g:pymode_folding=0
-let g:pymode_lint_cwindow=0
-set completeopt-=preview
+" let g:pymode_rope_complete_on_dot = 0
+" let g:pymode_folding=0
+" let g:pymode_lint_cwindow=0
+" set completeopt-=preview
 
 " VimGo: enable goimports to automatically insert import paths instead of gofmt
 let g:go_fmt_command = "goimports"
@@ -631,7 +648,8 @@ let g:ctrlp_clear_cache_on_exit = 0
 
 " Neomake: configuration
 " https://github.com/neomake/neomake/wiki/Makers
-let g:neomake_python_enabled_makers = ['flake8', 'pylint', 'mypy']
+call neomake#configure#automake('nrwi', 500)
+let g:neomake_python_enabled_makers = ['flake8', 'pylint', 'mypy', 'vulture']
 let g:neomake_javascript_enabled_makers = ['eslint']
 autocmd! BufWritePost * Neomake
 
@@ -772,6 +790,8 @@ let g:taboo_modified_tab_flag = '•'
 let g:vim_json_syntax_conceal = 0
 
 " Neoformat; run on save
+"
+" https://github.com/sbdchd/neoformat#supported-filetypes
 augroup fmt
   autocmd!
   autocmd BufWritePre * undojoin | Neoformat
@@ -800,18 +820,15 @@ highlight GitGutterDelete guifg=#F92672  gui=bold
 let g:gitgutter_sign_added = '✚'
 let g:gitgutter_sign_modified = '~'
 let g:gitgutter_sign_removed = '━'
-" let g:gitgutter_sign_removed_first_line = '^^'
-" let g:gitgutter_sign_removed_above_and_below = '{'
-" let g:gitgutter_sign_modified_removed = 'ww'
+let g:gitgutter_sign_removed_first_line = '^^'
+let g:gitgutter_sign_removed_above_and_below = '{'
+let g:gitgutter_sign_modified_removed = 'ww'
+
+" isort
+g:isort_command = 'isort'
 
 " vim-devicons
-" get rid of [  ] around icons in NerdTree, put this at the bottom of vimrc
-let g:WebDevIcons_conceal_nerdtree_brackets = 1
-let g:WebDevIconsNerdTreeAfterGlyphPadding = ' '
-let g:WebDevIconsNerdTreeGitPluginForceVAlign = 0
-let g:WebDevIconsUnicodeDecorateFolderNodes = 0
-let g:WebDevIconsUnicodeDecorateFileNodes = 0
-" syntax enable
-if exists("g:loaded_webdevicons")
-	call webdevicons#refresh()
-endif
+" let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
+" let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+" let g:WebDevIconsUnicodeDecorateFileNodes = 1
+" let g:DevIconsEnableFoldersOpenClose = 1
