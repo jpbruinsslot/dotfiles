@@ -18,3 +18,6 @@ export PATH=/usr/local/lib/node/bin:$PATH
 
 # GCloud
 export PATH=$HOME/google-cloud-sdk/bin:$PATH
+
+# OpenSSL
+export PATH=/usr/local/ssl/bin:$PATH
