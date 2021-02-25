@@ -23,10 +23,44 @@ import sys
 
 import requests
 
-API = "https://api.darksky.net/forecast/{key}/{geocode}?units=auto"
+API_DARKSKY = "https://api.darksky.net/forecast/{key}/{geocode}?units=auto"
+API_IPGEOCODE = "https://api.ipgeolocation.io/ipgeo?apiKey={key}"
+
+
+def get_geocode(key):
+    resp = requests.get(
+        url=API_IPGEOCODE.format(key=key),
+        timeout=10,
+    )
+
+    if resp.status_code != 200:
+        sys.exit("not able to reach ipgeocode api endpoint")
+
+    # Get info from response
+    resp_json = resp.json()
+    if resp_json is None:
+        sys.exit("api ipgeocode response is empty")
+
+    lat = resp_json.get("latitude")
+    if lat is None:
+        sys.exit("lat not found in response")
+
+    long = resp_json.get("longitude")
+    if lat is None:
+        sys.exit("long not found in response")
+
+    return "{},{}".format(lat, long)
 
 
 def weather(path):
+    """
+
+    Arguments:
+        path: A string containing the file path to the config file
+
+    Returns:
+        A string
+    """
 
     weather = "{rain}{pad}{icon}  {temp}°C"
 
@@ -38,12 +72,19 @@ def weather(path):
     except:
         sys.exit("not able to load config file")
 
-    key = config.get("key")
-    if key is "" or key is None:
-        sys.exit("api key is not defined")
+    key_darksky = config.get("key_darksky")
+    if key_darksky == "" or key_darksky is None:
+        sys.exit("api key_darksky is not defined")
+
+    key_geocode = config.get("key_geocode")
+    if key_geocode == "" or key_geocode is None:
+        sys.exit("api key_geocode is not defined")
 
     geocode = config.get("geocode")
-    if geocode is "" or geocode is None:
+    if call_allowed:
+        geocode = get_geocode(key_geocode)
+
+    if geocode == "" or geocode is None:
         sys.exit("geocode is not defined")
 
     if call_allowed(config) is False:
@@ -55,15 +96,15 @@ def weather(path):
         )
 
     resp = requests.get(
-        url=API.format(
-            key=config.get("key"),
+        url=API_DARKSKY.format(
+            key=config.get("key_darksky"),
             geocode=config.get("geocode"),
         ),
         timeout=10,
     )
 
     if resp.status_code != 200:
-        sys.exit("not able to reach api endpoint")
+        sys.exit("not able to reach darksky api endpoint")
 
     # Get info from response
     resp_json = resp.json()
@@ -84,6 +125,7 @@ def weather(path):
     config["icon"] = icon
     config["temp"] = temp
     config["rain"] = rain
+    config["geocode"] = geocode
     config["last_check"] = datetime.datetime.now().timestamp()
 
     with open(path, "w") as f:
@@ -98,6 +140,15 @@ def weather(path):
 
 
 def get_rain(resp_json):
+    """From the json response check if there is a high enough chance of
+    rain.
+
+    Arguments:
+        resp_json: A dict
+
+    Returns:
+        A string
+    """
     if resp_json.get("hourly").get("data") is None:
         return ""
 
@@ -162,6 +213,14 @@ def get_icon(resp_json):
 
 
 def call_allowed(config):
+    """Check if we're allowed to make additional API calls
+
+    Arguments:
+        config: A dict
+
+    Returns:
+        A Boolean
+    """
     last_check = datetime.datetime.fromtimestamp(config.get("last_check"))
     now = datetime.datetime.now()
 
@@ -177,7 +236,7 @@ def call_allowed(config):
 def create_config(path):
     config = {
         "geocode": "",
-        "key": "",
+        "key_darksky": "",
         "icon": "",
         "rain": "",
         "last_check": datetime.datetime.now().timestamp(),
