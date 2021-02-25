@@ -398,24 +398,24 @@ let NERDTreeAutoDeleteBuffer = 1
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " NERDTree: File highlighting
-" function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
-"     exec 'autocmd FileType nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
-"     exec 'autocmd FileType nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
-" endfunction
+function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
+    exec 'autocmd FileType nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
+    exec 'autocmd FileType nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
+endfunction
 
-" call NERDTreeHighlightFile('ini', 'yellow', 'none', '#d8a235', 'none')
-" call NERDTreeHighlightFile('yml', 'yellow', 'none', '#d8a235', 'none')
-" call NERDTreeHighlightFile('conf', 'yellow', 'none', '#d8a235', 'none')
-" call NERDTreeHighlightFile('json', 'green', 'none', '#d8a235', 'none')
-" call NERDTreeHighlightFile('js', 'yellow', 'none', '#F8DC3D', 'none')
-" call NERDTreeHighlightFile('py', 'blue', 'none', '#376F9D', 'none')
-" call NERDTreeHighlightFile('md', 'blue', 'none', '#679EB5', 'none')
-" call NERDTreeHighlightFile('sh', 'blue', 'none', '#AB74A0', 'none')
-" call NERDTreeHighlightFile('go', 'blue', 'none', '#6AD7E5', 'none')
-" call NERDTreeHighlightFile('html', 'red', 'none', '#E44D26', 'none')
-" call NERDTreeHighlightFile('jsx', 'cyan', 'none', '#00d8ff', 'none')
-" call NERDTreeHighlightFile('css', 'blue', 'none', '#1C70B0', 'none')
-" call NERDTreeHighlightFile('scss', 'cyan', 'none', '#C6538C', 'none')
+call NERDTreeHighlightFile('ini', 'yellow', 'none', '#d8a235', 'none')
+call NERDTreeHighlightFile('yml', 'yellow', 'none', '#d8a235', 'none')
+call NERDTreeHighlightFile('conf', 'yellow', 'none', '#d8a235', 'none')
+call NERDTreeHighlightFile('json', 'green', 'none', '#d8a235', 'none')
+call NERDTreeHighlightFile('js', 'yellow', 'none', '#F8DC3D', 'none')
+call NERDTreeHighlightFile('py', 'blue', 'none', '#376F9D', 'none')
+call NERDTreeHighlightFile('md', 'blue', 'none', '#679EB5', 'none')
+call NERDTreeHighlightFile('sh', 'blue', 'none', '#AB74A0', 'none')
+call NERDTreeHighlightFile('go', 'blue', 'none', '#6AD7E5', 'none')
+call NERDTreeHighlightFile('html', 'red', 'none', '#E44D26', 'none')
+call NERDTreeHighlightFile('jsx', 'cyan', 'none', '#00d8ff', 'none')
+call NERDTreeHighlightFile('css', 'blue', 'none', '#1C70B0', 'none')
+call NERDTreeHighlightFile('scss', 'cyan', 'none', '#C6538C', 'none')
 
 
 " NERDTree: Set colors
