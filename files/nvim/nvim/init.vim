@@ -76,7 +76,8 @@ Plug 'https://github.com/Raimondi/delimitMate'
 Plug 'https://github.com/valloric/MatchTagAlways'
 Plug 'https://github.com/benekastah/neomake.git'
 Plug 'https://github.com/Shougo/deoplete.nvim'
-Plug 'https://github.com/junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'https://github.com/junegunn/fzf.git' , { 'do': { -> fzf#install() } }
+Plug 'https://github.com/junegunn/fzf.vim.git'
 Plug 'https://github.com/terryma/vim-multiple-cursors'
 Plug 'https://github.com/sbdchd/neoformat'
 Plug 'https://github.com/rhysd/vim-grammarous'
@@ -469,14 +470,12 @@ augroup nerdtreeconcealbrackets
     autocmd FileType nerdtree setlocal concealcursor=nvic
 augroup END
 
-" PyMode: configuration
-" let g:pymode_rope_complete_on_dot = 0
-" let g:pymode_folding=0
-" let g:pymode_lint_cwindow=0
-" set completeopt-=preview
-
 " VimGo: enable goimports to automatically insert import paths instead of gofmt
 let g:go_fmt_command = "goimports"
+let g:go_fmt_fail_silently = 0
+let g:go_autodetect_gopath = 1
+let g:go_fmt_autosave = 1
+let g:go_snippet_engine = "neosnippet"
 
 " VimGo: syntax highlighting for functions, methods and structs
 let g:go_highlight_functions = 1
@@ -484,6 +483,27 @@ let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
+
+au FileType go nmap <Leader>s <Plug>(go-def-split)
+au FileType go nmap <Leader>v <Plug>(go-def-vertical)
+au FileType go nmap <Leader>i <Plug>(go-info)
+au FileType go nmap <Leader>l <Plug>(go-metalinter)
+
+au FileType go nmap <leader>r  <Plug>(go-run)
+
+au FileType go nmap <leader>b  <Plug>(go-build)
+au FileType go nmap <leader>t  <Plug>(go-test)
+au FileType go nmap <leader>dt  <Plug>(go-test-compile)
+au FileType go nmap <Leader>d <Plug>(go-doc)
+
+au FileType go nmap <Leader>e <Plug>(go-rename)
+
+" neovim specific
+if has('nvim')
+  au FileType go nmap <leader>rt <Plug>(go-run-tab)
+  au FileType go nmap <Leader>rs <Plug>(go-run-split)
+  au FileType go nmap <Leader>rv <Plug>(go-run-vertical)
+endif
 
 " LightLine: configuration
 set laststatus=2
