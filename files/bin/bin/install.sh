@@ -279,11 +279,19 @@ function golang() {
         github.com/erroneousboat/slack-term \
         github.com/erroneousboat/dot \
         github.com/jingweno/ccat \
-        github.com/golang/dep/... \
-        github.com/kardianos/govendor \
         github.com/derekparker/delve/cmd/dlv \
         github.com/junegunn/fzf
     )
+}
+
+function rust() {
+    echo ">>> Installing Rust"
+
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+    cargo install \
+        alacritty \
+        ripgrep
 }
 
 # Install: Node
@@ -683,6 +691,8 @@ usage() {
     echo "  python                              - setup python packages"
     echo "  golang [version]                    - setup golang language and packages"
     echo "  node [version]                      - setup node and packages"
+    echo "  rust                                - setup rust and packages"
+    echo "  c [version]                         - setup c and packages"
     echo "  docker                              - setup docker"
     echo "  gcloud [version]                    - setup gcloud"
     echo "  chrome                              - setup chrome"
@@ -723,6 +733,8 @@ main() {
         python
     elif [[ $cmd == "golang" ]]; then
         golang "$2"
+    elif [[ $cmd == "rust" ]]; then
+        rust
     elif [[ $cmd == "node" ]]; then
         node "$2"
     elif [[ $cmd == "docker" ]]; then
