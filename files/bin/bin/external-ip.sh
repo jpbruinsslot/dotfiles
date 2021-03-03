@@ -21,7 +21,7 @@
 #
 ##############################################################################
 
-INTERFACE="wl*"
+INTERFACE="wlp*"
 IP=$(dig +short myip.opendns.com @resolver1.opendns.com)
 ERR="$?"
 
@@ -30,9 +30,9 @@ if [ -z "$IP" ] || [ "$ERR" -ne 0 ]; then
 fi
 
 if [ ! -d /sys/class/net/${INTERFACE}/wireless ] || [ "$(cat /sys/class/net/${INTERFACE}/operstate)" = 'down' ]; then
-    echo " ${IP}"
+    echo "  🌐${IP}"
 else
     QUALITY=$(grep $INTERFACE /proc/net/wireless | awk '{ print int($3 * 100 / 70) }')
 
-    echo "  ${IP}"
+    echo "  ${QUALITY}%  🌐${IP}"
 fi
