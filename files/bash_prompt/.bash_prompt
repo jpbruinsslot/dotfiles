@@ -105,18 +105,17 @@ else
 	userStyle="\[$bldgrn\]";
 fi;
 
-PS1="\\[\\033]0;\\w\\007\\]";           # title to working directory
-PS1+="\\[$bldblu\\]${cloud}";           # cloud
-PS1+="${userStyle}\u";                  # user name
-PS1+="\\[$bldblu\\]@";                  # @
-PS1+="${hostStyle}\h";                  # host
-PS1+="\\[$bldred\\]:";                  # :
-PS1+="\\[$bldblu\\]\w ";                # working directory
-PS1+="\$(prompt_git)";                  # git
-PS1+="\\[$bldblu\\]$ ";                 # $
-PS1+="\\[$reset\\]";
+PS1="\[$bldblu\\]${cloud}";         # cloud
+PS1+="${userStyle}\u";              # user name
+PS1+="\[$bldblu\\]@";               # @
+PS1+="${hostStyle}\h";              # host
+PS1+="\[$bldred\\]:";               # :
+PS1+="\[$bldblu\\]\w ";             # working directory
+PS1+="\$(prompt_git)";              # git
+PS1+="\[$bldblu\\]$ ";              # $
+PS1+="\[$reset\\]";
 
 export PS1;
 
-PS2="\\[${yellow}\\]> \\[${reset}\\]";
+PS2="\[${yellow}\]> \[${reset}\]";
 export PS2;
