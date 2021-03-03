@@ -120,6 +120,7 @@ function base() {
         gnupg \
         gnupg2 \
         google-chrome-stable \
+        grc \
         chrome-gnome-shell \
         htop \
         indent \
