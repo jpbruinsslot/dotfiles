@@ -72,48 +72,52 @@ function parse_git_dirty {
 }
 
 prompt_git() {
-    local s="";
+    local s=""
 
 	BRANCH=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
-
 	if [ ! "${BRANCH}" == "" ]; then
         STATUS=$(parse_git_dirty)
-        s="$bldgrn(${BRANCH}$bldred${STATUS}$bldgrn) "
+        s="${bldgrn}(${BRANCH}${bldmag}${STATUS}${bldgrn}) "
         echo "${s}"
 	fi
 
-    return;
+    return
 }
 
 # Set cloud icon when in cloud environment
 cloud=""
 if [[ -f /proc/cpuinfo ]] && grep -q "^flags.* hypervisor" /proc/cpuinfo && [[ ! -d "/mnt/c/Windows/" ]]; then
-    cloud=" "
+    cloud="  "
 fi
+
+# Set docker icon when running docker container in cwd
+docker=""
 
 # Highlight the hostname when connected via SSH.
 if [[ "${SSH_TTY}" ]]; then
-	hostStyle="\[$bldmag\]";
+	hostStyle="${bldmag}";
 else
-	hostStyle="\[$bldgrn\]";
+	hostStyle="${bldcyn}";
 fi;
 
 # Highlight the user name when logged in as root.
 if [[ "${USER}" == "root" ]]; then
-	userStyle="\[$bldmag\]";
+	userStyle="${bldmag}";
 else
-	userStyle="\[$bldgrn\]";
+	userStyle="${bldcyn}";
 fi;
 
-PS1="\[$bldblu\\]${cloud}";         # cloud
-PS1+="${userStyle}\u";              # user name
-PS1+="\[$bldblu\\]@";               # @
-PS1+="${hostStyle}\h";              # host
-PS1+="\[$bldred\\]:";               # :
-PS1+="\[$bldblu\\]\w ";             # working directory
-PS1+="\$(prompt_git)";              # git
-PS1+="\[$bldblu\\]$ ";              # $
-PS1+="\[$reset\\]";
+
+PS1="\[${cloud}\]";                     # cloud
+PS1+="\[${userStyle}\]\u";              # user name
+PS1+="\[$bldblu\]@";                    # @
+PS1+="\[${hostStyle}\]\h";              # host
+PS1+="\[$bldwht\]:";                    # :
+PS1+="\[$bldblu\]\w ";                  # working directory
+PS1+="\$(prompt_git)";                  # git
+# PS1+="\[$bldylw\]\${docker}  ";     # docker
+PS1+="\[$bldblu\]$ ";                   # $
+PS1+="\[$reset\]";
 
 export PS1;
 
