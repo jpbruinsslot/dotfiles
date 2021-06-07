@@ -149,6 +149,10 @@ function screen() {
 # What the hell did I do yesterday, will return all commits on local branches
 # in the last `n` days.
 #
+# Example:
+#   $ standup
+#   $ standup 14
+#   $ standup 1983-10-28
 #
 # Helpful format sources:
 # - https://git-scm.com/docs/pretty-formats
@@ -168,7 +172,13 @@ function standup() {
         fi
     fi
 
-    git log "$date" --all --pretty=format:"%C(auto,yellow)%h%C(auto,blue)%>(12,trunc)%ad  %C(auto,reset)%s %C(auto,red)% gD% D" --date=short --author="\(J.P.H. Bruins Slot\)\|\(Jan Pieter\)\|\(erroneousboat\)" && cd ${pwd}
+
+    git log "$date" \
+        --all \
+        --pretty=format:"%C(auto,yellow)%h%C(auto,blue)%>(12,trunc)%ad  %C(auto,reset)%s %C(auto,red)% gD% D" \
+        --date=short \
+        --author="\($(git config user.name)\)\|\($(git config user.email)\)" \
+        && cd ${pwd}
 }
 
 # $ extract
