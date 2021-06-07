@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+function main {
+    dir="$HOME/Projects/safaribooks"
+    cur=${pwd}
+
+    cd $dir
+
+    python3 $dir/cookies.py
+    python3 $dir/safaribooks.py "$1"
+    mv $dir/Books/*"$1"* $HOME/Books
+
+    cd $cur
+}
+
+main "$@"
