@@ -47,9 +47,9 @@ function window_dashboard() {
     local wid=$2
 
     if [[ $wid == 0 ]]; then
-        tmux rename-window ""
+        tmux rename-window ""
     else
-        tmux new-window -t "$sid:$wid" -n ""
+        tmux new-window -t "$sid:$wid" -n ""
     fi
 
     tmux split-window -v
@@ -60,7 +60,7 @@ function window_dashboard() {
     # NOTE: view without sudo
     # sudo usermod -aG adm $USER
     tmux select-pane -t 1
-    tmux send-keys "multitail /var/log/syslog" C-m
+    tmux send-keys "grc tail -fq /var/log/syslog /var/log/auth.log /var/log/kern.log /var/log/user.log" C-m
 }
 
 function window_code() {
