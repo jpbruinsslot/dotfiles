@@ -13,6 +13,9 @@ export PATH=/usr/local/go/bin:$PATH
 export GOPATH=$HOME/go
 export PATH=$GOPATH/bin:$PATH
 
+# Rust
+export PATH=$HOME/.cargo/bin:$PATH
+
 # Node
 export PATH=/usr/local/lib/node/bin:$PATH
 
