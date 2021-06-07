@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+rm $HOME/.cache/dmenu_run && source ~/.path
+dmenu_run -m 0 -b -fn "Hack Nerd Font Mono-14"
