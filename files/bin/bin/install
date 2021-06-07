@@ -67,6 +67,11 @@ EOF
 deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
 EOF
 
+    cat <<-EOF > /etc/apt/sources.list.d/llvm.list
+    deb http://apt.llvm.org/buster/ llvm-toolchain-buster main
+deb-src http://apt.llvm.org/buster/ llvm-toolchain-buster main
+EOF
+
 	# Import the Google Chrome public key
 	curl https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
 
@@ -220,6 +225,8 @@ function python() {
     sudo -H pip3 install --no-cache-dir --upgrade --force-reinstall \
         asciinema \
         bpytop \
+        black \
+        cpplint \
         docker-compose \
         flake8 \
         bpytop \
@@ -299,7 +306,7 @@ function rust() {
 function node() {
     echo ">>> Installing Node"
 
-    NODE_VERSION=11.12.0
+    NODE_VERSION=14.16.0
 
 	if [[ ! -z "$1" ]]; then
 		NODE_VERSION=$1
@@ -317,13 +324,22 @@ function node() {
     cd "$HOME"
 
     # Create symlinks to use sudo
-    sudo ln -s /usr/local/lib/node/bin/node /usr/local/bin/node
-    sudo ln -s /usr/local/lib/node/bin/npm /usr/local/bin/npm
-    sudo ln -s /usr/local/lib/node/bin/npx /usr/local/bin/npx
+    if [[ ! -f /usr/local/bin/node ]]; then
+        sudo ln -s /usr/local/lib/node/bin/node /usr/local/bin/node
+    fi
+
+    if [[ ! -f /usr/local/bin/npm ]]; then
+        sudo ln -s /usr/local/lib/node/bin/npm /usr/local/bin/npm
+    fi
+
+    if [[ ! -f /usr/local/bin/npx ]]; then
+        sudo ln -s /usr/local/lib/node/bin/npx /usr/local/bin/npx
+    fi
 
     # Install: NPM packages
     echo "... Installing NPM packages"
     sudo npm -g install \
+        npm \
         eslint \
         eslint-plugin-import \
         eslint-config-airbnb \
@@ -360,6 +376,26 @@ function docker() {
     sudo service docker restart
 
     echo "Remember to logout for this to take effect"
+}
+
+function rofi() {
+    echo ">>> Installing tmux"
+
+    if [[ -d /tmp/rofi ]]; then
+        rm -rf /tmp/rofi
+    fi
+
+    git clone --recursive https://github.com/davatorium/rofi.git /tmp/rofi
+
+    cd /tmp/rofi
+    git submodule update --init
+    autoreconf -i
+    mkdir build && cd build
+    ../configure
+    make
+    sudo make install
+
+    cd "$HOME"
 }
 
 # Install: Tmux
@@ -760,6 +796,8 @@ main() {
     elif [[ $cmd == "fonts" ]]; then
 		check_is_sudo
         fonts
+    elif [[ $cmd == "rofi" ]]; then
+        rofi
     elif [[ $cmd == "misc" ]]; then
 		check_is_sudo
         misc
