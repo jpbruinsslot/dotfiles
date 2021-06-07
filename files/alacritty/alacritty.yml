@@ -21,7 +21,7 @@ env:
   # each instance of Alacritty. If it is not present, alacritty will
   # check the local terminfo database and use `alacritty` if it is
   # available, otherwise `xterm-256color` is used.
-  TERM: xterm-256color
+  TERM: xterm-256color-italic
 
 window:
   # Window dimensions (changes require restart)
@@ -177,10 +177,67 @@ draw_bold_text_with_bright_colors: true
 
 # Colors (Tomorrow Night)
 colors:
-  # Default colors
+
+  # Nord (https://github.com/arcticicestudio/nord-alacritty)
   primary:
-    background: '0x2a2a2a'
-    foreground: '0xf8f8f2'
+    background: '#2e3440'
+    foreground: '#d8dee9'
+    dim_foreground: '#a5abb6'
+
+  cursor:
+    text: '#2e3440'
+    cursor: '#d8dee9'
+
+  vi_mode_cursor:
+    text: '#2e3440'
+    cursor: '#d8dee9'
+
+  selection:
+    text: CellForeground
+    background: '#4c566a'
+
+  search:
+    matches:
+      foreground: CellBackground
+      background: '#88c0d0'
+    bar:
+      background: '#434c5e'
+      foreground: '#d8dee9'
+
+  normal:
+    black: '#3b4252'
+    red: '#bf616a'
+    green: '#a3be8c'
+    yellow: '#ebcb8b'
+    blue: '#81a1c1'
+    magenta: '#b48ead'
+    cyan: '#88c0d0'
+    white: '#e5e9f0'
+
+  bright:
+    black: '#4c566a'
+    red: '#bf616a'
+    green: '#a3be8c'
+    yellow: '#ebcb8b'
+    blue: '#81a1c1'
+    magenta: '#b48ead'
+    cyan: '#8fbcbb'
+    white: '#eceff4'
+
+  dim:
+    black: '#373e4d'
+    red: '#94545d'
+    green: '#809575'
+    yellow: '#b29e75'
+    blue: '#68809a'
+    magenta: '#8c738c'
+    cyan: '#6d96a5'
+    white: '#aeb3bb'
+
+  # Default colors
+  # primary:
+  #   background: '0x2a2a2a'
+  #   foreground: '0xf8f8f2'
 
     # Bright and dim foreground colors
     #
@@ -249,26 +306,26 @@ colors:
   #  background: CellForeground
 
   # Normal colors
-  normal:
-    black:   '0x212223'
-    red:     '0xff2c73'
-    green:   '0x7cb231'
-    yellow:  '0xff9639'
-    blue:    '0x3fc0d3'
-    magenta: '0x8d55f9'
-    cyan:    '0x465557'
-    white:   '0xcbcbc5'
+  # normal:
+  #   black:   '0x212223'
+  #   red:     '0xff2c73'
+  #   green:   '0x7cb231'
+  #   yellow:  '0xff9639'
+  #   blue:    '0x3fc0d3'
+  #   magenta: '0x8d55f9'
+  #   cyan:    '0x465557'
+  #   white:   '0xcbcbc5'
 
   # Bright colors
-  bright:
-    black:   '0x515455'
-    red:     '0xff5a94'
-    green:   '0xb0e261'
-    yellow:  '0xffec77'
-    blue:    '0x7becfd'
-    magenta: '0x9f6ff9'
-    cyan:    '0x869b9f'
-    white:   '0xf8f8f2'
+  # bright:
+  #   black:   '0x515455'
+  #   red:     '0xff5a94'
+  #   green:   '0xb0e261'
+  #   yellow:  '0xffec77'
+  #   blue:    '0x7becfd'
+  #   magenta: '0x9f6ff9'
+  #   cyan:    '0x869b9f'
+  #   white:   '0xf8f8f2'
 
   # Dim colors
   #
@@ -389,7 +446,7 @@ cursor:
   #thickness: 0.15
 
 # Live config reload (changes require restart)
-#live_config_reload: true
+live_config_reload: true
 
 # Shell
 #
