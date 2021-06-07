@@ -26,6 +26,21 @@ set completion-query-items 200
 # Show extra file information when completing, like `ls -F` does
 set visible-stats on
 
+# Color files by types
+set colored-stats on
+
+# Append char to indicate type
+set visible-stats on
+
+# Mark symlinked directories
+set mark-symlinked-directories on
+
+# Color the common prefix
+set colored-completion-prefix on
+
+# Color the common prefix in menu-complete
+set menu-complete-display-prefix on
+
 # Be more intelligent when autocompleting by also looking at the text after
 # the cursor. For example, when the current line is "cd ~/src/mozil", and
 # the cursor is on the "z", pressing Tab will not autocomplete it to "cd
@@ -47,6 +62,24 @@ set convert-meta off
 
 # Vi-mode settings (http://vim.wikia.com/wiki/Use_vi_shortcuts_in_terminal)
 
+# a full example omiting the wrapping \1 and \2
+#
+# \e[     (open sequence: ESC CSI)
+# 48;5;   (specifies 256 bg)
+# 46      (bg color)
+# m       (end)
+# 1;      (bold)
+# 38;5;   (specifies 256 fg)
+# 21      (fg color)
+# m       (end)
+# COMMAND (some text to display)
+# \e[     (open sequence)
+# 0       (reset)
+# m       (end)
+# \e[     (open sequence)
+# 0       (cursor type)
+# q       (end)
+
 # Adds character to the beginning of the prompt indicating the current editing
 # mode
 set show-mode-in-prompt on
@@ -55,8 +88,14 @@ set show-mode-in-prompt on
 set editing-mode vi
 
 # Custom mode strings for modes
-set vi-ins-mode-string \1\e[31;1m\2... \1\e[0m\2
-set vi-cmd-mode-string \1\e[31;1m\2>>> \1\e[0m\2
+# set vi-cmd-mode-string "\1\e[48;5;4m\2\1\e[1;38;5;18m\2 N \1\e[0m\2 \1\e[0 q\2"
+# set vi-ins-mode-string "\1\e[48;5;7m\2\1\e[1;38;5;18m\2 I \1\e[0m\2 \1\e[0 q\2"
+set vi-cmd-mode-string \1\e[31;1m\2 ≡ \1\e[0m\2
+set vi-ins-mode-string \1\e[31;1m\2 > \1\e[0m\2
+# set vi-ins-mode-string \1\e[31;1m\2> \1\e[0m\2
+# set vi-cmd-mode-string \1\e[31;1m\2# \1\e[0m\2
+# set vi-cmd-mode-string "\1\e[0 q\2"
+# set vi-ins-mode-string "\1\e[6 q\2"
 
 # Keymaps for when we're in command mode
 set keymap vi-command
