@@ -27,6 +27,7 @@
 		"path": "/.path",
 		"rofi": "/.config/rofi/config",
 		"terminfo": "/.terminfo",
+		"themes": "/.themes/",
 		"tmux": "/.tmux.conf",
 		"zshrc": "/.zshrc"
 	}
