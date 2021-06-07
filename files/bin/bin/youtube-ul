@@ -26,20 +26,12 @@ set -o errexit
 set -o pipefail
 
 function check_tools() {
-    UPLOAD=$(which youtubeuploader)
-    if [ -z $UPLOAD  ]; then
-        echo "ERROR: could not find 'youtubeuploader', is it installed?"
-        exit 1
-    fi
-
-    DOWNLOAD=$(which youtube-dl)
-    if [ -z $DOWNLOAD ]; then
+    if ! [ -x "$(command -v youtube-dl)" ]; then
         echo "ERROR: could not find 'youtube-dl', is it installed?"
         exit 1
     fi
     
-    JQ=$(which jq)
-    if [ -z $JQ ]; then
+    if ! [ -x "$(command -v jq)" ]; then
         echo "ERROR: could not find 'jq', is it installed?"
         exit 1
     fi
@@ -48,16 +40,23 @@ function check_tools() {
 function download() {
     local url
     local pl
+    local host
+    local location
 
     if [[ -z "$2" ]]; then
         url=$1
+        host=$2
+        location=$3
     else
         pl=$1
         url=$2
+        host=$3
+        location=$4
     fi
 
     resp=$(youtube-dl -j --no-check-certificate ${url})
 
+    # If no specific playlist is set check from response
     if [[ -z "$pl" ]]; then
         pl=$(echo $(jq -r '.playlist' <<< "${resp}"))
         if [[ $pl == "null" ]]; then
@@ -70,23 +69,14 @@ function download() {
     tmp_dir=$(mktemp -d -t yul-XXXXXXXXXX)
     youtube-dl --no-check-certificate -o ${tmp_dir}"/%(id)s.%(ext)s" ${url}
 
-    if [[ ! -z "$pl" ]]; then
-        plt="\"playlistTitles\":  [\"${pl}\"],"
-    fi
-
-    tmp_file=$(mktemp -t yul-XXXXXXXXXX)
-    cat > $tmp_file <<-EOF
-{
-  ${plt}
-  "title": "${title}",
-  "privacyStatus": "private"
-}
-EOF
-
     files=$(ls $tmp_dir/*)
     for file in $files; do
         echo $file
-        youtubeuploader -filename "${file}" -metaJSON $tmp_file
+        if [[-z "$pl"]]; then
+            ssh $host mkdir -p ${location}/${pl}
+        fi
+
+        scp $file $host:${location}/${pl}
     done
 }
 
@@ -94,6 +84,8 @@ usage() {
     echo "youtube-ul [options] [url]"
     echo ""
     echo "-p, --playlist        - set playlist"
+    echo "-h, --host            - specify host"
+    echo "-l, --location        - specify location"
 }
 
 main() {
@@ -105,6 +97,16 @@ main() {
         key="$1"
 
         case $key in
+        -h|--host)
+            HOST="$2"
+            shift # past argument
+            shift # past value
+            ;;
+        -l|--location)
+            LOCATION="$2"
+            shift # past argument
+            shift # past value
+            ;;
         -p|--playlist)
             PLAYLIST="$2"
             shift # past argument
@@ -121,11 +123,24 @@ main() {
 
     URL=$1
     if [[ -z "$URL" ]]; then
+        echo -e "ERROR: please specify a youtube url\n"
         usage
         exit 1
     fi
 
-    download $PLAYLIST $URL
+    if [[ -z "$HOST" ]]; then
+        echo -e "ERROR: please specify a youtube url\n"
+        usage
+        exit 1
+    fi
+
+    if [[ -z "$LOCATION" ]]; then
+        echo -e "ERROR: please specify a youtube url\n"
+        usage
+        exit 1
+    fi
+
+    download $PLAYLIST $URL $HOST $LOCATION
 }
 
 main "$@"
