@@ -1,146 +1,166 @@
+// :messages
+// :CocInfo
 {
-  "suggest.completionItemKindLabels": {
-    "keyword": "\uf1de",
-    "variable": "\ue79b",
-    "value": "\uf89f",
-    "operator": "\u03a8",
-    "function": "\u0192",
-    "reference": "\ufa46",
-    "constant": "\uf8fe",
-    "method": "\uf09a",
-    "struct": "\ufb44",
-    "class": "\uf0e8",
-    "interface": "\uf417",
-    "text": "\ue612",
-    "enum": "\uf435",
-    "enumMember": "\uf02b",
-    "module": "\uf40d",
-    "color": "\ue22b",
-    "property": "\ue624",
-    "field": "\uf9be",
-    "unit": "\uf475",
-    "event": "\ufacd",
-    "file": "\uf723",
-    "folder": "\uf114",
-    "snippet": "\ue60b",
-    "typeParameter": "\uf728",
-    "default": "\uf29c"
-  },
-  "codeLens.enable": true,
-  "codeLens.separator": "‣",
-  "diagnostic.errorSign": "",
-  "diagnostic.warningSign": "",
-  "diagnostic.infoSign": "",
-  "diagnostic.hintSign": "",
-  "coc.preferences.extensionUpdateCheck": "daily",
-  "coc.preferences.formatOnType": true,
-  "coc.preferences.formatOnSaveFiletypes": [
-    "python",
-    "javascript",
-    "json",
-    "go",
-    "c",
-    "rust"
-  ],
-
-  // coc-diagnostic (https://github.com/iamcco/coc-diagnostic)
-  "diagnostic-languageserver.mergeConfig": true,
-  "diagnostic-languageserver.formatters": {
-    "clang-format": {
-      "command": "clang-format",
-      "args": [
-        "-style={BasedOnStyle: llvm, IndentWidth: 4, AllowShortFunctionsOnASingleLine: None, KeepEmptyLinesAtTheStartOfBlocks: false}"
-      ]
-    }
-  },
-  "diagnostic-languageserver.formatFiletypes": {
-    "c": "clang-format"
-  },
-
-  // coc-explorer (https://github.com/weirongxu/coc-explorer)
-  "explorer.width": 30,
-  "explorer.icon.enableNerdfont": true,
-  "explorer.keyMappingMode": "none",
-  "explorer.buffer.root.template": "[icon & 1] BUFFER",
-  "explorer.file.root.template": "[icon & 1] PROJECT ([root])",
-  "explorer.file.child.template": "[git | 2] [selection | clip | 1] [indent][icon | 1] [diagnosticError & 1][filename omitCenter 1][modified][readonly] [linkIcon & 1][link growRight 1 omitCenter 5]",
-  "explorer.keyMappings.global": {
-    "s": "toggleSelection",
-    "<leader>": "actionMenu",
-
-    "h": "indentPrev",
-    "l": "indentNext",
-    "<cr>": ["expandable?", ["expanded?", "collapse", "expand"], "open"],
-    "o": "open",
-    "t": "open:tab",
-    "<bs>": "gotoParent",
-
-    "Y": "copyFilepath",
-    "y": "copyFilename",
-    "c": "copyFile",
-    "x": "cutFile",
-    "p": "pasteFile",
-    "d": "delete",
-    "D": "deleteForever",
-
-    "a": "addFile",
-    "A": "addDirectory",
-    "r": "rename",
-
-    ".": "toggleHidden",
-    "R": "refresh",
-    "<C-p>": "preview",
-
-    "?": "help",
-    "<esc>": "esc",
-    "e": "systemExecute",
-
-    "f": "searchRecursive",
-
-    "gf": "gotoSource:file",
-    "gb": "gotoSource:buffer",
-
-    "gk": "gitPrev",
-    "gj": "gitNext",
-    "ga": "gitStage",
-    "gu": "gitUnstage"
-  },
-  "explorer.git.enable": true,
-  "explorer.git.icon.status.added": "",
-  "explorer.git.icon.status.modified": "",
-  "explorer.git.icon.status.renamed": "",
-  "explorer.git.icon.status.deleted": "",
-  "explorer.git.icon.status.untracked": "★",
-  "explorer.git.icon.status.unmerged": "",
-
-  // python: coc-pyright (https://github.com/fannheyward/coc-pyright)
-  "python.pythonPath": "/usr/local/bin/python3.9",
-  "python.formatting.provider": "black",
-  "python.linting.mypyEnabled": true,
-  "python.linting.pytypeEnabled": true,
-  "python.linting.pylintEnabled": true,
-  "python.linting.flake8Enabled": true,
-  "python.linting.banditEnabled": true,
-
-  // go: coc-go (https://github.com/josa42/coc-go)
-  "go.goplsOptions": {
-    "gofumpt": true,
-    "staticcheck": true
-  },
-
-  "languageserver": {
-    // docker (https://github.com/rcjsuen/dockerfile-language-server-nodejs)
-    "dockerfile": {
-      "command": "docker-langserver",
-      "filetypes": ["dockerfile"],
-      "args": ["--stdio"]
+    "suggest.completionItemKindLabels": {
+        "keyword": "\uf1de",
+        "variable": "\ue79b",
+        "value": "\uf89f",
+        "operator": "\u03a8",
+        "function": "\u0192",
+        "reference": "\ufa46",
+        "constant": "\uf8fe",
+        "method": "\uf09a",
+        "struct": "\ufb44",
+        "class": "\uf0e8",
+        "interface": "\uf417",
+        "text": "\ue612",
+        "enum": "\uf435",
+        "enumMember": "\uf02b",
+        "module": "\uf40d",
+        "color": "\ue22b",
+        "property": "\ue624",
+        "field": "\uf9be",
+        "unit": "\uf475",
+        "event": "\ufacd",
+        "file": "\uf723",
+        "folder": "\uf114",
+        "snippet": "\ue60b",
+        "typeParameter": "\uf728",
+        "default": "\uf29c"
     },
-    //terraform (https://github.com/juliosueiras/terraform-lsp)
-    "terraform": {
-      "command": "terraform-lsp",
-      "filetypes": ["terraform"],
-      "initializationOptions": {}
-    }
-  },
-  "clangd.path": "/home/jp/.config/coc/extensions/coc-clangd-data/install/12.0.0/clangd_12.0.0/bin/clangd"
+    "codeLens.enable": true,
+    "codeLens.separator": "‣",
+    "diagnostic.errorSign": "",
+    "diagnostic.warningSign": "",
+    "diagnostic.infoSign": "",
+    "diagnostic.hintSign": "",
+    "coc.preferences.extensionUpdateCheck": "daily",
+    // formatting: (https://github.com/neoclide/coc-prettier)
+    "coc.preferences.formatOnType": true,
+    "coc.preferences.formatOnSaveFiletypes": [
+        "python",
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+        "json",
+        "go",
+        "c",
+        "rust",
+        "css",
+        "markdown",
+        "html"
+    ],
+    // coc-diagnostic (https://github.com/iamcco/coc-diagnostic)
+    "diagnostic-languageserver.mergeConfig": true,
+    "diagnostic-languageserver.formatters": {
+        "clang-format": {
+            "command": "clang-format",
+            "args": [
+                "-style={BasedOnStyle: llvm, IndentWidth: 4, AllowShortFunctionsOnASingleLine: None, KeepEmptyLinesAtTheStartOfBlocks: false}"
+            ]
+        }
+    },
+    "diagnostic-languageserver.formatFiletypes": {
+        "c": "clang-format"
+    },
+    // coc-explorer (https://github.com/weirongxu/coc-explorer)
+    "explorer.width": 30,
+    "explorer.icon.enableNerdfont": true,
+    "explorer.keyMappingMode": "none",
+    "explorer.buffer.root.template": "[icon & 1] BUFFER",
+    "explorer.file.root.template": "[icon & 1] PROJECT ([root])",
+    "explorer.file.child.template": "[git | 2] [selection | clip | 1] [indent][icon | 1] [diagnosticError & 1][filename omitCenter 1][modified][readonly] [linkIcon & 1][link growRight 1 omitCenter 5]",
+    "explorer.keyMappings.global": {
+        "s": "toggleSelection",
+        "<leader>": "actionMenu",
+        "h": "indentPrev",
+        "l": "indentNext",
+        "<cr>": [
+            "expandable?",
+            [
+                "expanded?",
+                "collapse",
+                "expand"
+            ],
+            "open"
+        ],
+        "o": "open",
+        "t": "open:tab",
+        "<bs>": "gotoParent",
+        "Y": "copyFilepath",
+        "y": "copyFilename",
+        "c": "copyFile",
+        "x": "cutFile",
+        "p": "pasteFile",
+        "d": "delete",
+        "D": "deleteForever",
+        "a": "addFile",
+        "A": "addDirectory",
+        "r": "rename",
+        ".": "toggleHidden",
+        "R": "refresh",
+        "<C-p>": "preview",
+        "?": "help",
+        "<esc>": "esc",
+        "e": "systemExecute",
+        "f": "searchRecursive",
+        "gf": "gotoSource:file",
+        "gb": "gotoSource:buffer",
+        "gk": "gitPrev",
+        "gj": "gitNext",
+        "ga": "gitStage",
+        "gu": "gitUnstage"
+    },
+    "explorer.git.enable": true,
+    "explorer.git.icon.status.added": "",
+    "explorer.git.icon.status.modified": "",
+    "explorer.git.icon.status.renamed": "",
+    "explorer.git.icon.status.deleted": "",
+    "explorer.git.icon.status.untracked": "★",
+    "explorer.git.icon.status.unmerged": "",
+    // python: coc-pyright (https://github.com/fannheyward/coc-pyright)
+    "python.pythonPath": "/usr/local/bin/python3.9",
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": [
+        "--line-length",
+        "79"
+    ],
+    "python.linting.mypyEnabled": true,
+    "python.linting.pytypeEnabled": true,
+    "python.linting.pylintEnabled": true,
+    "python.linting.flake8Enabled": true,
+    "python.linting.banditEnabled": true,
+    // javascript: coc-tsserver (https://github.com/neoclide/coc-tsserver)
+    "tsserver.formatOnType": true,
+    // javascript: coc-eslint (https://github.com/neoclide/coc-eslint)
+    "eslint.run": "onType",
+    "eslint.format.enable": true,
+    "eslint.autoFixOnSave": true,
+    // go: coc-go (https://github.com/josa42/coc-go)
+    "go.goplsOptions": {
+        "gofumpt": true,
+        "staticcheck": true
+    },
+    "languageserver": {
+        // docker (https://github.com/rcjsuen/dockerfile-language-server-nodejs)
+        "dockerfile": {
+            "command": "docker-langserver",
+            "filetypes": [
+                "dockerfile"
+            ],
+            "args": [
+                "--stdio"
+            ]
+        },
+        //terraform (https://github.com/juliosueiras/terraform-lsp)
+        "terraform": {
+            "command": "terraform-lsp",
+            "filetypes": [
+                "terraform"
+            ],
+            "initializationOptions": {}
+        }
+    },
+    "clangd.path": "/home/jp/.config/coc/extensions/coc-clangd-data/install/12.0.0/clangd_12.0.0/bin/clangd"
 }
