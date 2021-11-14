@@ -12,6 +12,11 @@ alias -- -="cd -"
 
 colorflag="--color"
 
+# $ open
+#
+# opens a file or URL in the user's preferred application
+alias open="xdg-open"
+
 # $ ll
 #
 # List all files colorized in long format
@@ -91,7 +96,7 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # Kill all the tabs in Chrome to free up memory
 #
 # [C] explained: http://www.commandlinefu.com/commands/view/402/exclude-grep-from-your-grepped-output-of-ps-alias-included-in-description
-alias chromekill="ps ux | grep '[c]hrome --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
+alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
 
 # $ share
 #
@@ -137,3 +142,50 @@ alias pro='cd ~/Projects'
 #
 # Shortcut for clear command
 alias cl='clear'
+
+# $ timer
+#
+# Stopwatch
+alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date'
+
+
+# $ pubip
+#
+# Get public IP address
+alias pubip="dig +short myip.opendns.com @resolver1.opendns.com"
+
+# $ localip
+#
+# Get local IP address
+alias localip="sudo ifconfig | grep -Eo 'inet (addr:)?([0-9]*\\.){3}[0-9]*' | grep -Eo '([0-9]*\\.){3}[0-9]*' | grep -v '127.0.0.1'"
+
+# $ ips
+#
+# Get all IP addresses
+alias ips="sudo ifconfig -a | grep -o 'inet6\\? \\(addr:\\)\\?\\s\\?\\(\\(\\([0-9]\\+\\.\\)\\{3\\}[0-9]\\+\\)\\|[a-fA-F0-9:]\\+\\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
+
+# $ sniff
+# 
+# View HTTP traffic
+alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
+
+# $ httpdump
+#
+# Grab the HTTP traffic
+alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\\: .*|GET \\/.*\""
+
+# $ afk
+#
+# Go AFK
+alias afk="dbus-send --type=method_call --dest=org.gnome.ScreenSaver \
+    /org/gnome/ScreenSaver org.gnome.ScreenSaver.Lock"
+
+# $ pubkey
+#
+# Pipe my public key to my clipboard.
+alias pubkey="more ~/.ssh/id_rsa.pub | xclip -selection clipboard | echo '=> Public key copied to pasteboard.'"
+
+# $ prikey
+#
+# Pipe my private key to my clipboard.
+alias prikey="more ~/.ssh/id_rsa | xclip -selection clipboard | echo '=> Private key copied to pasteboard.'"
