@@ -54,34 +54,22 @@ undmag=$under$magenta
 undcyn=$under$cyan
 undwht=$under$white
 
-# Set Prompt
-# \w = Full Path           eg.  /usr/www/html
-# \W = Current directory   eg.  html
-#
-# Sample:
-#   [Jan 01 13:37] [user@hostname ~]$ true
-#   [Jan 01 13:37] [user@hostname ~]$ false
-#    ಠ╭╮ಠ ( return value: 1 )
-#   [Jan 01 13:37] [user@hostname ~]$
-
 function parse_git_dirty {
     STATUS=$(git status 2> /dev/null | tail -n1)
     if [ "${STATUS}" != "nothing to commit, working tree clean" ]; then
-        echo "*"
+        echo -e "*"
     fi
 }
 
 prompt_git() {
-    local s=""
-
 	BRANCH=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
 	if [ ! "${BRANCH}" == "" ]; then
         STATUS=$(parse_git_dirty)
-        s="${bldgrn}(${BRANCH}${bldmag}${STATUS}${bldgrn}) "
-        echo "${s}"
+        # echo -e "${bldgrn}(${BRANCH}${bldmag}${STATUS}${bldgrn}) "
+        echo -e "(${BRANCH}${STATUS}) "
+    else 
+        return
 	fi
-
-    return
 }
 
 # Set cloud icon when in cloud environment
@@ -89,9 +77,6 @@ cloud=""
 if [[ -f /proc/cpuinfo ]] && grep -q "^flags.* hypervisor" /proc/cpuinfo && [[ ! -d "/mnt/c/Windows/" ]]; then
     cloud="  "
 fi
-
-# Set docker icon when running docker container in cwd
-docker=""
 
 # Highlight the hostname when connected via SSH.
 if [[ "${SSH_TTY}" ]]; then
@@ -107,7 +92,15 @@ else
 	userStyle="${bldcyn}";
 fi;
 
-
+# Set Prompt
+# \w = Full Path           eg.  /usr/www/html
+# \W = Current directory   eg.  html
+#
+# Sample:
+#   [Jan 01 13:37] [user@hostname ~]$ true
+#   [Jan 01 13:37] [user@hostname ~]$ false
+#    ಠ╭╮ಠ ( return value: 1 )
+#   [Jan 01 13:37] [user@hostname ~]$
 PS1="\[${cloud}\]";                     # cloud
 PS1+="\[${userStyle}\]\u";              # user name
 PS1+="\[$bldblu\]@";                    # @
@@ -115,7 +108,6 @@ PS1+="\[${hostStyle}\]\h";              # host
 PS1+="\[$bldwht\]:";                    # :
 PS1+="\[$bldblu\]\w ";                  # working directory
 PS1+="\$(prompt_git)";                  # git
-# PS1+="\[$bldylw\]\${docker}  ";     # docker
 PS1+="\[$bldblu\]$ ";                   # $
 PS1+="\[$reset\]";
 
