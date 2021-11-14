@@ -70,6 +70,7 @@ Plug 'https://github.com/kyazdani42/nvim-web-devicons'                      " fo
 Plug 'https://github.com/tomtom/tcomment_vim'                               " an extensible & universal comment vim-plugin that also handles embedded filetypes
 Plug 'https://github.com/tpope/vim-surround'                                " quoting/parentesizing made simple
 Plug 'https://github.com/Yggdroot/indentLine'                               " identation line
+Plug 'https://github.com/github/copilot.vim', { 'branch': 'release' }       " github co-pilot
 
 " https://github.com/neoclide/coc.nvim/wiki/Language-servers
 Plug 'https://github.com/neoclide/coc.nvim', { 'branch': 'release' }
