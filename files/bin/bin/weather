@@ -160,8 +160,10 @@ def get_rain(resp_json):
         return ""
 
     next_hour = resp_json.get("hourly").get("data")[0]
-    if (next_hour.get("precipType") == "rain"
-            and next_hour.get("precipProbability") > 0.20):
+    if (
+        next_hour.get("precipType") == "rain"
+        and next_hour.get("precipProbability") > 0.20
+    ):
         return ""
 
     return ""
@@ -169,8 +171,9 @@ def get_rain(resp_json):
 
 def get_icon(resp_json):
     night = True if (datetime.datetime.now().hour / 18) >= 1.0 else False
-    cloudy = True if resp_json.get("currently").get(
-        "cloudCover") >= 0.5 else False
+    cloudy = (
+        True if resp_json.get("currently").get("cloudCover") >= 0.5 else False
+    )
 
     icon = resp_json.get("currently").get("icon")
     if icon == "clear-day":
@@ -242,8 +245,9 @@ def call_allowed(config):
 
 def create_config(path):
     config = {
-        "geocode": "",
         "key_darksky": "",
+        "key_geocode": "",
+        "geocode": "",
         "icon": "",
         "rain": "",
         "last_check": datetime.datetime.now().timestamp(),
@@ -260,8 +264,8 @@ if __name__ == "__main__":
 
     parser.add_argument(
         "--config",
-        '-c',
-        dest='configuration',
+        "-c",
+        dest="configuration",
         metavar="FILE",
         default=".weather",
         help="Configuration file to use",

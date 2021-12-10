@@ -67,8 +67,9 @@ EOF
 deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
 EOF
 
+    # LLVM
     cat <<-EOF > /etc/apt/sources.list.d/llvm.list
-    deb http://apt.llvm.org/buster/ llvm-toolchain-buster main
+deb http://apt.llvm.org/buster/ llvm-toolchain-buster main
 deb-src http://apt.llvm.org/buster/ llvm-toolchain-buster main
 EOF
 
@@ -119,7 +120,11 @@ function base() {
         ca-certificates \
         coreutils \
         curl \
+        clang-11 \
+        clangd-11 \
+        clang-format-11 \
         dnsutils \
+        entr \
         fonts-hack-ttf \
         git-core \
         gnupg \
@@ -254,7 +259,7 @@ function python() {
 function golang() {
     echo ">>> Installing Golang"
 
-    GO_VERSION=1.11.4
+    GO_VERSION=1.17.5
 
 	if [[ ! -z "$1" ]]; then
 		GO_VERSION=$1
@@ -297,9 +302,27 @@ function rust() {
 
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
+    # Install components
+	rustup component add \
+        rust-src \
+        clippy \
+        rustfmt \
+        rls
+
+    # Install packages
     cargo install \
+        rust-analyzer \
         alacritty \
         ripgrep
+}
+
+function c() {
+    echo ">>> Installing C"
+
+    # LLVM
+
+    # Valgrind
+
 }
 
 # Install: Node
@@ -379,7 +402,7 @@ function docker() {
 }
 
 function rofi() {
-    echo ">>> Installing tmux"
+    echo ">>> Installing rofi"
 
     if [[ -d /tmp/rofi ]]; then
         rm -rf /tmp/rofi
@@ -441,7 +464,6 @@ function gcloud() {
 
     # Install
     ./google-cloud-sdk/install.sh --usage-reporting=true --path-update=true --bash-completion=true --rc-path=/.bashrc --additional-components app-engine-java app-engine-python kubectl alpha beta gcd-emulator pubsub-emulator
-
 
     # Update components
     gcloud components update
@@ -509,8 +531,8 @@ function dotfiles() {
 # Install: i3
 function i3() {
     echo ">>> Installing i3"
-    sudo apt-get update
-    sudo apt-get install -y i3
+    sudo apt update || true
+    sudo apt install -y i3
 }
 
 # Install: i3-apps
@@ -532,14 +554,35 @@ function i3apps() {
     sudo make install
 
     # Install additional apps
-    sudo apt-get update
-    sudo apt-get install -y --no-install-recommends \
-        alsa-utils \
-        feh \
-        i3lock \
-        i3status \
-        pulseaudio \
-        xbacklight
+	sudo apt update || true
+	sudo apt install -y \
+		bluez \
+		bluez-firmware \
+		feh \
+		i3 \
+		i3lock \
+		i3status \
+		pulseaudio \
+		pulseaudio-module-bluetooth \
+		pulsemixer \
+		scrot \
+		xclip \
+		xcompmgr \
+        xbacklight \
+		--no-install-recommends
+
+	# start and enable pulseaudio
+	systemctl --user daemon-reload
+	systemctl --user enable pulseaudio.service
+	systemctl --user enable pulseaudio.socket
+	systemctl --user start pulseaudio.service
+
+	echo "Fonts file setup successfully now run:"
+	echo "	dpkg-reconfigure fontconfig-config"
+	echo "with settings: "
+	echo "	Autohinter, Automatic, No."
+	echo "Run: "
+	echo "	dpkg-reconfigure fontconfig"
 
     cd "$HOME"
 }
@@ -606,8 +649,6 @@ function misc() {
     cd /tmp
 
     # Place installation of miscellaneous programs here
-
-    # TODO c (valgrind)
 
     # TODO dockerconfig
 
@@ -729,7 +770,7 @@ usage() {
     echo "  golang [version]                    - setup golang language and packages"
     echo "  node [version]                      - setup node and packages"
     echo "  rust                                - setup rust and packages"
-    echo "  c [version]                         - setup c and packages"
+    echo "  c                                   - setup c and packages"
     echo "  docker                              - setup docker"
     echo "  gcloud [version]                    - setup gcloud"
     echo "  chrome                              - setup chrome"
@@ -772,6 +813,8 @@ main() {
         golang "$2"
     elif [[ $cmd == "rust" ]]; then
         rust
+    elif [[ $cmd == "c" ]]; then
+        c
     elif [[ $cmd == "node" ]]; then
         node "$2"
     elif [[ $cmd == "docker" ]]; then
