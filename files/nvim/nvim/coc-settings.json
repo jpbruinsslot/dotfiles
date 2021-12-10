@@ -52,7 +52,11 @@
         "html"
     ],
     // coc-diagnostic (https://github.com/iamcco/coc-diagnostic)
+    "diagnostic-languageserver.enable": true,
     "diagnostic-languageserver.mergeConfig": true,
+    "diagnostic-languageserver.formatFiletypes": {
+        "c": "clang-format"
+    },
     "diagnostic-languageserver.formatters": {
         "clang-format": {
             "command": "clang-format",
@@ -61,8 +65,38 @@
             ]
         }
     },
-    "diagnostic-languageserver.formatFiletypes": {
-        "c": "clang-format"
+    "diagnostic-languageserver.filetypes": {
+        "c": "clang-tidy",
+        "go": [
+            "golangci-lint"
+        ]
+    },
+    "diagnostic-languageserver.linters": {
+        "clang-tidy": {
+            "command": "clang-tidy-11"
+        },
+        "golangci-lint": {
+            "command": "golangci-lint",
+            "rootPatterns": [
+                ".git",
+                "go.mod"
+            ],
+            "debounce": 100,
+            "args": [
+                "run",
+                "--out-format",
+                "json"
+            ],
+            "sourceName": "golangci-lint",
+            "parseJson": {
+                "sourceName": "Pos.Filename",
+                "sourceNameFilter": true,
+                "errorsRoot": "Issues",
+                "line": "Pos.Line",
+                "column": "Pos.Column",
+                "message": "${Text} [${FromLinter}]"
+            }
+        }
     },
     // coc-explorer (https://github.com/weirongxu/coc-explorer)
     "explorer.width": 30,
@@ -162,5 +196,8 @@
             "initializationOptions": {}
         }
     },
-    "clangd.path": "/home/jp/.config/coc/extensions/coc-clangd-data/install/12.0.0/clangd_12.0.0/bin/clangd"
+    "clangd.arguments": [
+        "--clang-tidy"
+    ],
+    "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/13.0.0/clangd_13.0.0/bin/clangd"
 }

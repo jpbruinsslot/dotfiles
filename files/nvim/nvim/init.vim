@@ -71,10 +71,10 @@ Plug 'https://github.com/tomtom/tcomment_vim'                               " an
 Plug 'https://github.com/tpope/vim-surround'                                " quoting/parentesizing made simple
 Plug 'https://github.com/Yggdroot/indentLine'                               " identation line
 Plug 'https://github.com/github/copilot.vim', { 'branch': 'release' }       " github co-pilot
+Plug 'https://github.com/dense-analysis/ale'                                " asynchronous Lint Engine
 
 " https://github.com/neoclide/coc.nvim/wiki/Language-servers
 Plug 'https://github.com/neoclide/coc.nvim', { 'branch': 'release' }
-Plug 'https://github.com/kevinoid/vim-jsonc'
 
 Plug 'https://github.com/junegunn/fzf' , { 'do': { -> fzf#install() } }
 Plug 'https://github.com/junegunn/fzf.vim'
@@ -86,7 +86,7 @@ Plug 'https://github.com/jiangmiao/auto-pairs'                              " in
 " -> Programming languages specific plugins
 
 " Go
-Plug 'https://github.com/fatih/vim-go', {'do': ':GoUpdateBinaries'}
+" Plug 'https://github.com/fatih/vim-go', {'do': ':GoUpdateBinaries'}
 
 " Rust
 Plug 'https://github.com/rust-lang/rust.vim'
@@ -645,7 +645,7 @@ let g:pandoc#syntax#codeblocks#embeds#langs = ["go", "python", "c", "cpp", "rust
 nmap <F5> :GrammarousCheck<CR>
 nmap <F6> <Plug>(grammarous-move-to-next-error)<CR>
 " let g:grammarous#languagetool_cmd = 'docker run -t --entrypoint java -v $HOME/.config/nvim/plugged/vim-grammarous/misc/LanguageTool-4.9:/LanguageTool -v /tmp:/tmp openjdk:8-jre-alpine -jar /LanguageTool/languagetool-commandline.jar $@'
-let g:grammarous#languagetool_cmd = 'docker run -v /tmp:/tmp -t ltool-cli $@'
+let g:grammarous#languagetool_cmd = 'docker run -v /tmp:/tmp -t --rm languagetool-cli $@'
 
 " vim-gitgutter
 set signcolumn=yes
@@ -722,6 +722,7 @@ let g:coc_global_extensions = [
       \'coc-explorer',
       \'coc-fzf-preview',
       \'coc-go',
+      \'coc-grammarly',
       \'coc-json',
       \'coc-html',
       \'coc-markdownlint',
