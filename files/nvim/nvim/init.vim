@@ -231,12 +231,14 @@ set virtualedit=all
 syntax on
 
 " background color
-set background=dark
+" set background=dark
 
 " colorscheme
 colorscheme nord
 " hi CursorLine guibg=#3D3D3D
 " hi Normal guibg=#2A2A2A
+hi Normal       guibg=none ctermbg=none
+hi VertSplit    guibg=none ctermbg=NONE
 
 " neovim true color now requires
 set termguicolors
