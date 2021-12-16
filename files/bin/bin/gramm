@@ -1,8 +1,0 @@
-#!/bin/sh
-LT_DIR="$HOME/.config/nvim/plugged/vim-grammarous/misc/LanguageTool-4.9"
-
-docker run -t \
-    --entrypoint java \
-    -v $LT_DIR:/LanguageTool \
-    -v /tmp:/tmp openjdk:8-jre-alpine \
-    -jar /LanguageTool/languagetool-commandline.jar $@
