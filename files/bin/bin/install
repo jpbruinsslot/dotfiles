@@ -259,15 +259,15 @@ function python() {
 function golang() {
     echo ">>> Installing Golang"
 
-    GO_VERSION=1.17.5
+    GO_VERSION=$(curl https://go.dev/VERSION?m=text)
 
 	if [[ ! -z "$1" ]]; then
-		GO_VERSION=$1
+		GO_VERSION=go$1
 	fi
 
     # read -p "--> Please enter the version of Go you want to install: " GO_VERSION
 
-    GOLANG=go$GO_VERSION.linux-amd64
+    GOLANG=$GO_VERSION.linux-amd64
 
     # Removing prior version of Go
     GO_SRC=/usr/local/go
@@ -288,12 +288,26 @@ function golang() {
     # Install: Go packages
     echo "... Installing Golang packages"
     (
-    go get -u \
-        github.com/erroneousboat/slack-term \
-        github.com/erroneousboat/dot \
-        github.com/jingweno/ccat \
-        github.com/derekparker/delve/cmd/dlv \
-        github.com/junegunn/fzf
+    set +x
+    set +e
+    go get -u golang.org/x/lint/golint
+	go get -u golang.org/x/tools/gopls
+	go get -u golang.org/x/tools/cmd/goimports
+	go get -u golang.org/x/tools/cmd/guru
+
+    go get -u github.com/jstemmer/gotags
+    go get -u honnef.co/go/tools/cmd/staticcheck
+    go get -u github.com/mgechev/revive
+    go get -u github.com/rogpeppe/godef
+    go get -u github.com/kisielk/errcheck
+    go get -u github.com/derekparker/delve/cmd/dlv
+    go get -u github.com/junegunn/fzf
+    go get github.com/axw/gocov/gocov
+
+    go get -u github.com/jingweno/ccat
+
+    go get -u github.com/erroneousboat/slack-term
+    go get -u github.com/erroneousboat/dot
     )
 }
 
@@ -304,14 +318,16 @@ function rust() {
 
     # Install components
 	rustup component add \
-        rust-src \
         clippy \
+        rust-src \
         rustfmt \
         rls
 
+    curl -sSL "https://github.com/rust-analyzer/rust-analyzer/releases/download/2020-04-20/rust-analyzer-linux" -o "${HOME}/.cargo/bin/rust-analyzer"
+	chmod +x "${HOME}/.cargo/bin/rust-analyzer"
+
     # Install packages
     cargo install \
-        rust-analyzer \
         alacritty \
         ripgrep
 }
