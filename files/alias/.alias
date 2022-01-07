@@ -180,12 +180,22 @@ alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\\: .*|GE
 alias afk="dbus-send --type=method_call --dest=org.gnome.ScreenSaver \
     /org/gnome/ScreenSaver org.gnome.ScreenSaver.Lock"
 
-# $ pubkey
+# $ pubkey_ssh
 #
-# Pipe my public key to my clipboard.
-alias pubkey="more ~/.ssh/id_rsa.pub | xclip -selection clipboard | echo '=> Public key copied to pasteboard.'"
+# Pipe my public ssh key to my clipboard.
+alias pubkey_ssh="more ~/.ssh/id_rsa.pub | xclip -selection clipboard | echo '=> Public key copied to pasteboard.'"
 
-# $ prikey
+# $ prikey_ssh
 #
-# Pipe my private key to my clipboard.
-alias prikey="more ~/.ssh/id_rsa | xclip -selection clipboard | echo '=> Private key copied to pasteboard.'"
+# Pipe my private ssh key to my clipboard.
+alias prikey_ssh="more ~/.ssh/id_rsa | xclip -selection clipboard | echo '=> Private key copied to pasteboard.'"
+
+# $ pubkey_gpg
+#
+# Pipe my public gpg key to my clipboard.
+alias pubkey_gpg="gpg --armor --export | xclip -selection clipboard | echo '=> Public key copied to pasteboard.'"
+
+# $ prikey_gpg
+#
+# Pipe my private gpg key to my clipboard.
+alias prikey_gpg="gpg --armor --export-secret-keys | xclip -selection clipboard | echo '=> Private key copied to pasteboard.'"
