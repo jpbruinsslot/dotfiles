@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+
+NOTES_DIR="$HOME/Projects/notes"
+NOTES_FILE="$NOTES_DIR/notes.md"
+EDITOR="$(which nvim)"
+
+function new() {
+    echo -e "## $(date --iso-8601) - $(date "+%A")\n\n* [ ] \n" | cat - $NOTES_FILE > /tmp/out && mv /tmp/out $NOTES_FILE
+    edit
+}
+
+function edit() {
+    $EDITOR +3 $NOTES_FILE
+}
+
+function push() {
+    # TODO: create cron job that does this daily
+    # TODO: pull
+    # TODO: rebase
+
+    local date=$(awk 'NR==1 {print $2}' $NOTES_FILE)
+
+    cd $NOTES_DIR
+    git add notes.md
+    git commit -m "$date"
+    git push
+}
+
+function pull() {
+    git pull
+}
+
+# TODO: split file into months
+# function split() {}
+
+# TODO: use fzf
+
+function check() {
+    local date1=$(date --iso-8601)
+    local date2=$(awk 'NR==1 {print $2}' $NOTES_FILE)
+    if [ "$date1" == "$date2" ]; then
+        edit
+    else
+        new
+    fi
+}
+
+usage () {
+    echo "Usage: $0 [new|edit|push|pull|split]"
+}
+
+main() {
+    local cmd="$1"
+
+    if [[ -z "$cmd" ]]; then
+		check
+    fi
+
+    case "$cmd" in
+        new)
+            new
+            ;;
+        edit)
+            edit
+            ;;
+        push)
+            push "$2"
+            ;;
+        pull)
+            pull
+            ;;
+        split)
+            split
+            ;;
+        *)
+            usage
+            exit 1
+            ;;
+    esac
+}
+
+main "$@"
