@@ -37,6 +37,7 @@ function session_dev() {
     window_dashboard "$sid" 0
     window_code "$sid" 1 "$HOME/Projects"
     window_command "$sid" 2 "$HOME/Projects"
+    window_notes "$sid" 3 "$HOME/Projects/notes"
 
     tmux select-window -t "$sid:0"
     tmux a -t $sid
@@ -95,6 +96,20 @@ function window_command() {
 
     tmux select-pane -t 1
     tmux send-keys "cd $dir && clear" C-m
+}
+
+function window_notes() {
+    local sid=$1
+    local wid=$2
+    local dir=$3
+
+    if [[ $wid == 0 ]]; then
+        tmux rename-window "פֿ"
+    else
+        tmux new-window -t "$sid:$wid" -n "פֿ"
+    fi
+
+    tmux send-keys "cd $dir && notes" C-m
 }
 
 function window_slack() {
