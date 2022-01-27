@@ -71,7 +71,6 @@ Plug 'https://github.com/tomtom/tcomment_vim'                               " an
 Plug 'https://github.com/tpope/vim-surround'                                " quoting/parentesizing made simple
 Plug 'https://github.com/Yggdroot/indentLine'                               " identation line
 Plug 'https://github.com/github/copilot.vim', { 'branch': 'release' }       " github co-pilot
-Plug 'https://github.com/dense-analysis/ale'                                " asynchronous Lint Engine
 
 " https://github.com/neoclide/coc.nvim/wiki/Language-servers
 Plug 'https://github.com/neoclide/coc.nvim', { 'branch': 'release' }
@@ -728,7 +727,6 @@ let g:coc_global_extensions = [
       \'coc-json',
       \'coc-html',
       \'coc-markdownlint',
-      \'coc-pyright',
       \'coc-rust-analyzer',
       \'coc-sh',
       \'coc-sql',

@@ -35,7 +35,6 @@
     "diagnostic.infoSign": "",
     "diagnostic.hintSign": "",
     "coc.preferences.extensionUpdateCheck": "daily",
-    // formatting: (https://github.com/neoclide/coc-prettier)
     "coc.preferences.formatOnType": true,
     "coc.preferences.formatOnSaveFiletypes": [
         "python",
@@ -54,7 +53,24 @@
     // coc-diagnostic (https://github.com/iamcco/coc-diagnostic)
     "diagnostic-languageserver.enable": true,
     "diagnostic-languageserver.mergeConfig": true,
+    "diagnostic-languageserver.filetypes": {
+        "python": [
+            "flake8",
+            "pylint",
+            "mypy"
+        ],
+        "c": [
+            "clang-tidy"
+        ],
+        "go": [
+            "golangci-lint"
+        ]
+    },
     "diagnostic-languageserver.formatFiletypes": {
+        "python": [
+            "black",
+            "isort"
+        ],
         "c": "clang-format"
     },
     "diagnostic-languageserver.formatters": {
@@ -65,13 +81,24 @@
             ]
         }
     },
-    "diagnostic-languageserver.filetypes": {
-        "c": "clang-tidy",
-        "go": [
-            "golangci-lint"
-        ]
-    },
     "diagnostic-languageserver.linters": {
+        "mypy": {
+            "command": "mypy",
+            "args": [
+                "--ignore-missing-imports",
+                "--follow-imports=skip",
+                "--no-error-summary",
+                "--no-strict-optional",
+                "--no-warn-no-return",
+                "--no-warn-redundant-return",
+                "--no-warn-unused-ignores",
+                "--no-warn-unused-variables",
+                "--no-warn-unused-function",
+                "--no-warn-unused-import",
+                "--no-warn-unused-wildcard-import",
+                "--no-warn-unused-loop-variable"
+            ]
+        },
         "clang-tidy": {
             "command": "clang-tidy-11"
         },
@@ -153,18 +180,6 @@
     "explorer.git.icon.status.deleted": "",
     "explorer.git.icon.status.untracked": "★",
     "explorer.git.icon.status.unmerged": "",
-    // python: coc-pyright (https://github.com/fannheyward/coc-pyright)
-    "python.pythonPath": "/usr/local/bin/python3.9",
-    "python.formatting.provider": "black",
-    "python.formatting.blackArgs": [
-        "--line-length",
-        "79"
-    ],
-    "python.linting.mypyEnabled": true,
-    "python.linting.pytypeEnabled": true,
-    "python.linting.pylintEnabled": true,
-    "python.linting.flake8Enabled": true,
-    "python.linting.banditEnabled": true,
     // javascript: coc-tsserver (https://github.com/neoclide/coc-tsserver)
     "tsserver.formatOnType": true,
     // javascript: coc-eslint (https://github.com/neoclide/coc-eslint)
