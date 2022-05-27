@@ -79,25 +79,34 @@
             "args": [
                 "-style={BasedOnStyle: llvm, IndentWidth: 4, AllowShortFunctionsOnASingleLine: None, KeepEmptyLinesAtTheStartOfBlocks: false}"
             ]
+        },
+        "black": {
+            "command": "black --line-length 120 --config pyproject.toml"
         }
     },
     "diagnostic-languageserver.linters": {
         "mypy": {
+            "sourceName": "mypy",
             "command": "mypy",
             "args": [
-                "--ignore-missing-imports",
-                "--follow-imports=skip",
+                "--no-color-output",
                 "--no-error-summary",
-                "--no-strict-optional",
-                "--no-warn-no-return",
-                "--no-warn-redundant-return",
-                "--no-warn-unused-ignores",
-                "--no-warn-unused-variables",
-                "--no-warn-unused-function",
-                "--no-warn-unused-import",
-                "--no-warn-unused-wildcard-import",
-                "--no-warn-unused-loop-variable"
-            ]
+                "--show-column-numbers",
+                "--follow-imports=silent",
+                "%file"
+            ],
+            "formatPattern": [
+                "^.*:(\\d+?):(\\d+?): ([a-z]+?): (.*)$",
+                {
+                    "line": 1,
+                    "column": 2,
+                    "security": 3,
+                    "message": 4
+                }
+            ],
+            "securities": {
+                "error": "error"
+            }
         },
         "clang-tidy": {
             "command": "clang-tidy-11"
