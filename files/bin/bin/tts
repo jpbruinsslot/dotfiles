@@ -1,0 +1,198 @@
+#!/usr/bin/env bash
+
+# make sure external dependencies are installed
+# get the name of this script
+declare script_name
+script_name="$(basename "${BASH_SOURCE[0]}")"
+
+# function to verify an external command is installed
+havecmd() {
+	local BINARY ERRMSG
+	# error if first argument isn't provided
+	BINARY="${1:?Must provide command to check}"
+	# the commend exists, exit with 0 (success!)
+	if command -v "${BINARY}" >/dev/null 2>&1; then
+		return 0
+	else
+		# construct error message
+		ERRMSG="'${script_name}' requires '${BINARY}', could not find that on your \$PATH"
+		if [[ -n "${2}" ]]; then
+			ERRMSG="${ERRMSG}. ${2}"
+		fi
+		printf '%s\n' "${ERRMSG}" 1>&2
+		return 1
+	fi
+}
+
+set -e
+havecmd curl
+havecmd jq "See https://stedolan.github.io/jq/download"
+set +e
+
+declare -A VOICES
+readonly VOICES=(
+	['Nicole']=1
+	['Enrique']=1
+	['Tatyana']=1
+	['Russell']=1
+	['Lotte']=1
+	['Geraint']=1
+	['Carmen']=1
+	['Mads']=1
+	['Penelope']=1
+	['Mia']=1
+	['Joanna']=1
+	['Matthew']=1
+	['Brian']=1
+	['Seoyeon']=1
+	['Ruben']=1
+	['Ricardo']=1
+	['Maxim']=1
+	['Lea']=1
+	['Giorgio']=1
+	['Carla']=1
+	['Naja']=1
+	['Maja']=1
+	['Astrid']=1
+	['Ivy']=1
+	['Kimberly']=1
+	['Chantal']=1
+	['Amy']=1
+	['Vicki']=1
+	['Marlene']=1
+	['Ewa']=1
+	['Conchita']=1
+	['Karl']=1
+	['Zeina']=1
+	['Miguel']=1
+	['Mathieu']=1
+	['Justin']=1
+	['Lucia']=1
+	['Jacek']=1
+	['Bianca']=1
+	['Takumi']=1
+	['Ines']=1
+	['Gwyneth']=1
+	['Cristiano']=1
+	['Mizuki']=1
+	['Celine']=1
+	['Zhiyu']=1
+	['Jan']=1
+	['Liv']=1
+	['Joey']=1
+	['Raveena']=1
+	['Filiz']=1
+	['Dora']=1
+	['Salli']=1
+	['Aditi']=1
+	['Vitoria']=1
+	['Emma']=1
+	['Hans']=1
+	['Kendra']=1
+)
+
+usage() {
+	echo -e "Usage:  ${script_name} [-h] [-v VOICE] [-d FILENAME|-p] <text_to_speak>..."
+}
+
+# Read arguments
+declare COMMAND VOICE TEXT OUTPUT
+COMMAND='DOWNLOAD'
+VOICE='Brian'
+OUTPUT="./tts-$(date '+%s').mpeg"
+while getopts ":ld:pv:h" OPT; do
+	case "$OPT" in
+	h)
+		usage
+		printf "Converts text to speech using the StreamLabs API\n"
+		printf "Any other positional arguments are interpreted as the text input\n"
+		printf "If no text is present, reads from STDIN\n\n"
+		printf "   -h           Prints this help message and exits\n"
+		printf "   -v VOICE     Change the voice used for TTS\n"
+		printf "   -l           List available voices\n"
+		printf "   -d FILENAME  Download the .mpeg file to FILENAME.mpeg [default]\n"
+		printf "   -p           Instead of downloading, print the audio URL\n"
+		printf "\nDisclaimer: Not affiliated with or endorsed by StreamLabs\n"
+		exit 0
+		;;
+	l)
+		COMMAND='LIST'
+		;;
+	p)
+		COMMAND='PRINT_URL'
+		;;
+	v)
+		VOICE="$OPTARG"
+		[[ "${VOICES["$OPTARG"]+_}" ]] || printf "Warning: Could not find '%s' in the list of voices\n" "$OPTARG" >&2
+		;;
+	d)
+		COMMAND='DOWNLOAD'
+		OUTPUT="${OPTARG%.*}.mpeg"
+		OUTPUT_DIR="$(dirname "$OUTPUT")"
+		[[ -d "$OUTPUT_DIR" ]] || {
+			printf "Error: Output directory '%s' does not exist\n" "$OUTPUT_DIR" >&2
+			exit 1
+		}
+		;;
+	\?)
+		printf "Error: Invalid option: '-%s'\n" "$OPTARG" >&2
+		exit 1
+		;;
+	:)
+		printf "Error: '-%s' requires an argument\n" "$OPTARG" >&2
+		exit 1
+		;;
+	*)
+		usage >&2
+		exit 1
+		;;
+	esac
+done
+shift $((OPTIND - 1))
+readonly COMMAND VOICE OUTPUT
+
+# dispatch on command
+case "$COMMAND" in
+LIST)
+	for voice in "${!VOICES[@]}"; do
+		printf "%s\n" "$voice"
+	done
+	;;
+*) # default, interact with API and download/print
+	declare CURL_DATA HTTP_RESP API_ERROR SPEAK_URL
+	# get text to send to API
+	TEXT="$*"
+	if [[ -z "$TEXT" ]]; then
+		# print the log message if reading from STDIN
+		# dont print if it the user is trying to capture the URL using the -p flag
+		[[ "$COMMAND" != PRINT_URL ]] && echo "Reading text from STDIN..." >&2
+		TEXT="$(cat)"
+	fi
+	readonly TEXT
+	# encode JSON body
+	CURL_DATA="$(jq -n --arg TTS_VOICE "$VOICE" --arg TTS_TEXT "$TEXT" '{"voice":$TTS_VOICE, "text":$TTS_TEXT}')" || exit $?
+	# make request to StreamLabs
+	HTTP_RESP="$(curl --silent -X POST --data "$CURL_DATA" -H 'Content-Type: application/json' 'https://streamlabs.com/polly/speak')" || exit $?
+	# handle response
+	API_ERROR="$(jq -r '.error' <<<"$HTTP_RESP")"
+	if [[ "$API_ERROR" == null ]]; then # request succeeded
+		SPEAK_URL="$(jq -r '.speak_url' <<<"$HTTP_RESP")"
+		case "$COMMAND" in
+		PRINT_URL)
+			printf '%s\n' "$SPEAK_URL"
+			;;
+		*) # default, download to file
+			if curl -s "$SPEAK_URL" --output "$OUTPUT"; then
+				printf "Downloaded file to %s\n" "$OUTPUT"
+			else
+				printf 'Error downloading from %s\n' "$SPEAK_URL" >&2
+				exit 1
+			fi
+			;;
+		esac
+	else
+		printf 'API Error: %s\n' "$API_ERROR" >&2
+		exit 1
+	fi
+	;;
+esac
