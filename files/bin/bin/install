@@ -329,7 +329,8 @@ function rust() {
     # Install packages
     cargo install \
         alacritty \
-        ripgrep
+        ripgrep \
+        bat
 }
 
 function c() {
