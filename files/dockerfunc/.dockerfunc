@@ -49,3 +49,12 @@ languagetool() {
         --name languagetool
         ${DOCKER_REPO_PREFIX}languagetool "$@"
 }
+
+pyspy() {
+    docker run -it --rm \
+        -v "${PWD}:/profiles" \
+        --name pyspy \
+        --pid host \
+        --privileged \
+        ${DOCKER_REPO_PREFIX}pyspy "$@"
+}
