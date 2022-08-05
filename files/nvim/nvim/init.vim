@@ -54,23 +54,23 @@ Plug 'https://github.com/arcticicestudio/nord-vim'                          " co
 Plug 'https://github.com/itchyny/lightline.vim'                             " light and configurable statusline/tabline for vim
 Plug 'https://github.com/mhinz/vim-startify'                                " the fancy start screen for Vim.
 Plug 'https://github.com/airblade/vim-gitgutter'                            " show a git diff in the gutter(sign column) and stages/reverts hunks
-Plug 'https://github.com/liuchengxu/vista.vim'                              " view and search LSP symbols, tags in Vim/NeoVim.
-Plug 'https://github.com/ctrlpvim/ctrlp.vim'                                " full path fuzzy file, buffer, mru, tag, ... finder for vim
+" Plug 'https://github.com/liuchengxu/vista.vim'                              " view and search LSP symbols, tags in Vim/NeoVim.
 Plug 'https://github.com/gcmt/taboo.vim'                                    " ease the way you set the vim tabline
 Plug 'https://github.com/junegunn/goyo.vim'                                 " distraction-less vim
 Plug 'https://github.com/wesq3/vim-windowswap'                              " swap windows without ruining your layout <leader> ww move to window and <leader> ww
 Plug 'https://github.com/psliwka/vim-smoothie'                              " smooth scrolling
 Plug 'https://github.com/mattn/vim-xxdcursor'                               " cursor that helps navigating with xxd hexdumps
-Plug 'https://github.com/kien/rainbow_parentheses.vim'                      " helps you read complex code by showing diff level of parentheses in diff color
 Plug 'https://github.com/tpope/vim-fugitive'                                " the premier Vim plugin for Git, used for lightline
 Plug 'https://github.com/onsails/lspkind-nvim'                              " adds vscode-like pictograms to neovim built-in lsp
 Plug 'https://github.com/kyazdani42/nvim-web-devicons'                      " for file icons
+Plug 'https://github.com/preservim/tagbar'                                  " a class outline viewer for Vim
 
 " -> Productivity
 Plug 'https://github.com/tomtom/tcomment_vim'                               " an extensible & universal comment vim-plugin that also handles embedded filetypes
 Plug 'https://github.com/tpope/vim-surround'                                " quoting/parentesizing made simple
 Plug 'https://github.com/Yggdroot/indentLine'                               " identation line
 Plug 'https://github.com/github/copilot.vim', { 'branch': 'release' }       " github co-pilot
+Plug 'https://github.com/tommcdo/vim-lion'                                  " a tool for aligning text by some character
 
 " https://github.com/neoclide/coc.nvim/wiki/Language-servers
 Plug 'https://github.com/neoclide/coc.nvim', { 'branch': 'release' }
@@ -78,9 +78,9 @@ Plug 'https://github.com/neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'https://github.com/junegunn/fzf' , { 'do': { -> fzf#install() } }
 Plug 'https://github.com/junegunn/fzf.vim'
 Plug 'https://github.com/mg979/vim-visual-multi', {'branch': 'master'}      " multiple cursors
-Plug 'https://github.com/rhysd/vim-grammarous'
-Plug 'https://github.com/francoiscabrol/ranger.vim'
+Plug 'https://github.com/rhysd/vim-grammarous'                              " grammar checker
 Plug 'https://github.com/jiangmiao/auto-pairs'                              " insert or delete brackets, parens, quotes in pair.
+Plug 'https://github.com/universal-ctags/ctags'
 
 " -> Programming languages specific plugins
 
@@ -368,6 +368,10 @@ map q: :q
 " 3. Play recorded keystrokes by hitting space
 :noremap <Space> @q
 
+" Move lines up and down when selected in visual mode
+xnoremap K :move '<-2<CR>gv-gv
+xnoremap J :move '>+1<CR>gv-gv
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Filetype settings
 " https://github.com/jessfraz/.vim/blob/8271e5f6bd4aec7a586b430c21e82c22ce90e83b/vimrc#L319
@@ -443,7 +447,7 @@ let g:lightline = {
     \ 'subseparator': { 'left': '|', 'right': '|' }
     \ }
 
-" LightLine: coc.vim intgration
+" LightLine: coc.vim integration
 function! CocCurrentFunction()
     return get(b:, 'coc_current_function', '')
 endfunction
@@ -560,6 +564,20 @@ let g:ctrlp_clear_cache_on_exit = 0
 
 " FZF
 
+" FZF: custom key bindings
+nmap <silent> <C-P> :Files<CR>
+nmap <silent> <C-G> :Rg<CR>
+
+nnoremap '. :exe ":FZF " . expand("%:h")<CR>
+" nnoremap '/ :e /<C-d>
+nnoremap 'f :FZF<CR>
+nnoremap 'g :Rg<CR>
+nnoremap 'b :Buffers<CR>
+nnoremap 'l :Lines<CR>
+nnoremap 'bl :BLines<CR>
+nnoremap 'p :FZF ~/Projects/<CR>
+nnoremap 'h :FZF ~/<CR>
+
 " FZF: This is the default extra key bindings
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
@@ -581,7 +599,9 @@ let g:fzf_action = {
 
 " FZF: Default fzf layout
 " - down / up / left / right
-let g:fzf_layout = { 'down': '~40%' }
+"let g:fzf_layout = { 'down': '~40%' }
+let g:fzf_layout = { 'window': {'width': 0.75, 'height': 0.75} }
+let $FZF_DEFAULT_OPTS="--preview-window 'right:60%' --margin=1,4"
 
 " You can set up fzf window using a Vim command (Neovim or latest Vim 8 required)
 " let g:fzf_layout = { 'window': 'enew' }
@@ -709,7 +729,10 @@ let g:rbpt_colorpairs = [
     \ ]
 
 " vista.vim
-nmap <F8> :Vista coc<CR>
+" nmap <F8> :Vista coc<CR>
+
+" Tagbar
+nmap <F8> :TagbarToggle<CR>
 
 " coc.nvim
 
@@ -902,7 +925,6 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
-nnoremap <C-n> :CocCommand explorer<CR>
 
 " nvim-tree.lua
 " https://github.com/kyazdani42/nvim-tree.lua
@@ -932,3 +954,10 @@ nnoremap <C-n> :CocCommand explorer<CR>
 "     \   'symlink_open': "",
 "     \   }
 "     \ }
+
+" vim-visual-multi
+nmap <leader>j  <Plug>(VM-Add-Cursor-Down)
+nmap <leader>k  <Plug>(VM-Add-Cursor-Up)
+
+" coc-explorer (also see coc-settings.json)
+nnoremap <C-n> :CocCommand explorer<CR>

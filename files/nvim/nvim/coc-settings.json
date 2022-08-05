@@ -71,7 +71,11 @@
             "black",
             "isort"
         ],
-        "c": "clang-format"
+        "c": "clang-format",
+        "go": [
+            "goimports",
+            "gofmt"
+        ]
     },
     "diagnostic-languageserver.formatters": {
         "clang-format": {
@@ -82,6 +86,12 @@
         },
         "black": {
             "command": "black --line-length 120 --config pyproject.toml"
+        },
+        "goimports": {
+            "command": "goimports"
+        },
+        "gofmt": {
+            "command": "gofmt"
         }
     },
     "diagnostic-languageserver.linters": {
@@ -189,6 +199,7 @@
     "explorer.git.icon.status.deleted": "",
     "explorer.git.icon.status.untracked": "★",
     "explorer.git.icon.status.unmerged": "",
+    "explorer.git.icon.status.mixed": "",
     // javascript: coc-tsserver (https://github.com/neoclide/coc-tsserver)
     "tsserver.formatOnType": true,
     // javascript: coc-eslint (https://github.com/neoclide/coc-eslint)
