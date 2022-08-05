@@ -303,3 +303,28 @@ function deb() {
     sudo dpkg -i $file
     sudo apt-get install -f
 }
+
+# $ viddl [url] [dir]
+#
+# Download vid from url and place it in dir, uses youtube-dl
+function viddl() {
+    local url=${1}
+    local dir=${2:-$PWD}
+
+    if [[ -n "$@" ]]; then
+        # youtube-dl \
+            # --external-downloader aria2c \
+            # --external-downloader-args '-c -j 5 -x 5 -s 5 -k 1M' \
+            # --ignore-errors \
+            # --continue \
+            # --no-overwrites \
+            # --download-archive progress.txt \
+        yt-dlp \
+            -f bestvideo[ext=mp4]+bestaudio[ext=m4a] \
+            --merge-output-format mp4 \
+            --no-check-certificate \
+            -o "$dir/%(title)s.%(ext)s" "$url"
+    else
+        echo "Usage: viddl [url] [dir]"
+    fi
+}
