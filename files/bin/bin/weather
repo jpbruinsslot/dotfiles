@@ -34,24 +34,24 @@ def get_geocode(key):
     )
 
     if resp.status_code != 200:
+        print("not able to reach ipgeocode api endpoint")
         return ""
-        # sys.exit("not able to reach ipgeocode api endpoint")
 
     # Get info from response
     resp_json = resp.json()
     if resp_json is None:
+        print("api ipgeocode response is empty")
         return ""
-        # sys.exit("api ipgeocode response is empty")
 
     lat = resp_json.get("latitude")
     if lat is None:
+        print("lat not found in response")
         return ""
-        # sys.exit("lat not found in response")
 
     long = resp_json.get("longitude")
     if lat is None:
+        print("long not found in response")
         return ""
-        # sys.exit("long not found in response")
 
     return "{},{}".format(lat, long)
 

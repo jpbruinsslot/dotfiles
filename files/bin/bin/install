@@ -48,12 +48,6 @@ deb http://httpredir.debian.org/debian buster main contrib non-free
 deb-src http://httpredir.debian.org/debian/ buster main contrib non-free
 EOF
 
-    # Neovim
-    cat <<-EOF > /etc/apt/sources.list.d/neovim.list
-deb http://ppa.launchpad.net/neovim-ppa/unstable/ubuntu xenial main
-deb-src http://ppa.launchpad.net/neovim-ppa/unstable/ubuntu xenial main
-EOF
-
     # Google Chrome
     echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
 
@@ -290,24 +284,22 @@ function golang() {
     (
     set +x
     set +e
-    go get -u golang.org/x/lint/golint
-	go get -u golang.org/x/tools/gopls
-	go get -u golang.org/x/tools/cmd/goimports
-	go get -u golang.org/x/tools/cmd/guru
-
-    go get -u github.com/jstemmer/gotags
-    go get -u honnef.co/go/tools/cmd/staticcheck
-    go get -u github.com/mgechev/revive
-    go get -u github.com/rogpeppe/godef
-    go get -u github.com/kisielk/errcheck
-    go get -u github.com/derekparker/delve/cmd/dlv
-    go get -u github.com/junegunn/fzf
-    go get github.com/axw/gocov/gocov
-
-    go get -u github.com/jingweno/ccat
-
-    go get -u github.com/erroneousboat/slack-term
-    go get -u github.com/erroneousboat/dot
+    go install golang.org/x/lint/golint@latest
+	go install golang.org/x/tools/gopls@latest
+	go install golang.org/x/tools/cmd/goimports@latest
+	go install golang.org/x/tools/cmd/guru@latest
+    go install github.com/jstemmer/gotags@latest
+    go install honnef.co/go/tools/cmd/staticcheck@latest
+    go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+    go install github.com/mgechev/revive@latest
+    go install github.com/rogpeppe/godef@latest
+    go install github.com/kisielk/errcheck@latest
+    go install github.com/derekparker/delve/cmd/dlv@latest
+    go install github.com/junegunn/fzf@latest
+    go install hub.com/axw/gocov/gocov@latest
+    go install github.com/jingweno/ccat@latest
+    go install github.com/erroneousboat/slack-term@latest
+    go install github.com/erroneousboat/dot@latest
     )
 }
 
@@ -346,7 +338,7 @@ function c() {
 function node() {
     echo ">>> Installing Node"
 
-    NODE_VERSION=14.16.0
+    NODE_VERSION=18.13.0
 
 	if [[ ! -z "$1" ]]; then
 		NODE_VERSION=$1
@@ -461,6 +453,17 @@ function tmux() {
     cd "$HOME"
 }
 
+# Install: Neovim
+function neovim() {
+    echo ">>> Installing Neovim"
+
+    cd /tmp
+    wget https://github.com/neovim/neovim/releases/download/stable/nvim.appimage
+    chmod u+x nvim.appimage
+    sudo mv nvim.appimage /usr/local/bin/nvim
+
+    cd "$HOME"
+}
 
 # Install: GCloud
 function gcloud() {
@@ -848,6 +851,8 @@ main() {
         chrome
     elif [[ $cmd == "tmux" ]]; then
         tmux
+    elif [[ $cmd == "neovim" ]]; then
+        neovim
     elif [[ $cmd == "dotfiles" ]]; then
         dotfiles
     elif [[ $cmd == "k8s" ]]; then
