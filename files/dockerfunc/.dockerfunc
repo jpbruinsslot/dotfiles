@@ -34,15 +34,23 @@ relies_on(){
 }
 
 # Container aliases
-# node() {}
-
-# npm() {}
-
 yarn() {
     docker run -it --rm \
         --name yarn \
         ${DOCKER_REPO_PREFIX}yarn "$@"
 }
+
+node() {
+    docker run -it --rm \
+        --name node \
+        ${DOCKER_REPO_PREFIX}node:alpine "$@"
+}
+
+# npm() {
+#     docker run -it --rm \
+#         --name npm \
+#         ${DOCKER_REPO_PREFIX}node:alpine npm "$@"
+# }
 
 languagetool() {
     docker run -it --rm \
