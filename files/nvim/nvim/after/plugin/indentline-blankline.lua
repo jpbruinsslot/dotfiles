@@ -1,0 +1,23 @@
+require("indent_blankline").setup({
+    char = "▏",
+    buftype_exclude = { "terminal", "nofile" },
+    filetype_exclude = { "alpha", "dashboard", "undotree", "lightline", "neo-tree", },
+    show_trailing_blankline_indent = false,
+    show_first_indent_level = false,
+    space_char_blankline = " ",
+    use_treesitter = true,
+    show_current_context = true,
+    context_patterns = {
+        "class",
+        "function",
+        "method",
+        "block",
+        "list_literal",
+        "selector",
+        "^if",
+        "^table",
+        "if_statement",
+        "while",
+        "for",
+    },
+})
