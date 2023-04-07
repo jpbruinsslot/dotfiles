@@ -39,3 +39,7 @@ done
 	-W "$(grep "^Host" ~/.ssh/config | \
 	grep -v "[?*]" | cut -d " " -f2 | \
 	tr ' ' '\n')" scp sftp ssh
+
+# Rust
+[[ -f "/home/jp/.config/autopackage/paths-bash" ]] && . "/home/jp/.config/autopackage/paths-bash"
+. "$HOME/.cargo/env"
