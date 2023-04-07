@@ -5,13 +5,13 @@ lsp.preset("recommended")
 lsp.ensure_installed({
     "clangd",
     "gopls",
-    "lua-language-server",
+    "lua_ls",
     "pyright",
     "rust_analyzer",
 })
 
 -- Fix Undefined global 'vim'
-lsp.configure("lua-language-server", {
+lsp.configure("lua_ls", {
     settings = {
         Lua = {
             diagnostics = {
