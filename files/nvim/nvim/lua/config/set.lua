@@ -9,9 +9,6 @@ vim.opt.autoread = true
 -- User interface
 ------------------------------------------------------------------------------
 
--- Colorscheme
-vim.cmd("colorscheme nord")
-
 -- Allow backspacing over everything in insert mode
 vim.opt.backspace = "indent,eol,start"
 

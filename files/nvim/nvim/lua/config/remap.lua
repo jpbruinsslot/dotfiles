@@ -1,5 +1,5 @@
 -- Remap leader to space
-vim.g.mapleader = " "
+vim.g.mapleader = ","
 
 -- Smart way to move between windows
 vim.keymap.set("n", "<C-h>", "<C-w>h")

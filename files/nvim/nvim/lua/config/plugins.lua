@@ -5,6 +5,15 @@ vim.cmd.packadd('packer.nvim')
 return require('packer').startup(function(use)
     use('wbthomason/packer.nvim')
 
+    -- telescope-nvim: fuzzy finder
+    use({
+        "nvim-telescope/telescope.nvim",
+        tag = "0.1.1",
+        requires = {
+            { "nvim-lua/plenary.nvim" }
+        },
+    })
+
     -- lsp-zero: LSP client
     use({
         "VonHeikemen/lsp-zero.nvim",
@@ -62,12 +71,6 @@ return require('packer').startup(function(use)
         config = function()
             require 'alpha'.setup(require "alpha.themes.dashboard".config)
         end
-    })
-
-    -- fzf: fuzzy finder
-    use({
-        "junegunn/fzf.vim",
-        requires = { "junegunn/fzf", run = ":call fzf#install()" }
     })
 
     -- copilot: code completion
