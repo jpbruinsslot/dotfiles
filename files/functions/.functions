@@ -320,10 +320,10 @@ function viddl() {
             # --no-overwrites \
             # --download-archive progress.txt \
         yt-dlp \
+            --no-check-certificate \
+            -o "$dir/%(title)s.%(ext)s" "$url" \
             -f bestvideo[ext=mp4]+bestaudio[ext=m4a] \
             --merge-output-format mp4 \
-            --no-check-certificate \
-            -o "$dir/%(title)s.%(ext)s" "$url"
     else
         echo "Usage: viddl [url] [dir]"
     fi
