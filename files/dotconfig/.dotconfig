@@ -8,8 +8,6 @@
 		"bash_prompt": "/.bash_prompt",
 		"bashrc": "/.bashrc",
 		"bin": "/bin",
-		"compton": "/.compton.conf",
-		"dircolors": "/.dircolors",
 		"dockerfunc": "/.dockerfunc",
 		"dotconfig": "/.dotconfig",
 		"env": "/.env",
@@ -23,12 +21,10 @@
 		"i3": "/.i3",
 		"inputrc": "/.inputrc",
 		"nvim": "/.config/nvim",
-		"ohmyzsh_theme": "/.oh-my-zsh/custom/erroneousboat.zsh-theme",
 		"path": "/.path",
 		"rofi": "/.config/rofi/config",
 		"terminfo": "/.terminfo",
 		"themes": "/.themes/",
-		"tmux": "/.tmux.conf",
-		"zshrc": "/.zshrc"
+		"tmux": "/.tmux.conf"
 	}
 }
