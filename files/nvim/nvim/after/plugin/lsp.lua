@@ -1,4 +1,5 @@
 local lsp = require("lsp-zero")
+local lsp_config = require("lspconfig")
 
 lsp.preset("recommended")
 
@@ -19,6 +20,12 @@ lsp.configure("lua_ls", {
             }
         }
     }
+})
+
+lsp_config.gopls.setup({
+    on_attach = function(client, bufnr)
+        print("hello from gopls")
+    end
 })
 
 local cmp = require("cmp")

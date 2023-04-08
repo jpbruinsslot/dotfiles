@@ -12,6 +12,7 @@ vim.g.lightline = {
     },
     component_function = {
         gitbranch = "fugitive#head",
-        modified = "LightlineModified"
+        modified = "LightlineModified",
+        method = "NearestMethodOrFunction",
     }
 }

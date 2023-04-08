@@ -1,10 +1,10 @@
 local builtin = require("telescope.builtin")
 
 -- Fuzzy search through the output of git ls-files command, respects .gitignore
-vim.keymap.set("n", "<C-P>", builtin.git_files, {})
+vim.keymap.set("n", "<C-P>", builtin.find_files, {})
 
 -- Lists files in your current working directory, respects .gitignore
-vim.keymap.set("n", "<leader>pf", builtin.find_files, {})
+vim.keymap.set("n", "<leader>pf", builtin.git_files, {})
 
 -- vim.keymap.set("n", "<C-G>", function()
 --     builtin.grep_string({ search = vim.fn.input("Grep > ") })
