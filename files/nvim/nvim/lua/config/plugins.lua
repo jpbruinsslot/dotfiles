@@ -106,4 +106,7 @@ return require('packer').startup(function(use)
 
     -- vista.vim:
     use("liuchengxu/vista.vim")
+
+    -- lspkin.nvim:
+    use("onsails/lspkind.nvim")
 end)
