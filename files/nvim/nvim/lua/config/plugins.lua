@@ -107,6 +107,12 @@ return require('packer').startup(function(use)
     -- vista.vim:
     use("liuchengxu/vista.vim")
 
-    -- lspkin.nvim:
+    -- lspkind.nvim:
     use("onsails/lspkind.nvim")
+
+    -- null-ls.nvim: needed to get additional formatters and linters working,
+    -- provides a way for non-lsp sources to hook into its lsp client
+    use("jose-elias-alvarez/null-ls.nvim")
+
+    use("jay-babu/mason-null-ls.nvim")
 end)

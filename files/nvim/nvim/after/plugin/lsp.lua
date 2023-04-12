@@ -12,7 +12,7 @@ lsp.ensure_installed({
 })
 
 -- Fix Undefined global 'vim'
-lsp.configure("lua_ls", {
+lsp_config.lua_ls.setup({
     settings = {
         Lua = {
             diagnostics = {
@@ -23,8 +23,19 @@ lsp.configure("lua_ls", {
 })
 
 lsp_config.gopls.setup({
+    settings = {
+        gopls = {
+            staticcheck = true,
+        }
+    },
     on_attach = function(client, bufnr)
-        print("hello from gopls")
+        --print("hello from gopls")
+    end
+})
+
+lsp_config.pyright.setup({
+    on_attach = function(client, bufnr)
+        --print("hello from pyright")
     end
 })
 
@@ -44,19 +55,17 @@ lsp.on_attach(function(client, bufnr)
 
     -- If you only ever have one language server attached in each file and you
     -- are happy with all of them
-    lsp.buffer_autoformat()
+    -- lsp.buffer_autoformat()
 end)
 
 -- Use the following if you want to control exactly what language server is
 -- used to format a file, this will allow you to associate a language server
 -- with a list of filetypes.
---
--- lsp.format_on_save({
---     servers = {
---         ['lua_ls'] = {'lua'},
---         ['rust_analyzer'] = {'rust'},
---     }
--- })
+lsp.format_on_save({
+    servers = {
+        ["null-ls"] = {"python", "go"}
+    },
+})
 
 lsp.set_sign_icons({
     error = "",
@@ -67,6 +76,7 @@ lsp.set_sign_icons({
 
 lsp.setup()
 
+-- Needs to be after lsp-zero setup
 local cmp = require("cmp")
 local lspkind = require("lspkind")
 
@@ -78,12 +88,20 @@ cmp.setup({
         ["<C-f>"] = cmp.mapping.scroll_docs(4),
         ["<C-Space>"] = cmp.mapping.complete(),
         ["<C-e>"] = cmp.mapping.close(),
-        ["<C-y>"] = cmp.mapping.confirm({
+        ["<CR>"] = cmp.mapping.confirm({
             behavior = cmp.ConfirmBehavior.Replace,
             select = true,
         }),
-        ["<Tab>"] = nil,
         ["<S-Tab>"] = nil,
+        ["<Tab>"] = cmp.mapping(function(fallback)
+            cmp.mapping.abort()
+            local copilot_keys = vim.fn["copilot#Accept"]()
+            if copilot_keys ~= "" and type(copilot_keys) == "string" then
+                vim.api.nvim_feedkeys(copilot_keys, "i", true)
+            else
+                fallback()
+            end
+        end),
     },
     window = {
         completion = cmp.config.window.bordered(),
@@ -93,4 +111,36 @@ cmp.setup({
         fields = { "abbr", "kind", "menu" },
         format = lspkind.cmp_format(),
     }
+})
+
+-- https://docs.rockylinux.org/books/nvchad/custom/plugins/null_ls/
+-- https://github.com/olexsmir/init.lua/blob/main/lua/plugins/lsp/null-ls.lua
+-- https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
+local null_ls = require("null-ls")
+
+null_ls.setup({
+    sources = {
+        null_ls.builtins.diagnostics.staticcheck,
+        null_ls.builtins.diagnostics.pylint.with({
+            diagnostics_postprocess = function(diagnostic)
+                diagnostic.code = diagnostic.message_id
+            end,
+        }),
+        null_ls.builtins.diagnostics.flake8,
+        null_ls.builtins.diagnostics.mypy,
+        null_ls.builtins.formatting.black,
+        null_ls.builtins.formatting.usort,
+        null_ls.builtins.formatting.gofumpt,
+        null_ls.builtins.formatting.goimports,
+        null_ls.builtins.formatting.goimports_reviser,
+        null_ls.builtins.formatting.golines,
+        null_ls.builtins.formatting.rustfmt,
+    }
+})
+
+-- Will automatically install the above
+local mason_null_ls = require("mason-null-ls")
+mason_null_ls.setup({
+    ensure_installed = nil,
+    automatic_installation = true,
 })
