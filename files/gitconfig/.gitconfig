@@ -72,6 +72,9 @@
     # git push --force but nicer
     please = "push --force-with-lease"
 
+    # Local branch is a commit behind the remote branch
+    pr = "pull --rebase"
+
 [core]
 	editor = nvim
 
@@ -133,7 +136,9 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+
 [commit]
 	gpgsign = true
+
 [user]
 	signingKey = A0B4608FF6738557
