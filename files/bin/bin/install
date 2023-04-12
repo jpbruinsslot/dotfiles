@@ -206,7 +206,7 @@ function python() {
     # Install: Python3 packages
     echo ">>> Installing Python packages"
 
-    PYTHON_VERSION=3.9.1
+    PYTHON_VERSION=3.11.3
 
 	if [[ ! -z "$1" ]]; then
 		PYTHON_VERSION=$1
@@ -218,6 +218,9 @@ function python() {
     cd Python-$PYTHON_VERSION
     ./configure --enable-optimizations 
     sudo make altinstall
+    sudo update-alternatives --install /usr/bin/python3 python3 /usr/local/bin/python$PYTHON_VERSION 1
+    sudo update-alternatives --install /usr/bin/python python /usr/local/bin/python$PYTHON_VERSION 1
+
     cd "$HOME"
 
     sudo -H pip3 install --upgrade pip
