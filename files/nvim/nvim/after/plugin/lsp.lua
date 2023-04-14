@@ -9,6 +9,7 @@ lsp.ensure_installed({
     "lua_ls",
     "pyright",
     "rust_analyzer",
+    "bashls",
 })
 
 -- Fix Undefined global 'vim'
@@ -63,7 +64,7 @@ end)
 -- with a list of filetypes.
 lsp.format_on_save({
     servers = {
-        ["null-ls"] = {"python", "go"}
+        ["null-ls"] = {"python", "go", "sh", "make"}
     },
 })
 
@@ -128,6 +129,7 @@ null_ls.setup({
         }),
         null_ls.builtins.diagnostics.flake8,
         null_ls.builtins.diagnostics.mypy,
+        null_ls.builtins.diagnostics.checkmake,
         null_ls.builtins.formatting.black,
         null_ls.builtins.formatting.usort,
         null_ls.builtins.formatting.gofumpt,
@@ -135,6 +137,8 @@ null_ls.setup({
         null_ls.builtins.formatting.goimports_reviser,
         null_ls.builtins.formatting.golines,
         null_ls.builtins.formatting.rustfmt,
+        null_ls.builtins.formatting.shfmt,
+        null_ls.builtins.formatting.ruff,
     }
 })
 
