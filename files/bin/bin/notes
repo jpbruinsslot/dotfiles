@@ -14,15 +14,15 @@ function edit() {
 }
 
 function push() {
-	# TODO: create cron job that does this daily
-	# TODO: pull
-	# TODO: rebase
-
 	local date=$(awk 'NR==1 {print $2}' $NOTES_FILE)
 
 	cd $NOTES_DIR
+
+	git add archive
 	git add notes.md
+
 	git commit -m "$date"
+
 	git push
 }
 
@@ -38,7 +38,7 @@ function archive() {
 
 # Split notes file into individual files
 function split() {
-	awk '/^## [0-9]{4}-[0-9]{2}-[0-9]{2}/ {filename=sprintf("%s.md", substr($2, 1, 7)); print > filename; next} {print > filename}' $NOTES_FILE
+	awk '/^## [0-9]{4}-[0-9]{2}-[0-9]{2}/ {filename=sprintf("./archive/%s.md", substr($2, 1, 7)); print > filename; next} {print > filename}' $NOTES_FILE
 }
 
 # Clean notes file
@@ -83,6 +83,7 @@ main() {
 	local cmd="$1"
 
 	if [[ -z "$cmd" ]]; then
+		pull
 		check
 	fi
 
