@@ -111,7 +111,7 @@ alias busy="cat /dev/urandom | hexdump -C | grep 'ca fe'"
 # $ compose
 #
 # Alias for docker-compose
-alias compose=docker-compose
+alias compose="docker compose"
 
 # $ cat
 #
