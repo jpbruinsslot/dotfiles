@@ -4,4 +4,7 @@ vim.g.nord_uniform_diff_background = 1
 
 vim.cmd.colorscheme("nord")
 
--- vim.cmd "hi Normal ctermbg=none guibg=none"
+-- Make it transparent
+vim.cmd "hi Normal      ctermbg=none guibg=none"
+vim.cmd "hi SignColumn  ctermbg=none guibg=none"
+vim.cmd "hi VertSplit   ctermbg=none guibg=none"

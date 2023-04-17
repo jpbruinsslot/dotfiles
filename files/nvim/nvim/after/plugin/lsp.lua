@@ -95,14 +95,12 @@ cmp.setup({
         }),
         ["<S-Tab>"] = nil,
         ["<Tab>"] = cmp.mapping(function(fallback)
-            cmp.mapping.abort()
-            local copilot_keys = vim.fn["copilot#Accept"]()
-            if copilot_keys ~= "" and type(copilot_keys) == "string" then
-                vim.api.nvim_feedkeys(copilot_keys, "i", true)
+            if cmp.visible() then
+                cmp.select_next_item()
             else
                 fallback()
             end
-        end),
+        end, { "i", "s" }),
     },
     window = {
         completion = cmp.config.window.bordered(),
