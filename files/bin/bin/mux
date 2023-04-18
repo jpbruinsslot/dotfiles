@@ -1,157 +1,172 @@
 #!/bin/bash
-#
+
 # Set window percentage:
-# tmux split-window [-v/-h] -p [nn] 
+# tmux split-window [-v/-h] -p [nn]
 
 function session_work() {
-    local sid="work"
+	local sid="work"
 
-    if tmux has-session -t "$id"; then
-        tmux new-session -A -s "$sid"
-        exit
-    fi
+	if tmux has-session -t "$id"; then
+		tmux new-session -A -s "$sid"
+		exit
+	fi
 
-    tmux start-server
-    tmux new-session -d -s "$sid"
+	tmux start-server
+	tmux new-session -d -s "$sid"
 
-    window_dashboard "$sid" 0
-    window_code "$sid" 1 "$HOME/Projects/"
-    window_command "$sid" 2 "$HOME/Projects/"
-    window_slack "$sid" 3
+	window_dashboard "$sid" 0
+	window_code "$sid" 1 "$HOME/Projects/"
+	window_command "$sid" 2 "$HOME/Projects/"
+	window_slack "$sid" 3
 
-    tmux select-window -t "$sid:0"
-    tmux a -t $sid
+	tmux select-window -t "$sid:0"
+	tmux a -t $sid
 }
 
 function session_dev() {
-    local sid="dev"
+	local sid="dev"
 
-    if tmux has-session -t "$id"; then
-        tmux new-session -A -s "$sid"
-        exit
-    fi
+	if tmux has-session -t "$id"; then
+		tmux new-session -A -s "$sid"
+		exit
+	fi
 
-    tmux start-server
-    tmux new-session -d -s "$sid"
+	tmux start-server
+	tmux new-session -d -s "$sid"
 
-    window_dashboard "$sid" 0
-    window_code "$sid" 1 "$HOME/Projects"
-    window_command "$sid" 2 "$HOME/Projects"
-    window_notes "$sid" 3 "$HOME/Projects/notes"
+	window_dashboard "$sid" 0
+	window_code "$sid" 1 "$HOME/Projects"
+	window_command "$sid" 2 "$HOME/Projects"
+	window_notes "$sid" 3 "$HOME/Projects/notes"
+	window_pkb "$sid" 4 "$HOME/Projects/pkb"
 
-    tmux select-window -t "$sid:0"
-    tmux a -t $sid
+	tmux select-window -t "$sid:0"
+	tmux a -t $sid
 }
 
 function window_dashboard() {
-    local sid=$1
-    local wid=$2
+	local sid=$1
+	local wid=$2
 
-    if [[ $wid == 0 ]]; then
-        tmux rename-window ""
-    else
-        tmux new-window -t "$sid:$wid" -n ""
-    fi
+	if [[ $wid == 0 ]]; then
+		tmux rename-window ""
+	else
+		tmux new-window -t "$sid:$wid" -n ""
+	fi
 
-    tmux split-window -v
-    
-    tmux select-pane -t 0
-    tmux send-keys "bpytop" C-m
+	tmux split-window -v
 
-    # NOTE: view without sudo
-    # sudo usermod -aG adm $USER
-    tmux select-pane -t 1
-    tmux send-keys "grc tail -fq /var/log/syslog /var/log/auth.log /var/log/kern.log /var/log/user.log" C-m
+	tmux select-pane -t 0
+	tmux send-keys "bpytop" C-m
+
+	# NOTE: view without sudo
+	# sudo usermod -aG adm $USER
+	tmux select-pane -t 1
+	tmux send-keys "grc tail -fq /var/log/syslog /var/log/auth.log /var/log/kern.log /var/log/user.log" C-m
 }
 
 function window_code() {
-    local sid=$1
-    local wid=$2
-    local dir=$3
+	local sid=$1
+	local wid=$2
+	local dir=$3
 
-    if [[ $wid == 0 ]]; then
-        tmux rename-window ""
-    else
-        tmux new-window -t "$sid:$wid" -n ""
-    fi
-    
-    tmux send-keys "cd $dir && nvim" C-m
+	if [[ $wid == 0 ]]; then
+		tmux rename-window ""
+	else
+		tmux new-window -t "$sid:$wid" -n ""
+	fi
+
+	tmux send-keys "cd $dir && nvim" C-m
 }
 
 function window_command() {
-    local sid=$1
-    local wid=$2
-    local dir=$3
+	local sid=$1
+	local wid=$2
+	local dir=$3
 
-    if [[ $wid == 0 ]]; then
-        tmux rename-window ""
-    else
-        tmux new-window -t "$sid:$wid" -n ""
-    fi
+	if [[ $wid == 0 ]]; then
+		tmux rename-window ""
+	else
+		tmux new-window -t "$sid:$wid" -n ""
+	fi
 
-    tmux split-window -v
+	tmux split-window -h
 
-    tmux select-pane -t 0
-    tmux send-keys "cd $dir && clear" C-m
+	tmux select-pane -t 0
+	tmux send-keys "cd $dir && clear" C-m
 
-    tmux select-pane -t 1
-    tmux send-keys "cd $dir && clear" C-m
+	tmux select-pane -t 1
+	tmux send-keys "cd $dir && clear" C-m
 }
 
 function window_notes() {
-    local sid=$1
-    local wid=$2
-    local dir=$3
+	local sid=$1
+	local wid=$2
+	local dir=$3
 
-    if [[ $wid == 0 ]]; then
-        tmux rename-window "פֿ"
-    else
-        tmux new-window -t "$sid:$wid" -n "פֿ"
-    fi
+	if [[ $wid == 0 ]]; then
+		tmux rename-window "פֿ"
+	else
+		tmux new-window -t "$sid:$wid" -n "פֿ"
+	fi
 
-    tmux send-keys "cd $dir && notes" C-m
+	tmux send-keys "cd $dir && notes" C-m
+}
+
+function window_pkb() {
+	local sid=$1
+	local wid=$2
+	local dir=$3
+
+	if [[ $wid == 0 ]]; then
+		tmux rename-window ""
+	else
+		tmux new-window -t "$sid:$wid" -n ""
+	fi
+
+	tmux send-keys "cd $dir && nvim" C-m
 }
 
 function window_slack() {
-    local sid=$1
-    local wid=$2
+	local sid=$1
+	local wid=$2
 
-    if [[ $wid == 0 ]]; then
-        tmux rename-window ""
-    else
-        tmux new-window -t "$sid:$wid" -n ""
-    fi
+	if [[ $wid == 0 ]]; then
+		tmux rename-window ""
+	else
+		tmux new-window -t "$sid:$wid" -n ""
+	fi
 
-    tmux send-keys "slack-term" C-m
+	tmux send-keys "slack-term" C-m
 }
 
 function usage() {
-    echo "mux"
-    echo
-    echo "This script automates the creation of tmux sessions"
-    echo
-    echo "Usage:"
-    echo
-    echo "  work      - start work"
-    echo "  dev       - start dev"
+	echo "mux"
+	echo
+	echo "This script automates the creation of tmux sessions"
+	echo
+	echo "Usage:"
+	echo
+	echo "  work      - start work"
+	echo "  dev       - start dev"
 }
 
 function main() {
-    local cmd=$1
+	local cmd=$1
 
-    if [[ -z "$cmd" ]]; then
-        usage
-        exit 1
-    fi
+	if [[ -z "$cmd" ]]; then
+		usage
+		exit 1
+	fi
 
-    if [[ $cmd == "work" ]]; then
-        session_work
-    elif [[ $cmd == "dev" ]]; then
-        session_dev
-    else
-        echo "ERROR: unknown session name"
-        exit 1
-    fi
+	if [[ $cmd == "work" ]]; then
+		session_work
+	elif [[ $cmd == "dev" ]]; then
+		session_dev
+	else
+		echo "ERROR: unknown session name"
+		exit 1
+	fi
 }
 
 main "$@"

@@ -5,7 +5,7 @@ NOTES_FILE="$NOTES_DIR/notes.md"
 EDITOR="$(which nvim)"
 
 function new() {
-	echo -e "## $(date --iso-8601) - $(date "+%A")\n\n* [ ] \n" | cat - $NOTES_FILE >/tmp/out && mv /tmp/out $NOTES_FILE
+	echo -e "## $(date --iso-8601) - $(date "+%A")\n\n* \n" | cat - $NOTES_FILE >/tmp/out && mv /tmp/out $NOTES_FILE
 	edit
 }
 

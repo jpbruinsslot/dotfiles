@@ -6,66 +6,66 @@ set -o pipefail
 
 # Make necessary directories
 function dir() {
-    echo ">>> Creating directories"
-    mkdir -p \
-        $HOME/Projects \
-        $HOME/Downloads
+	echo ">>> Creating directories"
+	mkdir -p \
+		$HOME/Projects \
+		$HOME/Downloads
 }
 
-# Copy ssh-keys 
+# Copy ssh-keys
 function ssh() {
-    echo ">>> Setting up ssh"
+	echo ">>> Setting up ssh"
 
-    echo "... Create ssh directory"
-    mkdir -p $HOME/.ssh
+	echo "... Create ssh directory"
+	mkdir -p $HOME/.ssh
 
-    echo "... Retrieving SSH keys from remote host"
-    read -p "--> Copy SSH keys from remote host? [y/n] " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        read -p "--> Please enter user@host: " HOST
-        scp $HOST:~/.ssh/id_rsa* ~/.ssh/
-        eval "$(ssh-agent -s)"
-        ssh-add ~/.ssh/id_rsa
-    fi
+	echo "... Retrieving SSH keys from remote host"
+	read -p "--> Copy SSH keys from remote host? [y/n] " -n 1 -r
+	echo
+	if [[ $REPLY =~ ^[Yy]$ ]]; then
+		read -p "--> Please enter user@host: " HOST
+		scp $HOST:~/.ssh/id_rsa* ~/.ssh/
+		eval "$(ssh-agent -s)"
+		ssh-add ~/.ssh/id_rsa
+	fi
 }
 
 # Add additional repositories
 function sources() {
-    echo ">>> Adding additional repositories"
-    apt update || true
-    apt install -y \
-        apt-transport-https \
-        ca-certificates \
-        curl \
-        dirmngr \
-        gnupg2 \
-        lsb-release \
-        --no-install-recommends
+	echo ">>> Adding additional repositories"
+	apt update || true
+	apt install -y \
+		apt-transport-https \
+		ca-certificates \
+		curl \
+		dirmngr \
+		gnupg2 \
+		lsb-release \
+		--no-install-recommends
 
-    cat <<-EOF > /etc/apt/sources.list
-deb http://httpredir.debian.org/debian buster main contrib non-free
-deb-src http://httpredir.debian.org/debian/ buster main contrib non-free
-EOF
+	cat <<-EOF >/etc/apt/sources.list
+		deb http://httpredir.debian.org/debian buster main contrib non-free
+		deb-src http://httpredir.debian.org/debian/ buster main contrib non-free
+	EOF
 
-    # Google Chrome
-    echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
+	# Google Chrome
+	echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >/etc/apt/sources.list.d/google-chrome.list
 
-    # Add the Cloud SDK distribution URI as a package source
-	cat <<-EOF > /etc/apt/sources.list.d/google-cloud-sdk.list
-deb https://packages.cloud.google.com/apt cloud-sdk main
-EOF
+	# Add the Cloud SDK distribution URI as a package source
+	cat <<-EOF >/etc/apt/sources.list.d/google-cloud-sdk.list
+		deb https://packages.cloud.google.com/apt cloud-sdk main
+	EOF
 
 	# Add the Google Chrome distribution URI as a package source
-	cat <<-EOF > /etc/apt/sources.list.d/google-chrome.list
-deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
-EOF
+	cat <<-EOF >/etc/apt/sources.list.d/google-chrome.list
+		deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
+	EOF
 
-    # LLVM
-    cat <<-EOF > /etc/apt/sources.list.d/llvm.list
-deb http://apt.llvm.org/buster/ llvm-toolchain-buster main
-deb-src http://apt.llvm.org/buster/ llvm-toolchain-buster main
-EOF
+	# LLVM
+	cat <<-EOF >/etc/apt/sources.list.d/llvm.list
+		deb http://apt.llvm.org/buster/ llvm-toolchain-buster main
+		deb-src http://apt.llvm.org/buster/ llvm-toolchain-buster main
+	EOF
 
 	# Import the Google Chrome public key
 	curl https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
@@ -73,97 +73,97 @@ EOF
 	# Import the Google Cloud Platform public key
 	curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 
-    # Add the neovim ppa gpg key
-    apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 9DBB0BE9366964F134855E2255F96FCF8231B6DD
+	# Add the neovim ppa gpg key
+	apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 9DBB0BE9366964F134855E2255F96FCF8231B6DD
 
-    # Add the tlp apt-repo gpg key
-    apt-key adv --keyserver pool.sks-keyservers.net --recv-keys CD4E8809
+	# Add the tlp apt-repo gpg key
+	apt-key adv --keyserver pool.sks-keyservers.net --recv-keys CD4E8809
 
-    # Add the google chrome public key
-    curl https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
+	# Add the google chrome public key
+	curl https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
 }
 
 function base() {
-    echo ">>> Installing base packages"
+	echo ">>> Installing base packages"
 
-    echo "... Synchronizing package index files"
-    apt update || true
+	echo "... Synchronizing package index files"
+	apt update || true
 
-    echo "... Installing new versions of all packages"
-    apt -y dist-upgrade
+	echo "... Installing new versions of all packages"
+	apt -y dist-upgrade
 
-    echo "... Installing system packages"
-    # Graveyard:
-    #   autoconf \
-    #   acpi \
-    #   automake \
-    #   build-essential \
-    #   dconf-tools \
-    #   libevent-dev \
-    #   libncurses5-dev \
-    #   libncursesw5-dev \
-    #   linux-image-extra-$(uname -r) \
-    #   linux-image-extra-virtual \
-    #   sysstat \
-    #   virtualbox \
+	echo "... Installing system packages"
+	# Graveyard:
+	#   autoconf \
+	#   acpi \
+	#   automake \
+	#   build-essential \
+	#   dconf-tools \
+	#   libevent-dev \
+	#   libncurses5-dev \
+	#   libncursesw5-dev \
+	#   linux-image-extra-$(uname -r) \
+	#   linux-image-extra-virtual \
+	#   sysstat \
+	#   virtualbox \
 
-    apt install -y \
-        automake \
-        bash-completion \
-        bc \
-        ca-certificates \
-        coreutils \
-        curl \
-        clang-11 \
-        clangd-11 \
-        clang-format-11 \
-        dnsutils \
-        entr \
-        fonts-hack-ttf \
-        git-core \
-        gnupg \
-        gnupg2 \
-        google-chrome-stable \
-        grc \
-        chrome-gnome-shell \
-        htop \
-        indent \
-        jq \
-        libevent-dev \
-        multitail \
-        ncurses-dev \
-        neovim \
-        openssh-server \
-        pkg-config \
-        python-dev \
-        python-pip \
-        python3-dev \
-        python3-pip \
-        python3-setuptools \
-        ranger \
-        rofi \
-        rxvt-unicode-256color \
-        silversearcher-ag \
-        strace \
-        tar \
-        tlp \
-        tree \
-        unzip \
-        urlview \
-        vim \
-        wget \
-        xclip \
-        --no-install-recommends
+	apt install -y \
+		automake \
+		bash-completion \
+		bc \
+		ca-certificates \
+		coreutils \
+		curl \
+		clang-11 \
+		clangd-11 \
+		clang-format-11 \
+		dnsutils \
+		entr \
+		fonts-hack-ttf \
+		git-core \
+		gnupg \
+		gnupg2 \
+		google-chrome-stable \
+		grc \
+		chrome-gnome-shell \
+		htop \
+		indent \
+		jq \
+		libevent-dev \
+		multitail \
+		ncurses-dev \
+		neovim \
+		openssh-server \
+		pkg-config \
+		python-dev \
+		python-pip \
+		python3-dev \
+		python3-pip \
+		python3-setuptools \
+		ranger \
+		rofi \
+		rxvt-unicode-256color \
+		silversearcher-ag \
+		strace \
+		tar \
+		tlp \
+		tree \
+		unzip \
+		urlview \
+		vim \
+		wget \
+		xclip \
+		--no-install-recommends
 
-    echo "... Cleaning up"
-    apt autoremove
-    apt autoclean
-    apt clean
+	echo "... Cleaning up"
+	apt autoremove
+	apt autoclean
+	apt clean
 }
 
 # Install: graphics drivers
 function graphics() {
-    echo ">>> Installing graphics drivers"
+	echo ">>> Installing graphics drivers"
 	local system=$1
 
 	if [[ -z "$system" ]]; then
@@ -171,412 +171,413 @@ function graphics() {
 		exit 1
 	fi
 
-    local pkgs=( xorg xserver-xorg xserver-xorg-input-libinput xserver-xorg-input-synaptics )
+	local pkgs=(xorg xserver-xorg xserver-xorg-input-libinput xserver-xorg-input-synaptics)
 
 	case $system in
-		"intel")
-			pkgs+=( xserver-xorg-video-intel )
-			;;
-		"geforce")
-			pkgs+=( nvidia-driver )
-			;;
-		"optimus")
-			pkgs+=( nvidia-kernel-dkms bumblebee-nvidia primus )
-			;;
-		*)
-			echo "You need to specify whether it's intel, geforce or optimus"
-			exit 1
-			;;
+	"intel")
+		pkgs+=(xserver-xorg-video-intel)
+		;;
+	"geforce")
+		pkgs+=(nvidia-driver)
+		;;
+	"optimus")
+		pkgs+=(nvidia-kernel-dkms bumblebee-nvidia primus)
+		;;
+	*)
+		echo "You need to specify whether it's intel, geforce or optimus"
+		exit 1
+		;;
 	esac
 
-    # Update grub to solve login loop
-    #
-    # Source:
-    #   - https://askubuntu.com/a/867647
-    #
-    # $ sed -i 's/splash//g' /etc/default/grub
-    # $ update-grub2
+	# Update grub to solve login loop
+	#
+	# Source:
+	#   - https://askubuntu.com/a/867647
+	#
+	# $ sed -i 's/splash//g' /etc/default/grub
+	# $ update-grub2
 
-    apt update || true
-    apt -y dist-upgrade
+	apt update || true
+	apt -y dist-upgrade
 	apt install -y "${pkgs[@]}" --no-install-recommends
 }
 
 function python() {
-    # Install: Python3 packages
-    echo ">>> Installing Python packages"
+	# Install: libsqlite3-dev
+	sudo apt install libsqlite3-dev
 
-    PYTHON_VERSION=3.11.3
+	# Install: Python3 packages
+	echo ">>> Installing Python packages"
+
+	PYTHON_VERSION=3.11.3
 
 	if [[ ! -z "$1" ]]; then
 		PYTHON_VERSION=$1
 	fi
 
-    cd /tmp
-    wget https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tgz
-    sudo tar -xvf Python-$PYTHON_VERSION.tgz
-    cd Python-$PYTHON_VERSION
-    ./configure --enable-optimizations 
-    sudo make altinstall
-    sudo update-alternatives --install /usr/bin/python3 python3 /usr/local/bin/python$PYTHON_VERSION 1
-    sudo update-alternatives --install /usr/bin/python python /usr/local/bin/python$PYTHON_VERSION 1
+	cd /tmp
+	wget https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tgz
+	sudo tar -xvf Python-$PYTHON_VERSION.tgz
+	cd Python-$PYTHON_VERSION
+	./configure --enable-optimizations
+	sudo make altinstall
+	sudo update-alternatives --install /usr/bin/python3 python3 /usr/local/bin/python$PYTHON_VERSION 1
+	sudo update-alternatives --install /usr/bin/python python /usr/local/bin/python$PYTHON_VERSION 1
 
-    cd "$HOME"
+	cd "$HOME"
 
-    sudo -H pip3 install --upgrade pip
-    sudo -H pip3 install --no-cache-dir --upgrade --force-reinstall \
-        asciinema \
-        bpytop \
-        black \
-        cpplint \
-        docker-compose \
-        flake8 \
-        bpytop \
-        httpie \
-        jedi \
-        lolcat \
-        mypy \
-        neovim \
-        psutil \
-        pylint \
-        vulture \
-        yapf \
-        youtube-dl
+	sudo -H pip install --upgrade pip
+	sudo -H pip install --no-cache-dir --upgrade --force-reinstall \
+		asciinema \
+		bpytop \
+		black \
+		cpplint \
+		docker-compose \
+		flake8 \
+		bpytop \
+		httpie \
+		jedi \
+		lolcat \
+		mypy \
+		neovim \
+		psutil \
+		pylint \
+		vulture \
+		yapf \
+		youtube-dl
 
-    # Install: Python2 packages
-    # crcmod: needed for gsutil
-    # neovim: needed for deoplete
-    # sudo -H pip2 install --upgrade pip
-    # sudo -H pip2 install --no-cache-dir --upgrade --force-reinstall \
-    #     crcmod \
-    #     neovim
+	# Install: Python2 packages
+	# crcmod: needed for gsutil
+	# neovim: needed for deoplete
+	# sudo -H pip2 install --upgrade pip
+	# sudo -H pip2 install --no-cache-dir --upgrade --force-reinstall \
+	#     crcmod \
+	#     neovim
 }
 
 # Install: Golang
 function golang() {
-    echo ">>> Installing Golang"
+	echo ">>> Installing Golang"
 
-    GO_VERSION=$(curl https://go.dev/VERSION?m=text)
+	GO_VERSION=$(curl https://go.dev/VERSION?m=text)
 
 	if [[ ! -z "$1" ]]; then
 		GO_VERSION=go$1
 	fi
 
-    # read -p "--> Please enter the version of Go you want to install: " GO_VERSION
+	# read -p "--> Please enter the version of Go you want to install: " GO_VERSION
 
-    GOLANG=$GO_VERSION.linux-amd64
+	GOLANG=$GO_VERSION.linux-amd64
 
-    # Removing prior version of Go
-    GO_SRC=/usr/local/go
-    if [[ -d "$GO_SRC" ]]; then
-        sudo rm -rf "$GO_SRC"
-        sudo rm -rf "$GOPATH"
-    fi
+	# Removing prior version of Go
+	GO_SRC=/usr/local/go
+	if [[ -d "$GO_SRC" ]]; then
+		sudo rm -rf "$GO_SRC"
+		sudo rm -rf "$GOPATH"
+	fi
 
-    # Download
-    cd /tmp
-    wget -O $GOLANG.tar.gz https://storage.googleapis.com/golang/$GOLANG.tar.gz 
-    sudo tar -C /usr/local -xzf $GOLANG.tar.gz
-    cd "$HOME"
+	# Download
+	cd /tmp
+	wget -O $GOLANG.tar.gz https://storage.googleapis.com/golang/$GOLANG.tar.gz
+	sudo tar -C /usr/local -xzf $GOLANG.tar.gz
+	cd "$HOME"
 
-    # Add binaries to path
-    export PATH=$PATH:/usr/local/go/bin
+	# Add binaries to path
+	export PATH=$PATH:/usr/local/go/bin
 
-    # Install: Go packages
-    echo "... Installing Golang packages"
-    (
-    set +x
-    set +e
-    go install golang.org/x/lint/golint@latest
-	go install golang.org/x/tools/gopls@latest
-	go install golang.org/x/tools/cmd/goimports@latest
-	go install golang.org/x/tools/cmd/guru@latest
-    go install github.com/jstemmer/gotags@latest
-    go install honnef.co/go/tools/cmd/staticcheck@latest
-    go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
-    go install github.com/mgechev/revive@latest
-    go install github.com/rogpeppe/godef@latest
-    go install github.com/kisielk/errcheck@latest
-    go install github.com/derekparker/delve/cmd/dlv@latest
-    go install github.com/junegunn/fzf@latest
-    go install hub.com/axw/gocov/gocov@latest
-    go install github.com/jingweno/ccat@latest
-    go install github.com/erroneousboat/slack-term@latest
-    go install github.com/erroneousboat/dot@latest
-    )
+	# Install: Go packages
+	echo "... Installing Golang packages"
+	(
+		set +x
+		set +e
+		go install golang.org/x/lint/golint@latest
+		go install golang.org/x/tools/gopls@latest
+		go install golang.org/x/tools/cmd/goimports@latest
+		go install golang.org/x/tools/cmd/guru@latest
+		go install github.com/jstemmer/gotags@latest
+		go install honnef.co/go/tools/cmd/staticcheck@latest
+		go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+		go install github.com/mgechev/revive@latest
+		go install github.com/rogpeppe/godef@latest
+		go install github.com/kisielk/errcheck@latest
+		go install github.com/derekparker/delve/cmd/dlv@latest
+		go install github.com/junegunn/fzf@latest
+		go install hub.com/axw/gocov/gocov@latest
+		go install github.com/jingweno/ccat@latest
+		go install github.com/erroneousboat/slack-term@latest
+		go install github.com/erroneousboat/dot@latest
+	)
 }
 
 function rust() {
-    echo ">>> Installing Rust"
+	echo ">>> Installing Rust"
 
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
-    # Install components
+	# Install components
 	rustup component add \
-        clippy \
-        rust-src \
-        rustfmt \
-        rls
+		clippy \
+		rust-src \
+		rustfmt \
+		rls
 
-    curl -sSL "https://github.com/rust-analyzer/rust-analyzer/releases/download/2020-04-20/rust-analyzer-linux" -o "${HOME}/.cargo/bin/rust-analyzer"
+	curl -sSL "https://github.com/rust-analyzer/rust-analyzer/releases/download/2020-04-20/rust-analyzer-linux" -o "${HOME}/.cargo/bin/rust-analyzer"
 	chmod +x "${HOME}/.cargo/bin/rust-analyzer"
 
-    # Install packages
-    cargo install \
-        alacritty \
-        ripgrep \
-        bat
+	# Install packages
+	cargo install \
+		alacritty \
+		ripgrep \
+		bat
 }
 
 function c() {
-    echo ">>> Installing C"
+	echo ">>> Installing C"
 
-    # LLVM
+	# LLVM
 
-    # Valgrind
+	# Valgrind
 
 }
 
 # Install: Node
 function node() {
-    echo ">>> Installing Node"
+	echo ">>> Installing Node"
 
-    NODE_VERSION=18.13.0
+	NODE_VERSION=18.13.0
 
 	if [[ ! -z "$1" ]]; then
 		NODE_VERSION=$1
 	fi
 
-    NODE_SRC=/usr/local/lib/node
-    if [[ -d "$NODE_SRC" ]]; then
-        sudo rm -rf "$NODE_SRC"
-    fi
+	NODE_SRC=/usr/local/lib/node
+	if [[ -d "$NODE_SRC" ]]; then
+		sudo rm -rf "$NODE_SRC"
+	fi
 
-    cd /tmp
-    wget -O node-v$NODE_VERSION-linux-x64.tar.xz https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz
-    sudo mkdir -p /usr/local/lib/node
-    sudo tar -C /usr/local/lib/node -xJvf node-v$NODE_VERSION-linux-x64.tar.xz --strip-components=1
-    cd "$HOME"
+	cd /tmp
+	wget -O node-v$NODE_VERSION-linux-x64.tar.xz https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz
+	sudo mkdir -p /usr/local/lib/node
+	sudo tar -C /usr/local/lib/node -xJvf node-v$NODE_VERSION-linux-x64.tar.xz --strip-components=1
+	cd "$HOME"
 
-    # Create symlinks to use sudo
-    if [[ ! -f /usr/local/bin/node ]]; then
-        sudo ln -s /usr/local/lib/node/bin/node /usr/local/bin/node
-    fi
+	# Create symlinks to use sudo
+	if [[ ! -f /usr/local/bin/node ]]; then
+		sudo ln -s /usr/local/lib/node/bin/node /usr/local/bin/node
+	fi
 
-    if [[ ! -f /usr/local/bin/npm ]]; then
-        sudo ln -s /usr/local/lib/node/bin/npm /usr/local/bin/npm
-    fi
+	if [[ ! -f /usr/local/bin/npm ]]; then
+		sudo ln -s /usr/local/lib/node/bin/npm /usr/local/bin/npm
+	fi
 
-    if [[ ! -f /usr/local/bin/npx ]]; then
-        sudo ln -s /usr/local/lib/node/bin/npx /usr/local/bin/npx
-    fi
+	if [[ ! -f /usr/local/bin/npx ]]; then
+		sudo ln -s /usr/local/lib/node/bin/npx /usr/local/bin/npx
+	fi
 
-    # Install: NPM packages
-    echo "... Installing NPM packages"
-    sudo npm -g install \
-        npm \
-        eslint \
-        eslint-plugin-import \
-        eslint-config-airbnb \
-        eslint-plugin-jsx-a11y \
-        eslint-plugin-react
+	# Install: NPM packages
+	echo "... Installing NPM packages"
+	sudo npm -g install \
+		npm \
+		eslint \
+		eslint-plugin-import \
+		eslint-config-airbnb \
+		eslint-plugin-jsx-a11y \
+		eslint-plugin-react
 }
 
 # Install: Docker
 function docker() {
-    echo ">>> Installing docker"
+	echo ">>> Installing docker"
 
-    echo "... Installing prerequisites"
-    sudo apt update || true
-    sudo apt install -y \
-        apt-transport-https \
-        ca-certificates \
-        gnupg2 \
-        software-properties-common \
-        --no-install-recommends
+	echo "... Installing prerequisites"
+	sudo apt update || true
+	sudo apt install -y \
+		apt-transport-https \
+		ca-certificates \
+		gnupg2 \
+		software-properties-common \
+		--no-install-recommends
 
-    # Download
-    echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
+	# Download
+	echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" >/etc/apt/sources.list.d/docker.list
 
-    # Add key
-    # curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-    curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+	# Add key
+	# curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+	curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
 
-    # Install
-    sudo apt update || true
-    sudo apt install -y docker-ce
+	# Install
+	sudo apt update || true
+	sudo apt install -y docker-ce
 
-    # Configure
-    sudo usermod -a -G docker $USER
-    sudo service docker restart
+	# Configure
+	sudo usermod -a -G docker $USER
+	sudo service docker restart
 
-    echo "Remember to logout for this to take effect"
+	echo "Remember to logout for this to take effect"
 }
 
 function rofi() {
-    echo ">>> Installing rofi"
+	echo ">>> Installing rofi"
 
-    if [[ -d /tmp/rofi ]]; then
-        rm -rf /tmp/rofi
-    fi
+	if [[ -d /tmp/rofi ]]; then
+		rm -rf /tmp/rofi
+	fi
 
-    git clone --recursive https://github.com/davatorium/rofi.git /tmp/rofi
+	git clone --recursive https://github.com/davatorium/rofi.git /tmp/rofi
 
-    cd /tmp/rofi
-    git submodule update --init
-    autoreconf -i
-    mkdir build && cd build
-    ../configure
-    make
-    sudo make install
+	cd /tmp/rofi
+	git submodule update --init
+	autoreconf -i
+	mkdir build && cd build
+	../configure
+	make
+	sudo make install
 
-    cd "$HOME"
+	cd "$HOME"
 }
 
 # Install: Tmux
 function tmux() {
-    echo ">>> Installing tmux"
-    sudo apt update || true
-    sudo apt install -y \
-        bison \
-        --no-install-recommends
+	echo ">>> Installing tmux"
+	sudo apt update || true
+	sudo apt install -y \
+		bison \
+		--no-install-recommends
 
+	if [[ -d /tmp/tmux ]]; then
+		rm -rf /tmp/tmux
+	fi
 
-    if [[ -d /tmp/tmux ]]; then
-        rm -rf /tmp/tmux
-    fi
+	git clone https://github.com/tmux/tmux.git /tmp/tmux
 
-    git clone https://github.com/tmux/tmux.git /tmp/tmux
+	cd /tmp/tmux
+	sh autogen.sh
+	./configure && make
+	sudo make install
 
-    cd /tmp/tmux
-    sh autogen.sh
-    ./configure && make
-    sudo make install
-
-    cd "$HOME"
+	cd "$HOME"
 }
 
 # Install: Neovim
 function neovim() {
-    echo ">>> Installing Neovim"
+	echo ">>> Installing Neovim"
 
-    cd /tmp
-    wget https://github.com/neovim/neovim/releases/download/stable/nvim.appimage
-    chmod u+x nvim.appimage
-    sudo mv nvim.appimage /usr/local/bin/nvim
+	cd /tmp
+	wget https://github.com/neovim/neovim/releases/download/stable/nvim.appimage
+	chmod u+x nvim.appimage
+	sudo mv nvim.appimage /usr/local/bin/nvim
 
-    cd "$HOME"
+	cd "$HOME"
 }
 
 # Install: GCloud
 function gcloud() {
-    echo ">>> Installing gcloud"
+	echo ">>> Installing gcloud"
 
-    cd "$HOME"
+	cd "$HOME"
 
-    # Check for version argument
+	# Check for version argument
 	if [[ ! -z "$1" ]]; then
 		export GCLOUD_VERSION=$1
 	fi
 
-    GCLOUD_VERSION=146.0.0
+	GCLOUD_VERSION=146.0.0
 
-    # Download
-    wget -q https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${GCLOUD_VERSION}-linux-x86_64.tar.gz
-    tar -xzf google-cloud-sdk-${GCLOUD_VERSION}-linux-x86_64.tar.gz
+	# Download
+	wget -q https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${GCLOUD_VERSION}-linux-x86_64.tar.gz
+	tar -xzf google-cloud-sdk-${GCLOUD_VERSION}-linux-x86_64.tar.gz
 
-    # Install
-    ./google-cloud-sdk/install.sh --usage-reporting=true --path-update=true --bash-completion=true --rc-path=/.bashrc --additional-components app-engine-java app-engine-python kubectl alpha beta gcd-emulator pubsub-emulator
+	# Install
+	./google-cloud-sdk/install.sh --usage-reporting=true --path-update=true --bash-completion=true --rc-path=/.bashrc --additional-components app-engine-java app-engine-python kubectl alpha beta gcd-emulator pubsub-emulator
 
-    # Update components
-    gcloud components update
+	# Update components
+	gcloud components update
 
-    # Reset owner of folder
-    chown -r $user:$user $HOME/google-cloud-sdk
+	# Reset owner of folder
+	chown -r $user:$user $HOME/google-cloud-sdk
 }
-
 
 # Install: Minikube
 function minikube() {
-    echo ">>> Install minikube"
+	echo ">>> Install minikube"
 
-    # Check for version argument
+	# Check for version argument
 	if [[ ! -z "$1" ]]; then
 		export MINIKUBE_VERSION=$1
 	fi
 
-    MINIKUBE_VERSION=v0.17.1
+	MINIKUBE_VERSION=v0.17.1
 
-    # Download
-    cd /tmp
-    curl -Lo minikube https://storage.googleapis.com/minikube/releases/$MINIKUBE_VERSION/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
+	# Download
+	cd /tmp
+	curl -Lo minikube https://storage.googleapis.com/minikube/releases/$MINIKUBE_VERSION/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
 
-    cd "$HOME"
+	cd "$HOME"
 }
 
 # Install: kubernetes config
 function kubeconf() {
-    echo ">>> Install kubernetes configuration"
+	echo ">>> Install kubernetes configuration"
 
-    read -p "--> Copy kubernetes config from remote host? [y/n] " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        read -p "--> Please enter user@host: " HOST
-        scp -r $HOST:~/.kube/ ~
-    fi
+	read -p "--> Copy kubernetes config from remote host? [y/n] " -n 1 -r
+	echo
+	if [[ $REPLY =~ ^[Yy]$ ]]; then
+		read -p "--> Please enter user@host: " HOST
+		scp -r $HOST:~/.kube/ ~
+	fi
 }
 
 # Install: Dotfiles
 function dotfiles() {
-    echo ">>> Install dotfiles"
+	echo ">>> Install dotfiles"
 
-    if [[ ! -d "$HOME"/dotfiles ]]; then
-        echo "... Cloning dotfiles"
-        git clone git@github.com:erroneousboat/dotfiles.git "${HOME}/dotfiles"
-    else
-        cd "$HOME/dotfiles"
-        git pull origin master
-    fi
+	if [[ ! -d "$HOME"/dotfiles ]]; then
+		echo "... Cloning dotfiles"
+		git clone git@github.com:erroneousboat/dotfiles.git "${HOME}/dotfiles"
+	else
+		cd "$HOME/dotfiles"
+		git pull origin master
+	fi
 
-    echo "... Syncing dotfiles"
-    if [[ ! -f $HOME/.dotconfig ]]; then
-        cp $HOME/dotfiles/files/dotconfig/.dotconfig $HOME
-    fi
+	echo "... Syncing dotfiles"
+	if [[ ! -f $HOME/.dotconfig ]]; then
+		cp $HOME/dotfiles/files/dotconfig/.dotconfig $HOME
+	fi
 
-    export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
-    yes All | dot sync
+	export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
+	yes All | dot sync
 
-    # For extra setup based on dotfiles, add below:
+	# For extra setup based on dotfiles, add below:
 
-    cd "$HOME"
+	cd "$HOME"
 }
 
 # Install: i3
 function i3() {
-    echo ">>> Installing i3"
-    sudo apt update || true
-    sudo apt install -y i3
+	echo ">>> Installing i3"
+	sudo apt update || true
+	sudo apt install -y i3
 }
 
 # Install: i3-apps
 function i3apps() {
-    echo ">>> Installing i3-apps"
+	echo ">>> Installing i3-apps"
 
-    if [[ -d /tmp/i3blocks ]]; then
-        rm -rf /tmp/i3blocks
-    fi
+	if [[ -d /tmp/i3blocks ]]; then
+		rm -rf /tmp/i3blocks
+	fi
 
-    # Download: i3blocks
-    git clone "https://github.com/vivien/i3blocks.git" /tmp/i3blocks
+	# Download: i3blocks
+	git clone "https://github.com/vivien/i3blocks.git" /tmp/i3blocks
 
-    # Install: i3blocks
-    cd /tmp/i3blocks
-    ./autogen.sh
-    ./configure
-    make
-    sudo make install
+	# Install: i3blocks
+	cd /tmp/i3blocks
+	./autogen.sh
+	./configure
+	make
+	sudo make install
 
-    # Install additional apps
+	# Install additional apps
 	sudo apt update || true
 	sudo apt install -y \
 		bluez \
@@ -591,7 +592,7 @@ function i3apps() {
 		scrot \
 		xclip \
 		xcompmgr \
-        xbacklight \
+		xbacklight \
 		--no-install-recommends
 
 	# start and enable pulseaudio
@@ -607,127 +608,125 @@ function i3apps() {
 	echo "Run: "
 	echo "	dpkg-reconfigure fontconfig"
 
-    cd "$HOME"
+	cd "$HOME"
 }
 
 function i3setup() {
-    # TODO screen-backlight
-    # TODO keyboard-backlight
-    # TODO wifi
-    # TODO sound + keyboard shortcut for sound
-    # TODO external monitor
-    cd "$HOME"
+	# TODO screen-backlight
+	# TODO keyboard-backlight
+	# TODO wifi
+	# TODO sound + keyboard shortcut for sound
+	# TODO external monitor
+	cd "$HOME"
 }
-
 
 # Install: Bash
 # (https://www.gnu.org/software/bash/)
 function bash() {
-    echo ">>> Installing bash"
+	echo ">>> Installing bash"
 
-    BASH_VERSION=5.0
+	BASH_VERSION=5.0
 
-    # Check for version argument
+	# Check for version argument
 	if [[ ! -z "$1" ]]; then
 		export BASH_VERSION=$1
 	fi
 
-    # Download
-    cd /tmp
-    wget -q http://ftp.gnu.org/gnu/bash/bash-${BASH_VERSION}.tar.gz
-    tar -xzf bash-${BASH_VERSION}.tar.gz
+	# Download
+	cd /tmp
+	wget -q http://ftp.gnu.org/gnu/bash/bash-${BASH_VERSION}.tar.gz
+	tar -xzf bash-${BASH_VERSION}.tar.gz
 
-    # Install
-    cd bash-${BASH_VERSION}
-    ./configure && make && sudo make install
+	# Install
+	cd bash-${BASH_VERSION}
+	./configure && make && sudo make install
 
-    # Replace old version with new one
-    sudo cp /bin/bash /bin/bash.old
-    sudo cp -f /usr/local/bin/bash /bin/bash
+	# Replace old version with new one
+	sudo cp /bin/bash /bin/bash.old
+	sudo cp -f /usr/local/bin/bash /bin/bash
 
-    cd "$HOME"
+	cd "$HOME"
 }
 
 function misc() {
-    cd /tmp
+	cd /tmp
 
-    # Place installation of miscellaneous programs here
+	# Place installation of miscellaneous programs here
 
-    # TODO dockerconfig
+	# TODO dockerconfig
 
-    # TODO Terminfo etc.
+	# TODO Terminfo etc.
 
-    # TODO slack-term config
+	# TODO slack-term config
 
-    # Install: icdiff
-    curl -sSL https://raw.githubusercontent.com/jeffkaufman/icdiff/master/icdiff > /usr/local/bin/icdiff
-    curl -sSL https://raw.githubusercontent.com/jeffkaufman/icdiff/master/git-icdiff > /usr/local/bin/git-icdiff
-    chmod +x /usr/local/bin/icdiff
-    chmod +x /usr/local/bin/git-icdiff
+	# Install: icdiff
+	curl -sSL https://raw.githubusercontent.com/jeffkaufman/icdiff/master/icdiff >/usr/local/bin/icdiff
+	curl -sSL https://raw.githubusercontent.com/jeffkaufman/icdiff/master/git-icdiff >/usr/local/bin/git-icdiff
+	chmod +x /usr/local/bin/icdiff
+	chmod +x /usr/local/bin/git-icdiff
 
-    # Install: numix icons
-    rm -rf /tmp/numix-icon-theme-circle
-    git clone https://github.com/numixproject/numix-icon-theme-circle.git
-    cp -r /tmp/numix-icon-theme-circle/Numix-Circle ~/.local/share/icons
+	# Install: numix icons
+	rm -rf /tmp/numix-icon-theme-circle
+	git clone https://github.com/numixproject/numix-icon-theme-circle.git
+	cp -r /tmp/numix-icon-theme-circle/Numix-Circle ~/.local/share/icons
 
 }
 
 function fonts() {
-    cd /tmp
+	cd /tmp
 
-    # Install: nerd fonts
-    git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git
-    sh /tmp/nerd-fonts/install.sh Hack
+	# Install: nerd fonts
+	git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git
+	sh /tmp/nerd-fonts/install.sh Hack
 
-    # Pretty fonts
-    # https://wiki.archlinux.org/index.php/font_configuration
-    cat <<-EOF > /etc/fonts/local.conf
-<?xml version='1.0'?>
-<!DOCTYPE fontconfig SYSTEM 'fonts.dtd'>
-<fontconfig>
-    <!-- pixel allignment, it needs to know what monitor type you're using -->
-    <match target="font">
-        <edit mode="assign" name="rgba">
-            <const>rgb</const>
-        </edit>
-    </match>
-    <!-- adjust the display of an outline font so that it lines up with a rasterized grid -->
-    <match target="font">
-        <edit mode="assign" name="hinting">
-            <bool>true</bool>
-        </edit>
-    </match>
-    <!-- amount of font reshaping done to line up to the grid -->
-    <match target="font">
-        <edit mode="assign" name="hintstyle">
-            <const>hintslight</const>
-        </edit>
-    </match>
-    <!-- remove jagged edges due to font rasterization -->
-    <match target="font">
-        <edit mode="assign" name="antialias">
-            <bool>true</bool>
-        </edit>
-    </match>
-    <!-- reduce colour fringing -->
-    <match target="font">
-        <edit mode="assign" name="lcdfilter">
-            <const>lcddefault</const>
-        </edit>
-    </match>
-</fontconfig>
-EOF
+	# Pretty fonts
+	# https://wiki.archlinux.org/index.php/font_configuration
+	cat <<-EOF >/etc/fonts/local.conf
+		<?xml version='1.0'?>
+		<!DOCTYPE fontconfig SYSTEM 'fonts.dtd'>
+		<fontconfig>
+		    <!-- pixel allignment, it needs to know what monitor type you're using -->
+		    <match target="font">
+		        <edit mode="assign" name="rgba">
+		            <const>rgb</const>
+		        </edit>
+		    </match>
+		    <!-- adjust the display of an outline font so that it lines up with a rasterized grid -->
+		    <match target="font">
+		        <edit mode="assign" name="hinting">
+		            <bool>true</bool>
+		        </edit>
+		    </match>
+		    <!-- amount of font reshaping done to line up to the grid -->
+		    <match target="font">
+		        <edit mode="assign" name="hintstyle">
+		            <const>hintslight</const>
+		        </edit>
+		    </match>
+		    <!-- remove jagged edges due to font rasterization -->
+		    <match target="font">
+		        <edit mode="assign" name="antialias">
+		            <bool>true</bool>
+		        </edit>
+		    </match>
+		    <!-- reduce colour fringing -->
+		    <match target="font">
+		        <edit mode="assign" name="lcdfilter">
+		            <const>lcddefault</const>
+		        </edit>
+		    </match>
+		</fontconfig>
+	EOF
 
-    echo "Fonts file setup successfully now run:"
-    echo "  (sudo) dpkg-reconfigure fontconfig-config"
-    echo "with settings: "
-    echo "  Autohinter, Automatic, No."
-    echo "Run: "
-    echo "  (sudo) dpkg-reconfigure fontconfig"
+	echo "Fonts file setup successfully now run:"
+	echo "  (sudo) dpkg-reconfigure fontconfig-config"
+	echo "with settings: "
+	echo "  Autohinter, Automatic, No."
+	echo "Run: "
+	echo "  (sudo) dpkg-reconfigure fontconfig"
 
-    cd "$HOME"
+	cd "$HOME"
 }
-
 
 function wifi() {
 	local system=$1
@@ -746,7 +745,6 @@ function wifi() {
 	fi
 }
 
-
 check_is_sudo() {
 	if [ "$EUID" -ne 0 ]; then
 		echo "Please run as root."
@@ -755,102 +753,102 @@ check_is_sudo() {
 }
 
 usage() {
-    echo "install.sh"
-    echo
-    echo "This script can install and setup the following on a debian based system:"
-    echo
-    echo "Usage:"
-    echo "  sources                             - setup sources"
-    echo "  base                                - install base pkgs"
-    echo "  dir                                 - setup all necessary directories"
-    echo "  ssh                                 - setup ssh & get keys"
-    echo "  dotfiles                            - setup dotfiles"
-    echo "  wifi {broadcom, intel}              - setup wifi drivers"
-    echo "  graphics {intel, geforce, optimus}  - setup graphics drivers"
-    echo "  bash [version]                      - setup bash"
-    echo "  python                              - setup python packages"
-    echo "  golang [version]                    - setup golang language and packages"
-    echo "  node [version]                      - setup node and packages"
-    echo "  rust                                - setup rust and packages"
-    echo "  c                                   - setup c and packages"
-    echo "  docker                              - setup docker"
-    echo "  gcloud [version]                    - setup gcloud"
-    echo "  chrome                              - setup chrome"
-    echo "  tmux                                - setup tmux"
-    echo "  k8s                                 - setup kubernetes"
-    echo "  fonts                               - setup fonts"
-    echo "  misc                                - setup miscellaneous programs"
-    echo "  i3                                  - setup i3"
+	echo "install.sh"
+	echo
+	echo "This script can install and setup the following on a debian based system:"
+	echo
+	echo "Usage:"
+	echo "  sources                             - setup sources"
+	echo "  base                                - install base pkgs"
+	echo "  dir                                 - setup all necessary directories"
+	echo "  ssh                                 - setup ssh & get keys"
+	echo "  dotfiles                            - setup dotfiles"
+	echo "  wifi {broadcom, intel}              - setup wifi drivers"
+	echo "  graphics {intel, geforce, optimus}  - setup graphics drivers"
+	echo "  bash [version]                      - setup bash"
+	echo "  python                              - setup python packages"
+	echo "  golang [version]                    - setup golang language and packages"
+	echo "  node [version]                      - setup node and packages"
+	echo "  rust                                - setup rust and packages"
+	echo "  c                                   - setup c and packages"
+	echo "  docker                              - setup docker"
+	echo "  gcloud [version]                    - setup gcloud"
+	echo "  chrome                              - setup chrome"
+	echo "  tmux                                - setup tmux"
+	echo "  k8s                                 - setup kubernetes"
+	echo "  fonts                               - setup fonts"
+	echo "  misc                                - setup miscellaneous programs"
+	echo "  i3                                  - setup i3"
 }
 
 main() {
-    local cmd=$1
+	local cmd=$1
 
-    if [[ -z "$cmd" ]]; then
+	if [[ -z "$cmd" ]]; then
 		usage
 		exit 1
 	fi
 
-    if [[ $cmd == "dir" ]]; then
-        dir
-    elif [[ $cmd == "sources" ]]; then
+	if [[ $cmd == "dir" ]]; then
+		dir
+	elif [[ $cmd == "sources" ]]; then
 		check_is_sudo
 		sources
-    elif [[ $cmd == "base" ]]; then
+	elif [[ $cmd == "base" ]]; then
 		check_is_sudo
 		base
-    elif [[ $cmd == "wifi" ]]; then
-        wifi "$2"
-    elif [[ $cmd == "ssh" ]]; then
-        ssh
-    elif [[ $cmd == "graphics" ]]; then
-        graphics
-    elif [[ $cmd == "bash" ]]; then
-        bash "$2"
-    elif [[ $cmd == "gnome-molokai" ]]; then
-        gnome_molokai
-    elif [[ $cmd == "python" ]]; then
-        python
-    elif [[ $cmd == "golang" ]]; then
-        golang "$2"
-    elif [[ $cmd == "rust" ]]; then
-        rust
-    elif [[ $cmd == "c" ]]; then
-        c
-    elif [[ $cmd == "node" ]]; then
-        node "$2"
-    elif [[ $cmd == "docker" ]]; then
-        check_is_sudo
-        docker
-    elif [[ $cmd == "i3" ]]; then
-        i3
-        i3apps
-        i3setup
-    elif [[ $cmd == "gcloud" ]]; then
-        check_is_sudo
-        gcloud "$2"
-    elif [[ $cmd == "chrome" ]]; then
-        chrome
-    elif [[ $cmd == "tmux" ]]; then
-        tmux
-    elif [[ $cmd == "neovim" ]]; then
-        neovim
-    elif [[ $cmd == "dotfiles" ]]; then
-        dotfiles
-    elif [[ $cmd == "k8s" ]]; then
-        kubeconf
-        minikube
-    elif [[ $cmd == "fonts" ]]; then
+	elif [[ $cmd == "wifi" ]]; then
+		wifi "$2"
+	elif [[ $cmd == "ssh" ]]; then
+		ssh
+	elif [[ $cmd == "graphics" ]]; then
+		graphics
+	elif [[ $cmd == "bash" ]]; then
+		bash "$2"
+	elif [[ $cmd == "gnome-molokai" ]]; then
+		gnome_molokai
+	elif [[ $cmd == "python" ]]; then
+		python
+	elif [[ $cmd == "golang" ]]; then
+		golang "$2"
+	elif [[ $cmd == "rust" ]]; then
+		rust
+	elif [[ $cmd == "c" ]]; then
+		c
+	elif [[ $cmd == "node" ]]; then
+		node "$2"
+	elif [[ $cmd == "docker" ]]; then
 		check_is_sudo
-        fonts
-    elif [[ $cmd == "rofi" ]]; then
-        rofi
-    elif [[ $cmd == "misc" ]]; then
+		docker
+	elif [[ $cmd == "i3" ]]; then
+		i3
+		i3apps
+		i3setup
+	elif [[ $cmd == "gcloud" ]]; then
 		check_is_sudo
-        misc
-    else
-        usage
-    fi
+		gcloud "$2"
+	elif [[ $cmd == "chrome" ]]; then
+		chrome
+	elif [[ $cmd == "tmux" ]]; then
+		tmux
+	elif [[ $cmd == "neovim" ]]; then
+		neovim
+	elif [[ $cmd == "dotfiles" ]]; then
+		dotfiles
+	elif [[ $cmd == "k8s" ]]; then
+		kubeconf
+		minikube
+	elif [[ $cmd == "fonts" ]]; then
+		check_is_sudo
+		fonts
+	elif [[ $cmd == "rofi" ]]; then
+		rofi
+	elif [[ $cmd == "misc" ]]; then
+		check_is_sudo
+		misc
+	else
+		usage
+	fi
 }
 
 main "$@"
