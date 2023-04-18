@@ -1,3 +1,4 @@
+-- :LspInfo
 local lsp = require("lsp-zero")
 local lsp_config = require("lspconfig")
 
@@ -112,6 +113,8 @@ cmp.setup({
     }
 })
 
+-- :NullLsInfo
+--
 -- https://docs.rockylinux.org/books/nvchad/custom/plugins/null_ls/
 -- https://github.com/olexsmir/init.lua/blob/main/lua/plugins/lsp/null-ls.lua
 -- https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
