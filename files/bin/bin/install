@@ -204,7 +204,7 @@ function graphics() {
 
 function python() {
 	# Install: libsqlite3-dev
-	sudo apt install libsqlite3-dev
+	# sudo apt install libsqlite3-dev
 
 	# Install: Python3 packages
 	echo ">>> Installing Python packages"

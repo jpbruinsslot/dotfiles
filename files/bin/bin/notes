@@ -85,6 +85,7 @@ main() {
 
 	if [[ -z "$cmd" ]]; then
 		pull
+		push
 		check
 	fi
 
