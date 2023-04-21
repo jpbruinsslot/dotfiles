@@ -102,7 +102,7 @@ return require('packer').startup(function(use)
     use("tomtom/tcomment_vim")
 
     -- autopairs: insert or delete brackets, parens, quotes in pair
-    use("jiangmiao/auto-pairs")
+    use("windwp/nvim-autopairs")
 
     -- vista.vim:
     use("liuchengxu/vista.vim")
