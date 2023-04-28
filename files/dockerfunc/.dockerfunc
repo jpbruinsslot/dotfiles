@@ -37,6 +37,7 @@ relies_on() {
 yarn() {
 	docker run -it --rm \
 		--name yarn \
+		-v ${PWD}:/usr/src/app \
 		${DOCKER_REPO_PREFIX}yarn "$@"
 }
 
@@ -46,16 +47,17 @@ node() {
 		${DOCKER_REPO_PREFIX}node:alpine "$@"
 }
 
-# npm() {
-#     docker run -it --rm \
-#         --name npm \
-#         ${DOCKER_REPO_PREFIX}node:alpine npm "$@"
-# }
+npm() {
+	docker run -it --rm \
+		--name npm \
+		-v ${PWD}:/usr/src/app \
+		${DOCKER_REPO_PREFIX}node:alpine npm "$@"
+}
 
 languagetool() {
 	docker run -it --rm \
-		--name languagetool
-	${DOCKER_REPO_PREFIX}languagetool "$@"
+		--name languagetool \
+		${DOCKER_REPO_PREFIX}languagetool "$@"
 }
 
 # Usage: pyspy record -o myprofile.svg --pid 1234
