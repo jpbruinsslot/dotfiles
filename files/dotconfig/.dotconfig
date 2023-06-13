@@ -8,6 +8,7 @@
 		"bash_prompt": "/.bash_prompt",
 		"bashrc": "/.bashrc",
 		"bin": "/bin",
+		"dir_colors": "/.dir_colors",
 		"dockerfunc": "/.dockerfunc",
 		"dotconfig": "/.dotconfig",
 		"env": "/.env",
