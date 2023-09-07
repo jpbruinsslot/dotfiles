@@ -47,6 +47,8 @@ node() {
 		${DOCKER_REPO_PREFIX}node:alpine "$@"
 }
 
+alias nodejs=node
+
 npm() {
 	docker run -it --rm \
 		--name npm \
@@ -68,4 +70,11 @@ pyspy() {
 		--pid host \
 		--privileged \
 		${DOCKER_REPO_PREFIX}pyspy "$@"
+}
+
+pre-commit() {
+	docker run -it --rm \
+		-v "${PWD}:/usr/src/app" \
+		--name pre-commit \
+		${DOCKER_REPO_PREFIX}pre-commit "$@"
 }
