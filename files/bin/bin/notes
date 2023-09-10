@@ -5,13 +5,21 @@ NOTES_FILE="$NOTES_DIR/notes.md"
 EDITOR="$(which nvim)"
 EDITOR_ZENMODE="+normal ,zZ"
 
+# Combine the markdown-style header with the contents of a the $NOTES_FILE
+# variable and replace the original file with the combined result.
 function new() {
 	echo -e "## $(date --iso-8601) - $(date "+%A")\n\n* \n" | cat - $NOTES_FILE >/tmp/out && mv /tmp/out $NOTES_FILE
 	edit
 }
 
+# Open editor, enter zen mode and move cursor 3 lines down
 function edit() {
 	$EDITOR +3 "$EDITOR_ZENMODE" $NOTES_FILE
+}
+
+function replace() {
+	(echo -e "## $(date --iso-8601) - $(date "+%A")\n\n* " && tail -n +4 $NOTES_FILE) >/tmp/tempfile && mv /tmp/tempfile $NOTES_FILE
+	edit
 }
 
 function push() {
@@ -64,13 +72,18 @@ function clean() {
 	' $NOTES_FILE
 }
 
-# Check if the first line contains a date, and if that date is today
+# Check if the first line contains a date, and if that date is today.
 # If not, create a new note
 function check() {
 	local date1=$(date --iso-8601)
 	local date2=$(awk 'NR==1 {print $2}' $NOTES_FILE)
+	local content=$(awk 'NR==2 {if ($0 ~ /^\* /) sub(/^\* /, ""); print}' $NOTES_FILE)
 	if [ "$date1" == "$date2" ]; then
-		edit
+		if [ -z "$content" ]; then
+			replace
+		else
+			edit
+		fi
 	else
 		new
 	fi
