@@ -38,7 +38,7 @@ function session_dev() {
 	window_code "$sid" 1 "$HOME/Projects"
 	window_command "$sid" 2 "$HOME/Projects"
 	window_notes "$sid" 3 "$HOME/Projects/notes"
-	window_pkb "$sid" 4 "$HOME/Projects/pkb"
+	window_pkb "$sid" 4 "$HOME/Projects/pkb2"
 
 	tmux select-window -t "$sid:0"
 	tmux a -t $sid
