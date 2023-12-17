@@ -42,7 +42,7 @@ function pull() {
 # Archive notes
 function archive() {
 	split
-	archive
+	clean
 }
 
 # Split notes file into individual files
