@@ -1,2 +1,2 @@
-require("config")
-require("plugins")
+require("jpbruinsslot.core")
+require("jpbruinsslot.lazy")
