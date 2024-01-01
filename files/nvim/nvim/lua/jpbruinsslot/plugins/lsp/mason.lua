@@ -67,6 +67,7 @@ return {
 				"jsonlint",
 				"markdownlint",
 				"mypy",
+				"pylint",
 				"ruff",
 				"shellcheck",
 				"stylelint",
