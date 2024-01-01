@@ -1,58 +1,77 @@
 -- mason : install and manage all your language servers
 return {
-    "williamboman/mason.nvim",
-    dependencies =  {
-        -- Acts like a bridge between mason and lspconfig
-        "williamboman/mason-lspconfig.nvim",
+	"williamboman/mason.nvim",
+	dependencies = {
+		-- Acts like a bridge between mason and lspconfig
+		"williamboman/mason-lspconfig.nvim",
 
-        -- Auto install formatters and linters, whenever we start neovim up
-        "WhoIsSethDaniel/mason-tool-installer.nvim",
-    },
-    config = function()
-        local mason = require("mason")
-        local mason_lspconfig = require("mason-lspconfig")
-        local mason_tool_installer = require("mason-tool-installer")
+		-- Auto install formatters and linters, whenever we start neovim up
+		"WhoIsSethDaniel/mason-tool-installer.nvim",
+	},
+	config = function()
+		local mason = require("mason")
+		local mason_lspconfig = require("mason-lspconfig")
+		local mason_tool_installer = require("mason-tool-installer")
 
-        mason.setup({
-            ui = {
-                icons = {
-                    package_installed = "✓",
-                    package_pending = "➜",
-                    package_uninstalled = "✗",
-                },
-            },
-        })
+		mason.setup({
+			ui = {
+				icons = {
+					package_installed = "✓",
+					package_pending = "➜",
+					package_uninstalled = "✗",
+				},
+			},
+		})
 
-        -- *** define the servers we want to install automatically ***
-        mason_lspconfig.setup({
+		-- Install following language servers automatically
+		mason_lspconfig.setup({
 
-            -- list of servers for mason to install
-            ensure_installed = {
-                "clangd",
-                "gopls",
-                "lua_ls",
-                "pyright",
-                "rust_analyzer",
-                "bashls",
-            },
+			-- list of servers for mason to install
+			ensure_installed = {
+				"clangd",
+				"gopls",
+				"lua_ls",
+				"pyright",
+				"rust_analyzer",
+				"bashls",
+			},
 
-            -- auto-install  configure servers (with lspconfig)
-            automatic_installation = true,
-        })
+			-- auto-install  configure servers (with lspconfig)
+			automatic_installation = true,
+		})
 
-        -- *** define the formatters and linters we want to install automatically ***
-        mason_tool_installer.setup({
-            ensure_installed = {
-                -- formatters
-                "prettier",
-                "rustfmt",
-                "black",
-                "isort",
-                "shfmt",
+		-- Install following formatter and linters automatically
+		--
+		-- See what linters you're using at ./plugins/linting.lua
+		-- See what formatters you're using at ./plugins/formatting.lua
+		mason_tool_installer.setup({
+			ensure_installed = {
+				-- formatters
+				"black",
+				"clang-format",
+				"codespell",
+				"goimports",
+				"gofumpt",
+				"isort",
+				"prettier",
+				"rustfmt",
+				"shfmt",
+				"stylua",
 
-                -- linters
-                "eslint_d",
-            },
-        })
-    end,
+				-- linters
+				"eslint_d",
+				"flake8",
+				"hadolint",
+				"luacheck",
+				"golangci-lint",
+				"jsonlint",
+				"markdownlint",
+				"mypy",
+				"ruff",
+				"shellcheck",
+				"stylelint",
+				"yamllint",
+			},
+		})
+	end,
 }
