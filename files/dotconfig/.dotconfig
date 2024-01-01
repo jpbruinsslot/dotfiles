@@ -1,7 +1,7 @@
 {
-	"dot_path": "/dotfiles",
+	"dot_path": "/.dotfiles",
 	"files": {
-		"alacritty": "/.config/alacritty/alacritty.yml",
+		"alacritty": "/.config/alacritty/alacritty.toml",
 		"alias": "/.alias",
 		"background": "/.background",
 		"bash_profile": "/.bash_profile",
@@ -23,7 +23,7 @@
 		"inputrc": "/.inputrc",
 		"nvim": "/.config/nvim",
 		"path": "/.path",
-		"rofi": "/.config/rofi/config",
+		"rofi": "/.config/rofi/config.rasi",
 		"terminfo": "/.terminfo",
 		"themes": "/.themes/",
 		"tmux": "/.tmux.conf"
