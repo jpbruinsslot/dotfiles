@@ -20,7 +20,7 @@ return {
 
         -- table of options for the keymaps
         local opts = { noremap = true, silent = true }
-        
+
         -- define a set of key maps that will only apply when a given language
         -- server is active
         local on_attach = function(client, bufnr)
@@ -79,40 +79,48 @@ return {
 
         -- *** CONFIGURE LSP SERVERS HERE ***
 
-        -- c language server
+        -- TODO: c language server
 
         -- go language server
-        lspconfig.gopls.setup({
+        lspconfig["gopls"].setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
             settings = {
                 gopls = {
                     staticcheck = true,
                 }
             },
-            on_attach = function(client, bufnr)
-                --print("hello from gopls")
-            end
         })
 
         -- lua language server
         --
         -- fix Undefined global 'vim'
-        lspconfig.lua_ls.setup({
+        lspconfig["lua_ls"].setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
             settings = {
                 Lua = {
+                    -- make the language server recognize "vim" global variable
                     diagnostics = {
                         globals = { "vim" }
-                    }
+                    },
+                    workspace = {
+                        -- make the language server aware of neovim runtime files
+                        library = {
+                            [vim.fn.expand("$VIMRUNTIME/lua")] = true,
+                            [vim.fn.stdpath("config") .. "/lua"] = true,
+                        },
+                    },
                 }
-            }
+            },
         })
 
-        -- rust language server
+        -- TODO: rust language server
 
         -- python language server
-        lspconfig.pyright.setup({
-            on_attach = function(client, bufnr)
-                --print("hello from pyright")
-            end
+        lspconfig["pyright"].setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
         })
     end,
 }

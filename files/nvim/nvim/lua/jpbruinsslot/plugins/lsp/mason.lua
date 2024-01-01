@@ -2,12 +2,16 @@
 return {
     "williamboman/mason.nvim",
     dependencies =  {
-        -- Acts like a brdige between mason and lspconfig
+        -- Acts like a bridge between mason and lspconfig
         "williamboman/mason-lspconfig.nvim",
+
+        -- Auto install formatters and linters, whenever we start neovim up
+        "WhoIsSethDaniel/mason-tool-installer.nvim",
     },
     config = function()
         local mason = require("mason")
         local mason_lspconfig = require("mason-lspconfig")
+        local mason_tool_installer = require("mason-tool-installer")
 
         mason.setup({
             ui = {
@@ -19,6 +23,7 @@ return {
             },
         })
 
+        -- *** define the servers we want to install automatically ***
         mason_lspconfig.setup({
 
             -- list of servers for mason to install
@@ -33,6 +38,21 @@ return {
 
             -- auto-install  configure servers (with lspconfig)
             automatic_installation = true,
+        })
+
+        -- *** define the formatters and linters we want to install automatically ***
+        mason_tool_installer.setup({
+            ensure_installed = {
+                -- formatters
+                "prettier",
+                "rustfmt",
+                "black",
+                "isort",
+                "shfmt",
+
+                -- linters
+                "eslint_d",
+            },
         })
     end,
 }
