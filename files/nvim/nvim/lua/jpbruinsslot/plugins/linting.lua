@@ -39,7 +39,7 @@ return {
 
         -- list of neovim events that we want to use to trigger linting
         vim.api.nvim_create_autocmd({
-            "BUffEnter",    -- trigger whenever we open a new buffer or we move the cursor into another buffer
+            "BufEnter",    -- trigger whenever we open a new buffer or we move the cursor into another buffer
             "BufWritePost", -- trigger whenever we save a buffer
             "InsertLeave",  -- trigger whenever we leave insert mode
         },{
