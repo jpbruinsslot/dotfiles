@@ -12,12 +12,14 @@ return {
         }
 
         dashboard.section.buttons.val = {
-            dashboard.button("e", "  New file", ":ene <BAR> startinsert <CR>"),
-            dashboard.button("f", "  Find file", ":Telescope find_files <CR>"),
-            dashboard.button("h", "  Recently opened files", ":Telescope oldfiles <CR>"),
-            dashboard.button("b", "  Bookmarks", ":Telescope marks <CR>"),
-            dashboard.button("c", "  Load last session", ":source Session.vim <CR>"),
-            dashboard.button("q", "  Quit", ":qa <CR>"),
+            dashboard.button("e", "  > New File", "<cmd>ene<CR>"),
+            dashboard.button("x", "  > Toggle file explorer", "<cmd>NvimTreeToggle<CR>"),
+            dashboard.button("f", "󰱼  > Find File", "<cmd>Telescope find_files<CR>"),
+            dashboard.button("w", "  > Find Word", "<cmd>Telescope live_grep<CR>"),
+            dashboard.button("b", "  > Bookmarks", ":Telescope marks <CR>"),
+            dashboard.button("h", "  > Recently opened files", ":Telescope oldfiles <CR>"),
+            dashboard.button("c", "󰁯  > Restore Session For Current Directory", "<cmd>SessionRestore<CR>"),
+            dashboard.button("q", "  > Quit NVIM", "<cmd>qa<CR>"),
         }
 
         alpha.setup(dashboard.opts)
