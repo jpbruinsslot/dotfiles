@@ -24,8 +24,8 @@
 
 import os
 import re
-import sys
 import subprocess
+import sys
 from pathlib import Path
 
 FILE = "/tmp/bat"
@@ -36,25 +36,22 @@ def notify(percentage):
 
     if percentage > 80 and not touch_file:
         # notify and create file
-        subprocess.run(
-            ["notify-send", "-i", "battery", "Please disconnect charger"])
-        print('\a')
+        subprocess.run(["notify-send", "-i", "battery", "Please disconnect charger"])
+        print("\a")
         Path(FILE).touch()
     elif 40 <= percentage <= 80 and touch_file:
         # remove touch file
         os.remove(FILE)
     elif percentage < 40 and not touch_file:
         # notify and create file
-        subprocess.run(
-            ["notify-send", "-i", "battery", "Please connect charger"])
-        print('\a')
+        subprocess.run(["notify-send", "-i", "battery", "Please connect charger"])
+        print("\a")
         Path(FILE).touch()
     else:
         pass
 
 
 def check_status(metric_percentage, metric_status):
-
     if metric_status == b"Full":
         return ""
     elif metric_status == b"Charging":
@@ -77,10 +74,10 @@ def check_status(metric_percentage, metric_status):
 def main():
     try:
         console_output = subprocess.check_output(
-            "acpi", stderr=subprocess.STDOUT, shell=True)
+            "acpi", stderr=subprocess.STDOUT, shell=True
+        )
     except:
-        sys.exit(
-            "acpi not found please install with sudo apt-get install acpi")
+        sys.exit("acpi not found please install with sudo apt install acpi")
 
     # There is no battery and probably on a power supply
     if b"No support" in console_output or console_output == b"":
@@ -92,15 +89,18 @@ def main():
     list_metrics = console_output.split(b", ")
 
     metric_status = list_metrics[0].split(b":")[-1].strip()
-    metric_percentage = int(re.match(b'\d+', list_metrics[1]).group())
+    metric_percentage = int(re.match(b"\d+", list_metrics[1]).group())
 
     # Send notification when necessary
     notify(metric_percentage)
 
-    print("{icon} {percentage}%".format(
-        icon=check_status(metric_percentage, metric_status),
-        percentage=metric_percentage))
+    print(
+        "{icon} {percentage}%".format(
+            icon=check_status(metric_percentage, metric_status),
+            percentage=metric_percentage,
+        )
+    )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -15,8 +15,8 @@ function session_work() {
 	tmux new-session -d -s "$sid"
 
 	window_dashboard "$sid" 0
-	window_code "$sid" 1 "$HOME/Projects/"
-	window_command "$sid" 2 "$HOME/Projects/"
+	window_code "$sid" 1 "$WORK_DIR"
+	window_command "$sid" 2 "$WORK_DIR"
 	window_slack "$sid" 3
 
 	tmux select-window -t "$sid:0"
@@ -49,20 +49,12 @@ function window_dashboard() {
 	local wid=$2
 
 	if [[ $wid == 0 ]]; then
-		tmux rename-window ""
+		tmux rename-window ""
 	else
-		tmux new-window -t "$sid:$wid" -n ""
+		tmux new-window -t "$sid:$wid" -n ""
 	fi
 
-	tmux split-window -v
-
-	tmux select-pane -t 0
-	tmux send-keys "bpytop" C-m
-
-	# NOTE: view without sudo
-	# sudo usermod -aG adm $USER
-	tmux select-pane -t 1
-	tmux send-keys "grc tail -fq /var/log/syslog /var/log/auth.log /var/log/kern.log /var/log/user.log" C-m
+	tmux send-keys "btop" C-m
 }
 
 function window_code() {
@@ -105,9 +97,9 @@ function window_notes() {
 	local dir=$3
 
 	if [[ $wid == 0 ]]; then
-		tmux rename-window "פֿ"
+		tmux rename-window "󰙏"
 	else
-		tmux new-window -t "$sid:$wid" -n "פֿ"
+		tmux new-window -t "$sid:$wid" -n "󰙏"
 	fi
 
 	tmux send-keys "cd $dir && notes" C-m
@@ -152,6 +144,8 @@ function usage() {
 }
 
 function main() {
+	source .mux
+
 	local cmd=$1
 
 	if [[ -z "$cmd" ]]; then
