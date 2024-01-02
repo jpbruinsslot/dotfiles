@@ -6,12 +6,20 @@
 # export DOCKER_REPO_PREFIX=registry.digitalocean.com/aztlan/
 
 # Helper functions
-dcleanup() {
+
+# Kill all running containers
+docker-kill() {
+	docker kill $(docker ps -q)
+}
+
+# Remove all
+docker-rma() {
 	docker rm -v $(docker ps --filter status=exited -q 2>/dev/null) 2>/dev/null
 	docker rmi $(docker images --filter dangling=true -q 2>/dev/null) 2>/dev/null
 }
 
-del_stopped() {
+# Remove stopped
+docker-rms() {
 	local name=$1
 	local state=$(docker inspect --format "{{.State.Running}}" $name 2>/dev/null)
 
@@ -20,7 +28,7 @@ del_stopped() {
 	fi
 }
 
-relies_on() {
+docker-relies() {
 	local containers=$@
 
 	for container in $containers; do
@@ -41,20 +49,20 @@ yarn() {
 		${DOCKER_REPO_PREFIX}yarn "$@"
 }
 
-node() {
-	docker run -it --rm \
-		--name node \
-		${DOCKER_REPO_PREFIX}node:alpine "$@"
-}
+# node() {
+# 	docker run -it --rm \
+# 		--name node \
+# 		${DOCKER_REPO_PREFIX}node:alpine "$@"
+# }
+#
+# alias nodejs=node
 
-alias nodejs=node
-
-npm() {
-	docker run -it --rm \
-		--name npm \
-		-v ${PWD}:/usr/src/app \
-		${DOCKER_REPO_PREFIX}node:alpine npm "$@"
-}
+# npm() {
+# 	docker run -it --rm \
+# 		--name npm \
+# 		-v ${PWD}:/usr/src/app \
+# 		${DOCKER_REPO_PREFIX}node:alpine npm "$@"
+# }
 
 languagetool() {
 	docker run -it --rm \
