@@ -18,7 +18,7 @@ vim.opt.cursorline = true
 -- Disable cursor styling
 vim.opt.guicursor = ""
 
--- Line seperator character
+-- Line separator character
 vim.opt.fillchars = "vert:│"
 
 -- Ignore case when searching
@@ -49,9 +49,6 @@ vim.opt.showmatch = true
 
 -- Show command in bottom bar
 vim.opt.showcmd = true
-
--- Highlight column limit
-vim.opt.colorcolumn = "80"
 
 -- Enable folding
 vim.opt.foldenable = true

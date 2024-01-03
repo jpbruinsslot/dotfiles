@@ -8,6 +8,7 @@ return {
 			options = {
 				theme = "nord",
 				icons_enabled = true,
+				globalstatus = true,
 			},
 			sections = {
 				lualine_a = { "mode" },
