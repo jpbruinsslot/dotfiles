@@ -30,61 +30,8 @@ function ssh() {
 	fi
 }
 
-# Add additional repositories
-function sources() {
-	echo ">>> Adding additional repositories"
-	apt update || true
-	apt install -y \
-		apt-transport-https \
-		ca-certificates \
-		curl \
-		dirmngr \
-		gnupg2 \
-		lsb-release \
-		--no-install-recommends
-
-	cat <<-EOF >/etc/apt/sources.list
-		deb http://httpredir.debian.org/debian buster main contrib non-free
-		deb-src http://httpredir.debian.org/debian/ buster main contrib non-free
-	EOF
-
-	# Google Chrome
-	echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >/etc/apt/sources.list.d/google-chrome.list
-
-	# Add the Cloud SDK distribution URI as a package source
-	cat <<-EOF >/etc/apt/sources.list.d/google-cloud-sdk.list
-		deb https://packages.cloud.google.com/apt cloud-sdk main
-	EOF
-
-	# Add the Google Chrome distribution URI as a package source
-	cat <<-EOF >/etc/apt/sources.list.d/google-chrome.list
-		deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
-	EOF
-
-	# LLVM
-	cat <<-EOF >/etc/apt/sources.list.d/llvm.list
-		deb http://apt.llvm.org/buster/ llvm-toolchain-buster main
-		deb-src http://apt.llvm.org/buster/ llvm-toolchain-buster main
-	EOF
-
-	# Import the Google Chrome public key
-	curl https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
-
-	# Import the Google Cloud Platform public key
-	curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
-
-	# Add the neovim ppa gpg key
-	apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 9DBB0BE9366964F134855E2255F96FCF8231B6DD
-
-	# Add the tlp apt-repo gpg key
-	apt-key adv --keyserver pool.sks-keyservers.net --recv-keys CD4E8809
-
-	# Add the google chrome public key
-	curl https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
-}
-
 function apt_base() {
-	echo ">>> Installing base packages"
+	echo ">>> Installing base apt packages"
 
 	echo "... Synchronizing package index files"
 	apt update || true
@@ -93,64 +40,12 @@ function apt_base() {
 	apt -y dist-upgrade
 
 	echo "... Installing system packages"
-	# Graveyard:
-	#   autoconf \
-	#   acpi \
-	#   automake \
-	#   build-essential \
-	#   dconf-tools \
-	#   libevent-dev \
-	#   libncurses5-dev \
-	#   libncursesw5-dev \
-	#   linux-image-extra-$(uname -r) \
-	#   linux-image-extra-virtual \
-	#   sysstat \
-	#   virtualbox \
-
 	apt install -y \
-		automake \
-		bash-completion \
-		bc \
 		ca-certificates \
-		coreutils \
 		curl \
-		clang-11 \
-		clangd-11 \
-		clang-format-11 \
-		dnsutils \
-		entr \
-		fonts-hack-ttf \
-		git-core \
-		gnupg \
-		gnupg2 \
-		google-chrome-stable \
-		grc \
-		chrome-gnome-shell \
-		htop \
-		indent \
-		jq \
-		libevent-dev \
-		multitail \
-		ncurses-dev \
-		neovim \
-		openssh-server \
-		pkg-config \
-		python3-dev \
-		python3-pip \
-		python3-setuptools \
-		ranger \
-		rofi \
-		rxvt-unicode-256color \
-		silversearcher-ag \
-		strace \
-		tar \
-		tlp \
-		tree \
-		unzip \
-		urlview \
-		vim \
-		wget \
-		xclip \
+		git \
+        gnupg \
+        wget \
 		--no-install-recommends
 
 	echo "... Cleaning up"
@@ -159,91 +54,45 @@ function apt_base() {
 	apt clean
 }
 
-# Install: graphics drivers
-function graphics() {
-	echo ">>> Installing graphics drivers"
-	local system=$1
+function apt_pkg() {
+    echo ">>> Installing apt packages"
 
-	if [[ -z "$system" ]]; then
-		echo "You need to specify it's intel, geforce or optimus"
-		exit 1
-	fi
-
-	local pkgs=(xorg xserver-xorg xserver-xorg-input-libinput xserver-xorg-input-synaptics)
-
-	case $system in
-	"intel")
-		pkgs+=(xserver-xorg-video-intel)
-		;;
-	"geforce")
-		pkgs+=(nvidia-driver)
-		;;
-	"optimus")
-		pkgs+=(nvidia-kernel-dkms bumblebee-nvidia primus)
-		;;
-	*)
-		echo "You need to specify whether it's intel, geforce or optimus"
-		exit 1
-		;;
-	esac
-
-	# Update grub to solve login loop
-	#
-	# Source:
-	#   - https://askubuntu.com/a/867647
-	#
-	# $ sed -i 's/splash//g' /etc/default/grub
-	# $ update-grub2
-
+	echo "... Synchronizing package index files"
 	apt update || true
-	apt -y dist-upgrade
-	apt install -y "${pkgs[@]}" --no-install-recommends
+
+	apt install -y \
+		btop \
+        icdiff \
+		jq \
+		urlview \
+        mc \
+		net-tools \
+		rofi \
+        tmux \
+		--no-install-recommends
+
+	apt autoremove
+	apt autoclean
+	apt clean
 }
 
 function python_base() {
 	sudo apt install \
+        python3 \
 		python3-pip \
 		python3-venv
 }
 
-function python() {
-	# Install: libsqlite3-dev
-	# sudo apt install libsqlite3-dev
-
+function python_pkg() {
 	# Install: Python3 packages
 	echo ">>> Installing Python packages"
 
 	sudo -H pip install --upgrade pip
 	sudo -H pip install --no-cache-dir --upgrade --force-reinstall \
-		asciinema \
-		bpytop \
-		black \
-		cpplint \
-		docker-compose \
-		flake8 \
-		bpytop \
-		httpie \
-		jedi \
-		lolcat \
-		mypy \
-		neovim \
-		psutil \
-		pylint \
-		vulture \
-		yapf \
-		youtube-dl
-
-	# Install: Python2 packages
-	# crcmod: needed for gsutil
-	# neovim: needed for deoplete
-	# sudo -H pip2 install --upgrade pip
-	# sudo -H pip2 install --no-cache-dir --upgrade --force-reinstall \
-	#     crcmod \
-	#     neovim
 }
 
 # Install: Golang
-function golang() {
+function golang_base() {
 	echo ">>> Installing Golang"
 
 	GO_VERSION=$(curl https://go.dev/VERSION?m=text)
@@ -271,32 +120,16 @@ function golang() {
 
 	# Add binaries to path
 	export PATH=$PATH:/usr/local/go/bin
-
-	# Install: Go packages
-	echo "... Installing Golang packages"
-	(
-		set +x
-		set +e
-		go install golang.org/x/lint/golint@latest
-		go install golang.org/x/tools/gopls@latest
-		go install golang.org/x/tools/cmd/goimports@latest
-		go install golang.org/x/tools/cmd/guru@latest
-		go install github.com/jstemmer/gotags@latest
-		go install honnef.co/go/tools/cmd/staticcheck@latest
-		go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
-		go install github.com/mgechev/revive@latest
-		go install github.com/rogpeppe/godef@latest
-		go install github.com/kisielk/errcheck@latest
-		go install github.com/derekparker/delve/cmd/dlv@latest
-		go install github.com/junegunn/fzf@latest
-		go install hub.com/axw/gocov/gocov@latest
-		go install github.com/jingweno/ccat@latest
-		go install github.com/erroneousboat/slack-term@latest
-		go install github.com/erroneousboat/dot@latest
-	)
 }
 
-function rust() {
+function golang_pkg() {
+	echo ">>> Installing Golang packages"
+
+    go install -u github.com/junegunn/fzf
+    go install -u github.com/owenthereal/ccat
+}
+
+function rust_base() {
 	echo ">>> Installing Rust"
 
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -310,28 +143,32 @@ function rust() {
 
 	#curl -sSL "https://github.com/rust-analyzer/rust-analyzer/releases/download/2020-04-20/rust-analyzer-linux" -o "${HOME}/.cargo/bin/rust-analyzer"
 	#chmod +x "${HOME}/.cargo/bin/rust-analyzer"
+}
 
-	# Dependencies for alacritty
-	sudo apt install cmake pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3
-
+function rust_pkg() {
+	echo ">>> Installing Rust packages"
+    #
 	# Install packages
 	cargo install \
 		alacritty \
 		ripgrep \
-		bat
+        exa
 }
 
-function c() {
+function c_base() {
 	echo ">>> Installing C"
+}
 
+function c_pkg() {
+    echo ">>> Installing C packages"
+    
 	# LLVM
 
 	# Valgrind
-
 }
 
 # Install: Node
-function node() {
+function node_base() {
 	echo ">>> Installing Node"
 
 	NODE_VERSION=21
@@ -356,6 +193,14 @@ function node() {
 		nodejs
 }
 
+function node_pkg() {
+    echo ">>> Installing Node packages"
+}
+
+function chrome() {
+    echo ">>> Installing Chrome"
+}
+
 # Install: Docker
 function docker() {
 	echo ">>> Installing docker"
@@ -369,11 +214,13 @@ function docker() {
 		--no-install-recommends
 
 	# Add official docker GPG key
+    echo "... Adding official docker GPG key"
 	sudo install -m 0755 -d /etc/apt/keyrings
 	curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 	sudo chmod a+r /etc/apt/keyrings/docker.gpg
 
 	# Add the repository to Apt sources:
+    echo "... Adding repository to Apt sources"
 	echo \
 		"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
         $(. /etc/os-release && echo "$VERSION_CODENAME") stable" |
@@ -381,32 +228,14 @@ function docker() {
 	sudo apt-get update
 
 	# Install
+    echo "... Installing docker"
 	sudo apt update || true
 	sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 	# Configure
+    echo "... Configuring docker"
 	sudo usermod -a -G docker $USER
 	sudo service docker restart
-}
-
-function rofi() {
-	echo ">>> Installing rofi"
-
-	if [[ -d /tmp/rofi ]]; then
-		rm -rf /tmp/rofi
-	fi
-
-	git clone --recursive https://github.com/davatorium/rofi.git /tmp/rofi
-
-	cd /tmp/rofi
-	git submodule update --init
-	autoreconf -i
-	mkdir build && cd build
-	../configure
-	make
-	sudo make install
-
-	cd "$HOME"
 }
 
 # Install: Tmux
@@ -449,6 +278,21 @@ function neovim() {
 	cd "$HOME"
 }
 
+# TODO: wine
+function lutris() {
+    echo ">>> Installing Lutris"
+
+    echo "... Adding official lutris GPG key"
+    wget -q -O- https://download.opensuse.org/repositories/home:/strycore/Debian_12/Release.key | gpg --dearmor | sudo tee /etc/apt/keyrings/lutris.gpg > /dev/null
+
+    echo "... Adding repository to Apt sources"
+    echo "deb [signed-by=/etc/apt/keyrings/lutris.gpg] https://download.opensuse.org/repositories/home:/strycore/Debian_12/ ./" | sudo tee /etc/apt/sources.list.d/lutris.list > /dev/null
+
+    echo "... Installing lutris"
+    sudo apt update
+    sudo apt install lutris
+}
+
 # Install: GCloud
 function gcloud() {
 	echo ">>> Installing gcloud"
@@ -474,36 +318,6 @@ function gcloud() {
 
 	# Reset owner of folder
 	chown -r $user:$user $HOME/google-cloud-sdk
-}
-
-# Install: Minikube
-function minikube() {
-	echo ">>> Install minikube"
-
-	# Check for version argument
-	if [[ ! -z "$1" ]]; then
-		export MINIKUBE_VERSION=$1
-	fi
-
-	MINIKUBE_VERSION=v0.17.1
-
-	# Download
-	cd /tmp
-	curl -Lo minikube https://storage.googleapis.com/minikube/releases/$MINIKUBE_VERSION/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
-
-	cd "$HOME"
-}
-
-# Install: kubernetes config
-function kubeconf() {
-	echo ">>> Install kubernetes configuration"
-
-	read -p "--> Copy kubernetes config from remote host? [y/n] " -n 1 -r
-	echo
-	if [[ $REPLY =~ ^[Yy]$ ]]; then
-		read -p "--> Please enter user@host: " HOST
-		scp -r $HOST:~/.kube/ ~
-	fi
 }
 
 # Install: Dotfiles
@@ -627,30 +441,6 @@ function bash() {
 	cd "$HOME"
 }
 
-function misc() {
-	cd /tmp
-
-	# Place installation of miscellaneous programs here
-
-	# TODO dockerconfig
-
-	# TODO Terminfo etc.
-
-	# TODO slack-term config
-
-	# Install: icdiff
-	curl -sSL https://raw.githubusercontent.com/jeffkaufman/icdiff/master/icdiff >/usr/local/bin/icdiff
-	curl -sSL https://raw.githubusercontent.com/jeffkaufman/icdiff/master/git-icdiff >/usr/local/bin/git-icdiff
-	chmod +x /usr/local/bin/icdiff
-	chmod +x /usr/local/bin/git-icdiff
-
-	# Install: numix icons
-	rm -rf /tmp/numix-icon-theme-circle
-	git clone https://github.com/numixproject/numix-icon-theme-circle.git
-	cp -r /tmp/numix-icon-theme-circle/Numix-Circle ~/.local/share/icons
-
-}
-
 function fonts() {
 	cd /tmp
 
@@ -706,23 +496,6 @@ function fonts() {
 	echo "  (sudo) dpkg-reconfigure fontconfig"
 
 	cd "$HOME"
-}
-
-function wifi() {
-	local system=$1
-
-	if [[ -z "$system" ]]; then
-		echo "You need to specify whether it's broadcom or intel"
-		exit 1
-	fi
-
-	if [[ $system == "broadcom" ]]; then
-		local pkg="broadcom-sta-dkms"
-
-		apt-get install -y "$pkg" --no-install-recommends
-	else
-		update-iwlwifi
-	fi
 }
 
 check_is_sudo() {

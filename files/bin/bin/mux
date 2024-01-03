@@ -17,7 +17,8 @@ function session_work() {
 	window_dashboard "$sid" 0
 	window_code "$sid" 1 "$WORK_DIR"
 	window_command "$sid" 2 "$WORK_DIR"
-	window_slack "$sid" 3
+	window_notes "$sid" 3 "$HOME/Projects/notes"
+	window_pkb "$sid" 4 "$HOME/Projects/pkb2"
 
 	tmux select-window -t "$sid:0"
 	tmux a -t $sid

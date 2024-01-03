@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+# http://www.davidpashley.com/articles/writing-robust-shell-scripts/
+set -o errexit
+set -o pipefail
+
+# Golang
+
+# Golang packages
+
+# Rust
+
+# Rust packages
+
+# Node (apt)
+
+# Node packages
+
+# Python (apt)
+
+# Python packages
+
+# Debian
+
+# Neovim
+
+# Tmux (apt)
+
+# Docker (apt)
+
+# Chrome (apt)

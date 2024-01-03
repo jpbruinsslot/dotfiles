@@ -46,8 +46,8 @@ get_network_speeds() {
 	rx_after=$(cat /proc/net/dev | awk '/'"$interface"'/ {print $2}')
 	tx_after=$(cat /proc/net/dev | awk '/'"$interface"'/ {print $10}')
 
-	download_speed=$((rx_after - rx_before))
-	upload_speed=$((tx_after - tx_before))
+	download_speed=$(((rx_after - rx_before) / 1024))
+	upload_speed=$(((tx_after - tx_before) / 1024))
 
 	echo "$download_speed/$upload_speed"
 }
