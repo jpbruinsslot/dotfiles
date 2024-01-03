@@ -12,6 +12,7 @@
     # `git di $number` shows the diff between the state `$number` revisions ago and the current state
     di = !"d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
 
+    # Show the names of files that have changed between the `base` branch and the current branch
     df = !"git difftool"
 
     # Pull in remote changes for the current repository and all its submodules
@@ -124,13 +125,13 @@
   tool = icdiff
 
 [difftool]
-  prompt = false
+    prompt = false
 
 [difftool "icdiff"]
-  cmd = /usr/local/bin/icdiff --line-numbers $LOCAL $REMOTE
+    cmd = /bin/icdiff --line-numbers $LOCAL $REMOTE
 
 [pager]
-  difftool = true
+    difftool = true
 
 [http]
 	sslVerify = false
@@ -146,3 +147,5 @@
 
 [user]
 	signingKey = A0B4608FF6738557
+    name = "JP Bruins Slot"
+    email = "jpbruinsslot@gmail.com"
