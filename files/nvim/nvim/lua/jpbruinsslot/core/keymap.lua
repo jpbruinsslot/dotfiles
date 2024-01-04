@@ -11,6 +11,9 @@ vim.keymap.set("n", "<C-l>", "<C-w>l")
 vim.keymap.set("n", "-", "<C-W>-")
 vim.keymap.set("n", "+", "<C-W>+")
 
+-- Even split panel size
+vim.keymap.set("n", "=", "<C-W>=")
+
 -- Useful mappings for managing tabs
 vim.keymap.set("n", "tn", ":tabnew<CR>")
 vim.keymap.set("n", "tc", ":tabclose<CR>")
@@ -18,7 +21,7 @@ vim.keymap.set("n", "to", ":tabonly<CR>")
 vim.keymap.set("n", "tm", ":tabmove<CR>")
 vim.keymap.set("n", "tr", ":tabrename<CR>")
 
--- Tab nagivation
+-- Tab navigation
 vim.keymap.set("n", "th", ":tabprevious<CR>")
 vim.keymap.set("n", "tl", ":tabnext<CR>")
 
@@ -52,16 +55,16 @@ vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
 -- Don't loose current paste buffer when pasting
-vim.keymap.set("x", "<leader>p", "\"_dP")
+vim.keymap.set("x", "<leader>p", '"_dP')
 
 -- Paste into the '+'' register (system clipboard)
-vim.keymap.set("n", "<leader>y", "\"+y")
-vim.keymap.set("v", "<leader>y", "\"+y")
-vim.keymap.set("n", "<leader>Y", "\"+Y")
+vim.keymap.set("n", "<leader>y", '"+y')
+vim.keymap.set("v", "<leader>y", '"+y')
+vim.keymap.set("n", "<leader>Y", '"+Y')
 
 -- Deleting to void register
-vim.keymap.set("n", "<leader>d", "\"_d")
-vim.keymap.set("v", "<leader>d", "\"_d")
+vim.keymap.set("n", "<leader>d", '"_d')
+vim.keymap.set("v", "<leader>d", '"_d')
 
 -- Fix for the annoying 'Q' and 'q:' commands
 vim.keymap.set("n", "Q", "<nop>")
