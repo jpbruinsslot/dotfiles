@@ -77,10 +77,15 @@ function apt_pkg() {
 }
 
 function python_base() {
+	echo "... Synchronizing package index files"
+	sudo apt update || true
+
+    echo "... Installing Python"
 	sudo apt install \
         python3 \
 		python3-pip \
-		python3-venv
+		python3-venv \
+		--no-install-recommends
 }
 
 function python_pkg() {
@@ -95,17 +100,17 @@ function python_pkg() {
 function golang_base() {
 	echo ">>> Installing Golang"
 
-	GO_VERSION=$(curl https://go.dev/VERSION?m=text)
-
+	GO_VERSION=$(curl -s https://go.dev/VERSION?m=text | grep -o 'go[0-9.]*')
 	if [[ ! -z "$1" ]]; then
 		GO_VERSION=go$1
 	fi
 
-	# read -p "--> Please enter the version of Go you want to install: " GO_VERSION
-
 	GOLANG=$GO_VERSION.linux-amd64
 
+	# read -p "--> Please enter the version of Go you want to install: " GO_VERSION
+
 	# Removing prior version of Go
+    echo "... Removing prior version of Go"
 	GO_SRC=/usr/local/go
 	if [[ -d "$GO_SRC" ]]; then
 		sudo rm -rf "$GO_SRC"
@@ -113,20 +118,24 @@ function golang_base() {
 	fi
 
 	# Download
+    echo "... Downloading Go $GO_VERSION"
 	cd /tmp
-	wget -O $GOLANG.tar.gz https://storage.googleapis.com/golang/$GOLANG.tar.gz
+	wget -O $GOLANG.tar.gz https://go.dev/dl/$GOLANG.tar.gz
+
+    echo "... Installing Go $GO_VERSION"
 	sudo tar -C /usr/local -xzf $GOLANG.tar.gz
-	cd "$HOME"
 
 	# Add binaries to path
+    echo "... Adding binaries to path"
 	export PATH=$PATH:/usr/local/go/bin
+
+	cd "$HOME"
 }
 
 function golang_pkg() {
 	echo ">>> Installing Golang packages"
 
-    go install -u github.com/junegunn/fzf
-    go install -u github.com/owenthereal/ccat
+    go get -u github.com/owenthereal/ccat
 }
 
 function rust_base() {
@@ -168,6 +177,8 @@ function c_pkg() {
 }
 
 # Install: Node
+#
+# https://github.com/nodesource/distributions?tab=readme-ov-file#installation-instructions
 function node_base() {
 	echo ">>> Installing Node"
 
@@ -177,6 +188,7 @@ function node_base() {
 		NODE_VERSION=$1
 	fi
 
+    echo "... Installing prerequisites"
 	sudo apt update || true
 	sudo apt install -y \
 		ca-certificates \
@@ -184,8 +196,10 @@ function node_base() {
 		gnupg \
 		--no-install-recommends
 
+    echo "... Adding official node GPG key"
 	curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
 
+    echo "... Adding repository to Apt sources"
 	echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_VERSION.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
 
 	sudo apt update || true
@@ -199,11 +213,22 @@ function node_pkg() {
 
 function chrome() {
     echo ">>> Installing Chrome"
+
+    echo "... Adding official chrome GPG key"
+    curl https://dl.google.com/linux/linux_signing_key.pub | sudo gpg --dearmor -o /etc/apt/keyrings/google-chrome.gpg
+
+    echo "... Adding repository to Apt sources"
+    echo deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main | sudo tee /etc/apt/sources.list.d/google-chrome.list
+
+	# Install
+    echo "... Installing chrome"
+    sudo apt update || true
+    sudo apt install -y google-chrome-stable
 }
 
 # Install: Docker
 function docker() {
-	echo ">>> Installing docker"
+	echo ">>> Installing Docker"
 
 	echo "... Installing prerequisites"
 	sudo apt update || true
@@ -219,7 +244,7 @@ function docker() {
 	curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 	sudo chmod a+r /etc/apt/keyrings/docker.gpg
 
-	# Add the repository to Apt sources:
+	# Add the repository to Apt sources
     echo "... Adding repository to Apt sources"
 	echo \
 		"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
@@ -230,7 +255,7 @@ function docker() {
 	# Install
     echo "... Installing docker"
 	sudo apt update || true
-	sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+	sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 	# Configure
     echo "... Configuring docker"
@@ -268,8 +293,15 @@ function tmux() {
 function neovim() {
 	echo ">>> Installing Neovim"
 
-	# node, luarocks, python
+    echo "... Installing prerequisites"
+	sudo apt update || true
+	sudo apt install -y \
+        luarocks \
+		--no-install-recommends
 
+    node_base
+
+    echo "... Installing neovim"
 	cd /tmp
 	wget https://github.com/neovim/neovim/releases/download/stable/nvim.appimage
 	chmod u+x nvim.appimage
@@ -278,7 +310,7 @@ function neovim() {
 	cd "$HOME"
 }
 
-# TODO: wine
+# TODO: flatpak
 function lutris() {
     echo ">>> Installing Lutris"
 
@@ -324,23 +356,28 @@ function gcloud() {
 function dotfiles() {
 	echo ">>> Install dotfiles"
 
-	if [[ ! -d "$HOME"/dotfiles ]]; then
+    DOT_VERSION=0.3.0
+    if [[ ! -z "$1" ]]; then
+        DOT_VERSION=$1
+    fi
+
+	curl -sSL "https://github.com/jpbruinsslot/dot/releases/download/$DOT_VERSION/dot-linux-amd64" -o "/usr/local/bin/dot"
+
+	if [[ ! -d "$HOME"/.dotfiles ]]; then
 		echo "... Cloning dotfiles"
-		git clone git@github.com:erroneousboat/dotfiles.git "${HOME}/dotfiles"
+		git clone git@github.com:jpbruinsslot/dotfiles.git "${HOME}/.dotfiles"
 	else
-		cd "$HOME/dotfiles"
+		cd "$HOME/.dotfiles"
 		git pull origin master
 	fi
 
 	echo "... Syncing dotfiles"
 	if [[ ! -f $HOME/.dotconfig ]]; then
-		cp $HOME/dotfiles/files/dotconfig/.dotconfig $HOME
+		cp $HOME/.dotfiles/files/dotconfig/.dotconfig $HOME
 	fi
 
-	export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
-	yes All | dot sync
-
-	# For extra setup based on dotfiles, add below:
+	# yes All | dot sync
+    dot sync
 
 	cd "$HOME"
 }

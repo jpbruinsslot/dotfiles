@@ -4,28 +4,103 @@
 set -o errexit
 set -o pipefail
 
-# Golang
+function update_apt() {
+    echo ">>> Updating APT"
 
-# Golang packages
+	apt -y update
+	apt -y upgrade
+	apt -y autoremove
+	apt -y autoclean
+	apt -y clean
+	rm -rf /var/lib/apt/lists/*
+}
 
-# Rust
+function update_golang() {
+	echo ">>> Updating Golang"
 
-# Rust packages
+	GO_VERSION=$(curl -s https://go.dev/VERSION?m=text | grep -o 'go[0-9.]*')
+	if [[ -n "$1" ]]; then
+		GO_VERSION=go$1
+	fi
 
-# Node (apt)
+	GOLANG=$GO_VERSION.linux-amd64
 
-# Node packages
+	# Removing prior version of Go
+	echo "... Removing prior version of Go"
+	GO_SRC=/usr/local/go
+	if [[ -d "$GO_SRC" ]]; then
+		sudo rm -rf "$GO_SRC"
+		sudo rm -rf "$GOPATH"
+	fi
 
-# Python (apt)
+	# Download
+	echo "... Downloading Go $GO_VERSION"
+	cd /tmp
+	wget -O $GOLANG.tar.gz https://go.dev/dl/$GOLANG.tar.gz
 
-# Python packages
+	echo "... Installing Go $GO_VERSION"
+	sudo tar -C /usr/local -xzf $GOLANG.tar.gz
 
-# Debian
+	# Add binaries to path
+	echo "... Adding binaries to path"
+	export PATH=$PATH:/usr/local/go/bin
 
-# Neovim
+	cd "$HOME"
+}
 
-# Tmux (apt)
+function update_golang_pkg()_{
+    echo ">>> Updating Golang packages"
+}
 
-# Docker (apt)
+function update_rust() {
+    echo ">>> Updating Rust"
 
-# Chrome (apt)
+    rustup update
+
+	rustup completions bash  >  /etc/bash_completion.d/rustup
+
+    rustc --version
+}
+
+function() update_neovim() {
+    echo ">>> Updating Neovim"
+
+	cd /tmp
+	wget https://github.com/neovim/neovim/releases/download/stable/nvim.appimage
+	chmod u+x nvim.appimage
+	sudo mv nvim.appimage /usr/local/bin/nvim
+
+	cd "$HOME"
+
+    nvim --version
+}
+
+usage() {
+	echo "update.sh"
+	echo
+	echo "Usage: update.sh <command>"
+	echo
+	echo "Commands:"
+	echo "  golang"
+}
+
+main() {
+	local cmd=$1
+
+	if [[ -z "$cmd" ]]; then
+		echo "Usage: $0 <command>"
+		exit 1
+	fi
+
+    if [[ $cmd == "golang" ]]; then
+        update_golang
+    elif [[ $cmd == "rust" ]]; then
+        update_rust
+    elif [[ $cmd == "neovim" ]]; then
+        update_neovim
+    else
+        usage
+    fi
+}
+
+main "$@"
