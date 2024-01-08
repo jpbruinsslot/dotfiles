@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-NOTES_DIR="$HOME/Projects/notes"
+NOTES_DIR="$HOME/Projects/jpbruinsslot/notes"
 NOTES_FILE="$NOTES_DIR/notes.md"
 EDITOR="$(which nvim)"
 EDITOR_ZENMODE="+normal ,zZ"
