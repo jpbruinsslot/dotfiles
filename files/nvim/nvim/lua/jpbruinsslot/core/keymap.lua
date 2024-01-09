@@ -12,7 +12,7 @@ vim.keymap.set("n", "-", "<C-W>-")
 vim.keymap.set("n", "+", "<C-W>+")
 
 -- Even split panel size
-vim.keymap.set("n", "=", "<C-W>=")
+vim.keymap.set("n", "<leader>=", "<C-W>=")
 
 -- Useful mappings for managing tabs
 vim.keymap.set("n", "tn", ":tabnew<CR>")

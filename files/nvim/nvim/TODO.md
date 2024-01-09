@@ -8,3 +8,4 @@
 - [ ] rust analyzer
 - [ ] moving window should move one to left/right not to end
 - [ ] neo-tree / search highlight
+- [ ] I don't like the underline with indent
