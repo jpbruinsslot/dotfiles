@@ -10,8 +10,6 @@ alias .....="cd ../../../.."
 alias ~="cd ~"
 alias -- -="cd -"
 
-colorflag="--color"
-
 # $ open
 #
 # opens a file or URL in the user's preferred application
@@ -137,6 +135,10 @@ alias gpg="gpg2"
 #
 # Shortcut for Projects folder
 alias pro='cd ~/Projects'
+
+# $ jp
+#
+alias jp="cd /home/jp/Projects/jpbruinsslot"
 
 # $ cl
 #
