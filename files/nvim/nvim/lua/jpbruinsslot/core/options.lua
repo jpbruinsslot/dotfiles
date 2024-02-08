@@ -82,6 +82,9 @@ vim.opt.isfname:append("@-@")
 -- triggering an event (e.g. CursorHold).
 vim.opt.updatetime = 50
 
+-- Sets relative numbers
+vim.opt.relativenumber = false
+
 ------------------------------------------------------------------------------
 -- Text, tabs, and indents
 ------------------------------------------------------------------------------
@@ -92,9 +95,13 @@ vim.opt.smarttab = true
 -- Use spaces instead of tabs
 vim.opt.expandtab = true
 
--- 1 tab = 4 spaces
+-- Next line will automatically be indented by this amount
 vim.opt.shiftwidth = 4
+
+-- Tab character will be displayed as this many spaces
 vim.opt.tabstop = 4
+
+-- Prevent unintentional insertion of spaces, when using tabs
 vim.opt.softtabstop = 4
 
 ------------------------------------------------------------------------------
