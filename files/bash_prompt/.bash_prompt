@@ -1,28 +1,28 @@
 #!/bin/bash
 
-reset=$(   tput sgr0 )
-bold=$(    tput bold )
-under=$(   tput smul )
+reset=$(tput sgr0)
+bold=$(tput bold)
+under=$(tput smul)
 
 # Unstyled colors
-black=$(   tput setaf 0 || tput AF 0 )
-red=$(     tput setaf 1 || tput AF 1 )
-green=$(   tput setaf 2 || tput AF 2 )
-yellow=$(  tput setaf 3 || tput AF 3 )
-blue=$(    tput setaf 4 || tput AF 4 )
-magenta=$( tput setaf 5 || tput AF 5 )
-cyan=$(    tput setaf 6 || tput AF 6 )
-white=$(   tput setaf 7 || tput AF 7 )
+black=$(tput setaf 0 || tput AF 0)
+red=$(tput setaf 1 || tput AF 1)
+green=$(tput setaf 2 || tput AF 2)
+yellow=$(tput setaf 3 || tput AF 3)
+blue=$(tput setaf 4 || tput AF 4)
+magenta=$(tput setaf 5 || tput AF 5)
+cyan=$(tput setaf 6 || tput AF 6)
+white=$(tput setaf 7 || tput AF 7)
 
 # Background colors (use with unstyled colors)
-onblk=$(   tput setab 0 || tput AB 0 )
-onred=$(   tput setab 1 || tput AB 1 )
-ongrn=$(   tput setab 2 || tput AB 2 )
-onylw=$(   tput setab 3 || tput AB 3 )
-onblu=$(   tput setab 4 || tput AB 4 )
-onmag=$(   tput setab 5 || tput AB 5 )
-oncyn=$(   tput setab 6 || tput AB 6 )
-onwht=$(   tput setab 7 || tput AB 7 )
+onblk=$(tput setab 0 || tput AB 0)
+onred=$(tput setab 1 || tput AB 1)
+ongrn=$(tput setab 2 || tput AB 2)
+onylw=$(tput setab 3 || tput AB 3)
+onblu=$(tput setab 4 || tput AB 4)
+onmag=$(tput setab 5 || tput AB 5)
+oncyn=$(tput setab 6 || tput AB 6)
+onwht=$(tput setab 7 || tput AB 7)
 
 # Normal colors
 txtblk=$reset$black
@@ -55,42 +55,42 @@ undcyn=$under$cyan
 undwht=$under$white
 
 function parse_git_dirty {
-    STATUS=$(git status 2> /dev/null | tail -n1)
-    if [ "${STATUS}" != "nothing to commit, working tree clean" ]; then
-        echo -e "*"
-    fi
+	STATUS=$(git status 2>/dev/null | tail -n1)
+	if [ "${STATUS}" != "nothing to commit, working tree clean" ]; then
+		echo -e "*"
+	fi
 }
 
 prompt_git() {
-	BRANCH=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
+	BRANCH=$(git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
 	if [ ! "${BRANCH}" == "" ]; then
-        STATUS=$(parse_git_dirty)
-        # echo -e "${bldgrn}(${BRANCH}${bldmag}${STATUS}${bldgrn}) "
-        echo -e "(${BRANCH}${STATUS}) "
-    else 
-        return
+		STATUS=$(parse_git_dirty)
+		# echo -e "${bldgrn}(${BRANCH}${bldmag}${STATUS}${bldgrn}) "
+		echo -e "(${BRANCH}${STATUS}) "
+	else
+		return
 	fi
 }
 
 # Set cloud icon when in cloud environment
 cloud=""
 if [[ -f /proc/cpuinfo ]] && grep -q "^flags.* hypervisor" /proc/cpuinfo && [[ ! -d "/mnt/c/Windows/" ]]; then
-    cloud="  "
+	cloud="󰅟  "
 fi
 
 # Highlight the hostname when connected via SSH.
 if [[ "${SSH_TTY}" ]]; then
-	hostStyle="${bldmag}";
+	hostStyle="${bldmag}"
 else
-	hostStyle="${bldcyn}";
-fi;
+	hostStyle="${bldcyn}"
+fi
 
 # Highlight the user name when logged in as root.
 if [[ "${USER}" == "root" ]]; then
-	userStyle="${bldmag}";
+	userStyle="${bldmag}"
 else
-	userStyle="${bldcyn}";
-fi;
+	userStyle="${bldcyn}"
+fi
 
 # Set Prompt
 # \w = Full Path           eg.  /usr/www/html
@@ -101,17 +101,17 @@ fi;
 #   [Jan 01 13:37] [user@hostname ~]$ false
 #    ಠ╭╮ಠ ( return value: 1 )
 #   [Jan 01 13:37] [user@hostname ~]$
-PS1="\[${cloud}\]";                     # cloud
-PS1+="\[${userStyle}\]\u";              # user name
-PS1+="\[$bldblu\]@";                    # @
-PS1+="\[${hostStyle}\]\h";              # host
-PS1+="\[$bldwht\]:";                    # :
-PS1+="\[$bldblu\]\w ";                  # working directory
-PS1+="\$(prompt_git)";                  # git
-PS1+="\[$bldblu\]$ ";                   # $
-PS1+="\[$reset\]";
+PS1="\[${cloud}\]"        # cloud
+PS1+="\[${userStyle}\]\u" # user name
+PS1+="\[$bldblu\]@"       # @
+PS1+="\[${hostStyle}\]\h" # host
+PS1+="\[$bldwht\]:"       # :
+PS1+="\[$bldblu\]\w "     # working directory
+PS1+="\$(prompt_git)"     # git
+PS1+="\[$bldblu\]$ "      # $
+PS1+="\[$reset\]"
 
-export PS1;
+export PS1
 
-PS2="\[${yellow}\]> \[${reset}\]";
-export PS2;
+PS2="\[${yellow}\]> \[${reset}\]"
+export PS2
