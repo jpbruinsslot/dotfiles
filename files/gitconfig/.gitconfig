@@ -149,3 +149,7 @@
 	signingKey = A0B4608FF6738557
     name = "JP Bruins Slot"
     email = "jpbruinsslot@gmail.com"
+
+[gpg]
+    program = gpg
+    pinentryMode = loopback
