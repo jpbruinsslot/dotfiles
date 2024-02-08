@@ -41,6 +41,12 @@ docker-relies() {
 	done
 }
 
+docker-pid() {
+	local name=$1
+	local cid=$(docker ps -aqf "name=$name")
+	docker inspect -f '{{.State.Pid}}' $cid
+}
+
 # Container aliases
 yarn() {
 	docker run -it --rm \
@@ -85,4 +91,11 @@ pre-commit() {
 		-v "${PWD}:/usr/src/app" \
 		--name pre-commit \
 		${DOCKER_REPO_PREFIX}pre-commit "$@"
+}
+
+poetry() {
+	docker run -it --rm \
+		-v "${PWD}:/usr/src/app" \
+		--name poetry \
+		${DOCKER_REPO_PREFIX}poetry "$@"
 }
