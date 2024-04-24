@@ -115,7 +115,11 @@ return {
 			},
 		})
 
-		-- TODO: rust language server
+		-- rust language server
+		lspconfig["rust_analyzer"].setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+		})
 
 		-- python language server
 		lspconfig["pyright"].setup({
