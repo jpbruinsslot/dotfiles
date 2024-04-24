@@ -336,3 +336,45 @@ function http() {
 	# localhost
 	curl -s "http${1:+://localhost}${1:-}" | jq .
 }
+
+# $ dec2bin
+#
+# Decimal to binary converter
+function dec2bin() {
+	echo "obase=2; $1" | bc
+}
+
+# $ dec2hex
+#
+# Decimal to hexadecimal converter
+function dec2hex() {
+	echo "obase=16; $1" | bc
+}
+
+# $ hex2dec
+#
+# Hexadecimal to decimal converter
+function hex2dec() {
+	echo "ibase=16; $1" | bc
+}
+
+# $ hex2bin
+#
+# Hexadecimal to binary converter
+function hex2bin() {
+	echo "ibase=16; obase=2; $1" | bc
+}
+
+# $ bin2dec
+#
+# Binary to decimal converter
+function bin2dec() {
+	echo "ibase=2; $1" | bc
+}
+
+# $ bin2hex
+#
+# Binary to hexadecimal converter
+function bin2hex() {
+	echo "ibase=2; obase=16; $1" | bc
+}
