@@ -16,7 +16,7 @@ get_average_cpu_load() {
 }
 
 get_cpu_temp() {
-	temperature=$(cat /sys/class/thermal/thermal_zone0/temp)
+	temperature=$(cat /sys/class/thermal/thermal_zone2/temp)
 	temperature_celsius=$((temperature / 1000))
 	echo "$temperature_celsius"
 }
