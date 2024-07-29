@@ -1,7 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Set window percentage:
 # tmux split-window [-v/-h] -p [nn]
+#
+# https://github.com/tmux/tmux/issues/3836#issuecomment-1942216630
+# tmux split-window [-v/-h] -l {percentage}%
+
+source "$HOME/bin/.mux"
 
 function session_work() {
 	local sid="work"
@@ -117,7 +122,13 @@ function window_pkb() {
 		tmux new-window -t "$sid:$wid" -n ""
 	fi
 
+	tmux split-window -v -l "5%"
+
+	tmux select-pane -t 0
 	tmux send-keys "cd $dir && nvim" C-m
+
+	tmux select-pane -t 1
+	tmux send-keys "cd $dir && clear" C-m
 }
 
 function window_slack() {
@@ -145,7 +156,6 @@ function usage() {
 }
 
 function main() {
-	source .mux
 
 	local cmd=$1
 
