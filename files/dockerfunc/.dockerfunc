@@ -7,6 +7,11 @@
 
 # Helper functions
 
+docker-nuke() {
+	docker-kill
+	docker system prune -a
+}
+
 # Kill all running containers
 docker-kill() {
 	docker kill $(docker ps -q)
@@ -84,6 +89,16 @@ pyspy() {
 		--pid host \
 		--privileged \
 		${DOCKER_REPO_PREFIX}pyspy "$@"
+}
+
+memray() {
+	docker run -it --rm \
+		-v "${PWD}:/profiles" \
+		--name memray \
+		--pid host \
+		--privileged \
+		--cap-add=SYS_PTRACE \
+		${DOCKER_REPO_PREFIX}memray "$@"
 }
 
 pre-commit() {
