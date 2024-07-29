@@ -153,3 +153,5 @@
 [gpg]
     program = gpg
     pinentryMode = loopback
+[init]
+	defaultBranch = main
