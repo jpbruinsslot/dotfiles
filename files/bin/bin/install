@@ -67,6 +67,7 @@ function apt_pkg() {
 		urlview \
         mc \
 		net-tools \
+        openssh-server \
 		rofi \
         tmux \
 		--no-install-recommends
