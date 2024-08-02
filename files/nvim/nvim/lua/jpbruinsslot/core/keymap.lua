@@ -11,6 +11,12 @@ vim.keymap.set("n", "<C-l>", "<C-w>l")
 vim.keymap.set("n", "-", "<C-W>-")
 vim.keymap.set("n", "+", "<C-W>+")
 
+-- Split window with a vertical split
+vim.keymap.set("n", "<leader>v", "<C-W>v")
+
+-- Split window with a horizontal split
+vim.keymap.set("n", "<leader>h", "<C-W>s")
+
 -- Even split panel size
 vim.keymap.set("n", "<leader>=", "<C-W>=")
 

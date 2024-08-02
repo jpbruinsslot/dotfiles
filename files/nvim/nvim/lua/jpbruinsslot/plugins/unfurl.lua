@@ -1,8 +1,6 @@
 return {
-	dir = "~/Projects/jpbruinsslot/unfurl.nvim",
-	name = "unfurl",
+	"jpbruinsslot/unfurl.nvim",
 	config = function()
 		require("unfurl").setup()
-		print("TEST")
 	end,
 }

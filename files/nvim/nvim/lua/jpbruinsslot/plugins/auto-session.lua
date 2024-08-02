@@ -12,7 +12,7 @@ return {
 		end
 
 		auto_session.setup({
-			auto_restore_enabled = false,
+			auto_restore_enabled = true,
 			auto_session_suppress_dirs = { "~/", "~/Projects/", "~/Downloads", "~/Documents", "~/Desktop/" },
 			pre_save_cmds = { close_neo_tree },
 			post_restore_cmds = { open_neo_tree },

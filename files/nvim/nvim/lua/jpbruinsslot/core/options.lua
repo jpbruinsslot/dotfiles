@@ -83,7 +83,7 @@ vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 
 -- Sets relative numbers
-vim.opt.relativenumber = false
+vim.opt.relativenumber = true
 
 ------------------------------------------------------------------------------
 -- Text, tabs, and indents
