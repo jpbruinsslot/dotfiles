@@ -16,7 +16,7 @@
     df = !"git difftool"
 
     # Pull in remote changes for the current repository and all its submodules
-    p = !"git pull; git submodule foreach git pull origin master"
+    p = !"git pull; git submodule foreach git pull origin main"
 
     # Clone a repository including all submodules
     c = clone --recursive
@@ -79,14 +79,26 @@
     # Local branch is a commit behind the remote branch
     pr = "pull --rebase"
 
+    recent = "branch --sort=-committerdate"
+
 [core]
 	editor = nvim
+
+    pager = delta
 
 	# Treat spaces before tabs and all kinds of trailing whitespace as an error
 	# [default] trailing-space: looks for spaces at the end of a line
 	# [default] space-before-tab: looks for spaces before tabs at the beginning of a line
 	whitespace = space-before-tab,-indent-with-non-tab,trailing-space
 	autocrlf = input
+
+[interactive]
+    diffFilter = delta --show-syntax-themes --catpuccin
+
+[delta]
+    navigate = true
+    line-numbers = true
+    side-by-side = true
 
 [apply]
     # Detect whitespace errors when applying a patch
@@ -121,17 +133,7 @@
 	# Include summaries of merged commits in newly created merge commit messages
 	log = true
 
-[diff]
-  tool = icdiff
-
-[difftool]
-    prompt = false
-
-[difftool "icdiff"]
-    cmd = /bin/icdiff --line-numbers $LOCAL $REMOTE
-
-[pager]
-    difftool = true
+    conflictstyle = diff3
 
 [http]
 	sslVerify = false
@@ -153,5 +155,6 @@
 [gpg]
     program = gpg
     pinentryMode = loopback
+
 [init]
 	defaultBranch = main
