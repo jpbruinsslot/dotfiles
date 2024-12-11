@@ -8,56 +8,56 @@
 # Helper functions
 
 docker-nuke() {
-	docker-kill
-	docker system prune -a
+    docker-kill
+    docker system prune -a
 }
 
 # Kill all running containers
 docker-kill() {
-	docker kill $(docker ps -q)
+    docker kill $(docker ps -q)
 }
 
 # Remove all
 docker-rma() {
-	docker rm -v $(docker ps --filter status=exited -q 2>/dev/null) 2>/dev/null
-	docker rmi $(docker images --filter dangling=true -q 2>/dev/null) 2>/dev/null
+    docker rm -v $(docker ps --filter status=exited -q 2>/dev/null) 2>/dev/null
+    docker rmi $(docker images --filter dangling=true -q 2>/dev/null) 2>/dev/null
 }
 
 # Remove stopped
 docker-rms() {
-	local name=$1
-	local state=$(docker inspect --format "{{.State.Running}}" $name 2>/dev/null)
+    local name=$1
+    local state=$(docker inspect --format "{{.State.Running}}" $name 2>/dev/null)
 
-	if [[ "$state" == "false" ]]; then
-		docker rm $name
-	fi
+    if [[ "$state" == "false" ]]; then
+        docker rm $name
+    fi
 }
 
 docker-relies() {
-	local containers=$@
+    local containers=$@
 
-	for container in $containers; do
-		local state=$(docker inspect --format "{{.State.Running}}" $container 2>/dev/null)
+    for container in $containers; do
+        local state=$(docker inspect --format "{{.State.Running}}" $container 2>/dev/null)
 
-		if [[ "$state" == "false" ]] || [[ "$state" == "" ]]; then
-			echo "$container is not running, starting it for you."
-			$container
-		fi
-	done
+        if [[ "$state" == "false" ]] || [[ "$state" == "" ]]; then
+            echo "$container is not running, starting it for you."
+            $container
+        fi
+    done
 }
 
 docker-pid() {
-	local name=$1
-	local cid=$(docker ps -aqf "name=$name")
-	docker inspect -f '{{.State.Pid}}' $cid
+    local name=$1
+    local cid=$(docker ps -aqf "name=$name")
+    docker inspect -f '{{.State.Pid}}' $cid
 }
 
 # Container aliases
 yarn() {
-	docker run -it --rm \
-		--name yarn \
-		-v ${PWD}:/usr/src/app \
-		${DOCKER_REPO_PREFIX}yarn "$@"
+    docker run -it --rm \
+        --name yarn \
+        -v ${PWD}:/usr/src/app \
+        ${DOCKER_REPO_PREFIX}yarn "$@"
 }
 
 # node() {
@@ -76,41 +76,59 @@ yarn() {
 # }
 
 languagetool() {
-	docker run -it --rm \
-		--name languagetool \
-		${DOCKER_REPO_PREFIX}languagetool "$@"
+    docker run -it --rm \
+        --name languagetool \
+        ${DOCKER_REPO_PREFIX}languagetool "$@"
 }
 
 # Usage: pyspy record -o myprofile.svg --pid 1234
 pyspy() {
-	docker run -it --rm \
-		-v "${PWD}:/profiles" \
-		--name pyspy \
-		--pid host \
-		--privileged \
-		${DOCKER_REPO_PREFIX}pyspy "$@"
+    docker run -it --rm \
+        -v "${PWD}:/profiles" \
+        --name pyspy \
+        --pid host \
+        --privileged \
+        ${DOCKER_REPO_PREFIX}pyspy "$@"
 }
 
 memray() {
-	docker run -it --rm \
-		-v "${PWD}:/profiles" \
-		--name memray \
-		--pid host \
-		--privileged \
-		--cap-add=SYS_PTRACE \
-		${DOCKER_REPO_PREFIX}memray "$@"
+    docker run -it --rm \
+        -v "${PWD}:/profiles" \
+        --name memray \
+        --pid host \
+        --privileged \
+        --cap-add=SYS_PTRACE \
+        ${DOCKER_REPO_PREFIX}memray "$@"
 }
 
 pre-commit() {
-	docker run -it --rm \
-		-v "${PWD}:/usr/src/app" \
-		--name pre-commit \
-		${DOCKER_REPO_PREFIX}pre-commit "$@"
+    docker run -it --rm \
+        -v "${PWD}:/usr/src/app" \
+        --name pre-commit \
+        ${DOCKER_REPO_PREFIX}pre-commit "$@"
 }
 
 poetry() {
-	docker run -it --rm \
-		-v "${PWD}:/usr/src/app" \
-		--name poetry \
-		${DOCKER_REPO_PREFIX}poetry "$@"
+    docker run -it --rm \
+        -v "${PWD}:/usr/src/app" \
+        --name poetry \
+        ${DOCKER_REPO_PREFIX}poetry "$@"
+}
+
+# quay.io/iovisor/bpftrace:latest \
+bpftrace() {
+    docker run -ti \
+        -v /usr/src:/usr/src:ro \
+        -v /lib/modules/:/lib/modules:ro \
+        -v /sys/kernel/debug/:/sys/kernel/debug:rw \
+        --net=host --pid=host --privileged \
+        ${DOCKER_REPO_PREFIX}bpftrace \
+        bpftrace "$@"
+}
+
+pandoc() {
+    docker run -it --rm \
+        -v "${PWD}:/pandoc" \
+        --name pandoc \
+        ${DOCKER_REPO_PREFIX}pandoc "$@"
 }
