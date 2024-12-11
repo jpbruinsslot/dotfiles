@@ -4,6 +4,13 @@ return {
 	dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
 	opts = {},
 	config = function()
-		require("hardtime").setup()
+		require("hardtime").setup({
+			restricted_keys = {
+				["h"] = {},
+				["j"] = {},
+				["k"] = {},
+				["l"] = {},
+			},
+		})
 	end,
 }

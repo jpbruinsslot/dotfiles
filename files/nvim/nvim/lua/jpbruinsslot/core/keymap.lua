@@ -1,6 +1,9 @@
 -- Remap leader to space
 vim.g.mapleader = ","
 
+-- Remap escape to also remove highlighting from search
+vim.keymap.set("n", "<Esc>", ":noh<CR>")
+
 -- Smart way to move between windows
 vim.keymap.set("n", "<C-h>", "<C-w>h")
 vim.keymap.set("n", "<C-j>", "<C-w>j")
@@ -38,9 +41,6 @@ vim.keymap.set("n", "<leader>te", ":tabedit %:p:h<CR>")
 vim.keymap.set("n", "j", "gj")
 vim.keymap.set("n", "k", "gk")
 
--- Remove highlight from search when not needed
-vim.keymap.set("n", "<leader>q", ":noh<CR>")
-
 -- Comment lines with ctrl + /
 vim.keymap.set("n", "<C-/>", ":TComment<CR>")
 vim.keymap.set("v", "<C-/>", ":TComment<CR>")
@@ -60,13 +60,18 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
--- Don't loose current paste buffer when pasting
-vim.keymap.set("x", "<leader>p", '"_dP')
-
 -- Paste into the '+'' register (system clipboard)
 vim.keymap.set("n", "<leader>y", '"+y')
 vim.keymap.set("v", "<leader>y", '"+y')
 vim.keymap.set("n", "<leader>Y", '"+Y')
+
+-- Paste from the '+'' register (system clipboard)
+vim.keymap.set("n", "<leader>p", '"+p')
+vim.keymap.set("i", "<leader>p", "<C-r>+")
+vim.keymap.set("v", "<leader>p", '"+p')
+
+-- Don't loose current paste buffer when pasting
+vim.keymap.set("x", "<leader>P", '"_dP')
 
 -- Deleting to void register
 vim.keymap.set("n", "<leader>d", '"_d')
@@ -88,3 +93,13 @@ vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
 -- Replace the word that you're on through the whole file
 vim.keymap.set("n", "<leader>r", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+
+-- Save file
+vim.keymap.set("n", "<leader>s", ":w<CR>")
+vim.keymap.set("n", "<leader>S", ":wq<CR>")
+vim.keymap.set("n", "<leader>q", ":q<CR>")
+vim.keymap.set("n", "<leader>Q", ":q!<CR>")
+
+-- Exit all windows and save
+vim.keymap.set("n", "<leader>w", ":wa<CR>")
+vim.keymap.set("n", "<leader>W", ":xa<CR>")

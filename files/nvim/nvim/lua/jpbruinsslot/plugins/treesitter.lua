@@ -1,34 +1,66 @@
--- treesitter: incremental parsing
+-- nvim-treesitter: incremental parsing
 --
--- Treesitter is a parsing system that understands the structure of code in a
--- more sophisticated way than traditional regular expressions-based syntax
--- highlighting. It can be used to enable syntax highlighting, indentation,
--- autotagging, and more.
+-- Provides advanced syntax highlighting and parsing capabilities. It leverages
+-- the Treesitter library, which is a parsing system that understands the
+-- structure of code in a more sophisticated way than traditional regular
+-- expressions-based syntax highlighting.
 return {
-	"nvim-treesitter/nvim-treesitter",
-	run = ":TSUpdate",
-	config = function()
-		require("nvim-treesitter.configs").setup({
-			-- A list of parser names, or "all"
-			ensure_installed = { "javascript", "typescript", "c", "lua", "rust", "go" },
+	{
+		"nvim-treesitter/nvim-treesitter",
+		event = { "BufReadPre", "BufNewFile" },
+		build = ":TSUpdate",
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter-textobjects",
+			"windwp/nvim-ts-autotag",
+		},
+		config = function()
+			-- import nvim-treesitter plugin
+			local treesitter = require("nvim-treesitter.configs")
 
-			-- Install parsers synchronously (only applied to `ensure_installed`)
-			sync_install = false,
-
-			-- Automatically install missing parsers when entering buffer
-			-- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
-			auto_install = true,
-
-			highlight = {
-				-- `false` will disable the whole extension
-				enable = true,
-
-				-- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-				-- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-				-- Using this option may slow down your editor, and you may see some duplicate highlights.
-				-- Instead of true it can also be a list of languages
-				additional_vim_regex_highlighting = false,
-			},
-		})
-	end,
+			-- configure treesitter
+			treesitter.setup({ -- enable syntax highlighting
+				highlight = {
+					enable = true,
+				},
+				-- enable indentation
+				indent = { enable = true },
+				-- enable autotagging (w/ nvim-ts-autotag plugin)
+				autotag = {
+					enable = true,
+				},
+				-- ensure these language parsers are installed
+				ensure_installed = {
+					"bash",
+					"c",
+					"css",
+					"csv",
+					"dockerfile",
+					"gitignore",
+					"go",
+					"html",
+					"json",
+					"javascript",
+					"typescript",
+					"lua",
+					"markdown",
+					"markdown_inline",
+					"query",
+					"rust",
+					"tsv",
+					"vim",
+					"vimdoc",
+					"yaml",
+				},
+				incremental_selection = {
+					enable = true,
+					keymaps = {
+						init_selection = "<C-space>",
+						node_incremental = "<C-space>",
+						scope_incremental = false,
+						node_decremental = "<bs>",
+					},
+				},
+			})
+		end,
+	},
 }
