@@ -115,6 +115,18 @@ poetry() {
         ${DOCKER_REPO_PREFIX}poetry "$@"
 }
 
+# Usage: bcc "opensnoop -h"
+bcc() {
+    docker run -it --rm \
+        -v /usr/src:/usr/src:ro \
+        -v /lib/modules:/lib/modules:ro \
+        -v /sys/kernel/debug:/sys/kernel/debug \
+        --cap-add=SYS_ADMIN --cap-add=SYS_PTRACE --device=/dev/kvm \
+        --net=host --pid=host --privileged \
+        --name bcc \
+        ${DOCKER_REPO_PREFIX}bcc "$@"
+}
+
 # quay.io/iovisor/bpftrace:latest \
 bpftrace() {
     docker run -ti \
