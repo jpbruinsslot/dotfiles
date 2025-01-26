@@ -4,6 +4,9 @@ vim.g.mapleader = ","
 -- Remap escape to also remove highlighting from search
 vim.keymap.set("n", "<Esc>", ":noh<CR>")
 
+-- Remap remove word to ctrl + backspace (used on system)
+vim.keymap.set("i", "<C-BS>", "<C-w>")
+
 -- Smart way to move between windows
 vim.keymap.set("n", "<C-h>", "<C-w>h")
 vim.keymap.set("n", "<C-j>", "<C-w>j")

@@ -1,3 +1,4 @@
+-- harpoon: A navigation utility for Vim and Neovim
 return {
 	"ThePrimeagen/harpoon",
 	branch = "harpoon2",
