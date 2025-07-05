@@ -5,56 +5,94 @@ NOTES_FILE="$NOTES_DIR/notes.md"
 EDITOR="$(which nvim)"
 EDITOR_ZENMODE="+normal ,zZ"
 
-# Combine the markdown-style header with the contents of a the $NOTES_FILE
-# variable and replace the original file with the combined result.
+# Trap to clean up temporary files on exit
+trap 'rm -f /tmp/notes.*' EXIT
+
+# Creates a new note with the current date and opens it in the editor.
 function new() {
-	echo -e "## $(date --iso-8601) - $(date "+%A")\n\n* \n" | cat - $NOTES_FILE >/tmp/out && mv /tmp/out $NOTES_FILE
-	edit
+    local temp_file=$(mktemp /tmp/notes.XXXXXX)
+    echo -e "## $(date --iso-8601) - $(date "+%A")\n\n\n" | cat - "$NOTES_FILE" >"$temp_file" && mv "$temp_file" "$NOTES_FILE"
+    edit
 }
 
-# Open editor, enter zen mode and move cursor 3 lines down
+# Opens the notes file in the configured editor.
 function edit() {
-	$EDITOR +3 "$EDITOR_ZENMODE" $NOTES_FILE
+    $EDITOR +3 "$EDITOR_ZENMODE" "$NOTES_FILE"
 }
 
+# Replaces the header of today's note if it's empty.
 function replace() {
-	(echo -e "## $(date --iso-8601) - $(date "+%A")\n\n* " && tail -n +4 $NOTES_FILE) >/tmp/tempfile && mv /tmp/tempfile $NOTES_FILE
-	edit
+    local temp_file=$(mktemp /tmp/notes.XXXXXX)
+    (echo -e "## $(date --iso-8601) - $(date "+%A")\n\n" && tail -n +4 "$NOTES_FILE") >"$temp_file" && mv "$temp_file" "$NOTES_FILE"
+    edit
 }
 
+# Commits and pushes the notes file to the remote git repository.
 function push() {
-	local date=$(awk 'NR==1 {print $2}' $NOTES_FILE)
+    local date
+    date=$(awk 'NR==1 {print $2}' "$NOTES_FILE")
 
-	cd $NOTES_DIR
+    cd "$NOTES_DIR" || exit
 
-	git add archive
-	git add notes.md
+    git add archive
+    git add notes.md
 
-	git commit -m "$date"
+    git commit -m "$date"
 
-	git push
+    git push
 }
 
+# Pulls the latest changes from the remote git repository.
 function pull() {
-	git pull
+    cd "$NOTES_DIR" || exit
+    git pull
 }
 
-# Archive notes
+# Archives notes from previous months.
 function archive() {
-	split
-	clean
+    split
+    clean
 }
 
-# Split notes file into individual files
+# Splits the main notes file into separate files for each month in the archive directory.
 function split() {
-	awk '/^## [0-9]{4}-[0-9]{2}-[0-9]{2}/ {filename=sprintf("./archive/%s.md", substr($2, 1, 7)); print > filename; next} {print > filename}' $NOTES_FILE
+    mkdir -p "$NOTES_DIR/archive"
+    local current_file=""
+    # Keep track of files we've already created in this run
+    local written_files=""
+
+    while IFS= read -r line; do
+        # Check if the line is a date header
+        if [[ "$line" =~ ^##\ ([0-9]{4}-[0-9]{2})-[0-9]{2} ]]; then
+            local month="${BASH_REMATCH[1]}"
+            current_file="$NOTES_DIR/archive/$month.md"
+
+            # If this is the first time we're writing to this month's file,
+            # truncate it. Otherwise, append.
+            if [[ "$written_files" != *"$current_file"* ]]; then
+                echo "$line" >"$current_file"
+                written_files="$written_files $current_file"
+            else
+                echo "$line" >>"$current_file"
+            fi
+        elif [[ -n "$current_file" ]]; then
+            # If we're inside a month block, append the current line
+            echo "$line" >>"$current_file"
+        fi
+    done <"$NOTES_FILE"
 }
 
-# Clean notes file
+# Removes archived notes from the main notes file, keeping only the current month's entries.
 function clean() {
-	awk -i inplace -v month="$(date +'%Y-%m')" '
+    local current_month
+    current_month=$(date +'%Y-%m')
+    local temp_file=$(mktemp /tmp/notes.XXXXXX)
+
+    awk -v month="$current_month" '
 	/^## [0-9]{4}-[0-9]{2}-[0-9]{2}/ {
-	  if (substr($2, 1, 7) == month) {
+	  match($0, /[0-9]{4}-[0-9]{2}/);
+	  header_month = substr($0, RSTART, RLENGTH);
+	  if (header_month == month) {
 	    print; keep=1
 	  } else {
 	    keep=0
@@ -69,65 +107,82 @@ function clean() {
 	    prev_line_empty = !NF
 	  }
 	}
-	' $NOTES_FILE
+	' "$NOTES_FILE" >"$temp_file" && mv "$temp_file" "$NOTES_FILE"
 }
 
-# Check if the first line contains a date, and if that date is today.
-# If not, create a new note
+# Checks if a note for the current day exists. If not, it creates one.
+# If a note for today exists but is empty, it replaces the header. Otherwise, it opens the editor.
 function check() {
-	local date1=$(date --iso-8601)
-	local date2=$(awk 'NR==1 {print $2}' $NOTES_FILE)
-	local content=$(awk 'NR==3 {if ($0 ~ /^\* /) sub(/^\* /, ""); print}' $NOTES_FILE)
+    local date1
+    date1=$(date --iso-8601)
+    local date2
+    date2=$(awk 'NR==1 {print $2}' "$NOTES_FILE")
+    # Check if there is any content on the 3rd line other than whitespace
+    local content
+    content=$(sed -n '3p' "$NOTES_FILE" | tr -d '[:space:]')
 
-	if [ "$date1" == "$date2" ]; then
-		edit
-	elif [ "$date1" ] >"$date2" && [ -z "$content" ]; then
-		replace
-	else
-		new
-	fi
+    if [ "$date1" == "$date2" ]; then
+        edit
+    elif [ "$date1" \> "$date2" ] && [ -z "$content" ]; then
+        replace
+    else
+        new
+    fi
 }
 
+# Displays usage information.
 usage() {
-	echo "Usage: $0 [new|edit|push|pull|split]"
+    echo "Usage: $0 <command>"
+    echo "
+Commands:"
+    echo "  new      : Creates a new note entry for the current day."
+    echo "  edit     : Opens the notes file in the configured editor."
+    echo "  push     : Commits and pushes the notes to the git repository."
+    echo "  pull     : Pulls changes from the git repository."
+    echo "  archive  : Archives notes from previous months and cleans the main notes file."
+    echo "  split    : Splits the main notes file into individual monthly archive files (does not clean main file)."
+    echo "  clean    : Removes archived notes from the main notes file (keeps current month's entries)."
+    echo "
+If no command is provided, it will pull, push, and then check/open the notes."
 }
 
+# Main function to parse command-line arguments and execute the corresponding command.
 main() {
-	local cmd="$1"
+    local cmd="$1"
 
-	if [[ -z "$cmd" ]]; then
-		pull
-		push
-		check
-	fi
+    if [[ -z "$cmd" ]]; then
+        pull
+        push
+        check
+    fi
 
-	case "$cmd" in
-	new)
-		new
-		;;
-	edit)
-		edit
-		;;
-	push)
-		push "$2"
-		;;
-	pull)
-		pull
-		;;
-	archive)
-		archive
-		;;
-	split)
-		split
-		;;
-	clean)
-		clean
-		;;
-	*)
-		usage
-		exit 1
-		;;
-	esac
+    case "$cmd" in
+    new)
+        new
+        ;;
+    edit)
+        edit
+        ;;
+    push)
+        push "$2"
+        ;;
+    pull)
+        pull
+        ;;
+    archive)
+        archive
+        ;;
+    split)
+        split
+        ;;
+    clean)
+        clean
+        ;;
+    *)
+        usage
+        exit 1
+        ;;
+    esac
 }
 
 main "$@"
