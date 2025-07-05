@@ -4,76 +4,76 @@
 #
 # Simple calculator
 calc() {
-	local result=""
-	result="$(printf "scale=10;$*\n" | bc --mathlib | tr -d '\\\n')" # scale 10: default (when `--mathlib` is used) is 20
+    local result=""
+    result="$(printf "scale=10;$*\n" | bc --mathlib | tr -d '\\\n')" # scale 10: default (when `--mathlib` is used) is 20
 
-	if [[ "$result" == *.* ]]; then # improve the output for decimal numbers
-		printf "$result" |
-			sed -e 's/^\./0./' `# add "0" for cases like ".5"` \
-				-e 's/^-\./-0./' `# add "0" for cases like "-.5"` \
-				-e 's/0*$//;s/\.$//' # remove trailing zeros
-	else
-		printf "$result"
-	fi
-	printf "\n"
+    if [[ "$result" == *.* ]]; then # improve the output for decimal numbers
+        printf "$result" |
+            sed -e 's/^\./0./' `# add "0" for cases like ".5"` \
+                -e 's/^-\./-0./' `# add "0" for cases like "-.5"` \
+                -e 's/0*$//;s/\.$//' # remove trailing zeros
+    else
+        printf "$result"
+    fi
+    printf "\n"
 }
 
 # $ fs
 #
 # Determine size of a file or total size of a directory
 fs() {
-	if du -b /dev/null >/dev/null 2>&1; then
-		local arg=-sbh
-	else
-		local arg=-sh
-	fi
-	if [[ -n "$@" ]]; then
-		du $arg -- "$@"
-	else
-		du $arg .[^.]* *
-	fi
+    if du -b /dev/null >/dev/null 2>&1; then
+        local arg=-sbh
+    else
+        local arg=-sh
+    fi
+    if [[ -n "$@" ]]; then
+        du $arg -- "$@"
+    else
+        du $arg .[^.]* *
+    fi
 }
 
 # $ digga
 #
 # Run `dig` and display the most useful info
 function digga() {
-	dig +nocmd "$1" any +multiline +noall +answer
+    dig +nocmd "$1" any +multiline +noall +answer
 }
 
 # $ getcertnames
 #
 # Show all the CNs and SANs listed in the SSL certificate for a given domain
 function getcertnames() {
-	if [ -z "${1}" ]; then
-		echo "ERROR: No domain specified."
-		return 1
-	fi
+    if [ -z "${1}" ]; then
+        echo "ERROR: No domain specified."
+        return 1
+    fi
 
-	local domain="${1}"
-	echo "Testing ${domain}…"
-	echo "" # newline
+    local domain="${1}"
+    echo "Testing ${domain}…"
+    echo "" # newline
 
-	local tmp=$(echo -e "GET / HTTP/1.0\nEOT" |
-		openssl s_client -connect "${domain}:443" -servername "${domain}" 2>&1)
+    local tmp=$(echo -e "GET / HTTP/1.0\nEOT" |
+        openssl s_client -connect "${domain}:443" -servername "${domain}" 2>&1)
 
-	if [[ "${tmp}" = *"-----BEGIN CERTIFICATE-----"* ]]; then
-		local certText=$(echo "${tmp}" |
-			openssl x509 -text -certopt "no_aux, no_header, no_issuer, no_pubkey, \
+    if [[ "${tmp}" = *"-----BEGIN CERTIFICATE-----"* ]]; then
+        local certText=$(echo "${tmp}" |
+            openssl x509 -text -certopt "no_aux, no_header, no_issuer, no_pubkey, \
             no_serial, no_sigdump, no_signame, no_validity, no_version")
-		echo "Common Name:"
-		echo "" # newline
-		echo "${certText}" | grep "Subject:" | sed -e "s/^.*CN=//" | sed -e "s/\/emailAddress=.*//"
-		echo "" # newline
-		echo "Subject Alternative Name(s):"
-		echo "" # newline
-		echo "${certText}" | grep -A 1 "Subject Alternative Name:" |
-			sed -e "2s/DNS://g" -e "s/ //g" | tr "," "\n" | tail -n +2
-		return 0
-	else
-		echo "ERROR: Certificate not found."
-		return 1
-	fi
+        echo "Common Name:"
+        echo "" # newline
+        echo "${certText}" | grep "Subject:" | sed -e "s/^.*CN=//" | sed -e "s/\/emailAddress=.*//"
+        echo "" # newline
+        echo "Subject Alternative Name(s):"
+        echo "" # newline
+        echo "${certText}" | grep -A 1 "Subject Alternative Name:" |
+            sed -e "2s/DNS://g" -e "s/ //g" | tr "," "\n" | tail -n +2
+        return 0
+    else
+        echo "ERROR: Certificate not found."
+        return 1
+    fi
 }
 
 # $ tre
@@ -83,45 +83,45 @@ function getcertnames() {
 # `less` with options to preserve color and line numbers, unless the output is
 # small enough for one screen.
 function tre() {
-	tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX
+    tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX
 }
 
 # $ gitio
 #
 # Create a git.io short URL
 gitio() {
-	if [ -z "${1}" -o -z "${2}" ]; then
-		echo "Usage: \`gitio slug url\`"
-		return 1
-	fi
-	curl -i http://git.io/ -F "url=${2}" -F "code=${1}"
+    if [ -z "${1}" -o -z "${2}" ]; then
+        echo "Usage: \`gitio slug url\`"
+        return 1
+    fi
+    curl -i http://git.io/ -F "url=${2}" -F "code=${1}"
 }
 
 # $ man
 #
 # Get colors in manual pages
 man() {
-	env \
-		LESS_TERMCAP_mb=$(printf "\e[1;31m") \
-		LESS_TERMCAP_md=$(printf "\e[1;31m") \
-		LESS_TERMCAP_me=$(printf "\e[0m") \
-		LESS_TERMCAP_se=$(printf "\e[0m") \
-		LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
-		LESS_TERMCAP_ue=$(printf "\e[0m") \
-		LESS_TERMCAP_us=$(printf "\e[1;32m") \
-		man "$@"
+    env \
+        LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+        LESS_TERMCAP_md=$(printf "\e[1;31m") \
+        LESS_TERMCAP_me=$(printf "\e[0m") \
+        LESS_TERMCAP_se=$(printf "\e[0m") \
+        LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+        LESS_TERMCAP_ue=$(printf "\e[0m") \
+        LESS_TERMCAP_us=$(printf "\e[1;32m") \
+        man "$@"
 }
 
 # $ isup
 #
 # Check if uri is up
 isup() {
-	local uri=$1
-	if curl -s --head --request GET "$uri" | grep "200 OK" >/dev/null; then
-		notify-send --urgency=critical "$uri is down"
-	else
-		notify-send --urgency=low "$uri is up"
-	fi
+    local uri=$1
+    if curl -s --head --request GET "$uri" | grep "200 OK" >/dev/null; then
+        notify-send --urgency=critical "$uri is down"
+    else
+        notify-send --urgency=low "$uri is up"
+    fi
 }
 
 # $ v
@@ -129,19 +129,19 @@ isup() {
 # `n` with no arguments opens the current directory in NeoVim, otherwise opens
 # the given location
 function v() {
-	if [ $# -eq 0 ]; then
-		nvim .
-	else
-		nvim "$@"
-	fi
+    if [ $# -eq 0 ]; then
+        nvim .
+    else
+        nvim "$@"
+    fi
 }
 
 # $ screen
 #
 # Setup resolutions and scaling when attached to external monitor
 function screen() {
-	xrandr --output eDP1 --scale 1x1 --pos 3840x0
-	xrandr --output DP1 --scale 2x2 --mode 1920x1080 --fb 7680x2160 --pos 0x0
+    xrandr --output eDP1 --scale 1x1 --pos 3840x0
+    xrandr --output DP1 --scale 2x2 --mode 1920x1080 --fb 7680x2160 --pos 0x0
 }
 
 # $ standup [days/date]
@@ -158,83 +158,83 @@ function screen() {
 # - https://git-scm.com/docs/pretty-formats
 # - http://stackoverflow.com/q/1441010
 function standup() {
-	pwd=$(pwd)
+    pwd=$(pwd)
 
-	if [ -z "$1" ]; then
-		date="--since=$(date --date="1 day ago" +"%Y-%m-%d")"
-	else
-		if [[ "$1" == *"-"* ]]; then
-			after=$(date --date="$1 -1 day" +%Y-%m-%d)
-			before=$(date --date="$1 1 day" +%Y-%m-%d)
-			date="--after=\"$after 00:00\" --before=\"$before 23:59\""
-		else
-			date="--since=$(date --date="$1 day ago" +"%Y-%m-%d")"
-		fi
-	fi
+    if [ -z "$1" ]; then
+        date="--since=$(date --date="1 day ago" +"%Y-%m-%d")"
+    else
+        if [[ "$1" == *"-"* ]]; then
+            after=$(date --date="$1 -1 day" +%Y-%m-%d)
+            before=$(date --date="$1 1 day" +%Y-%m-%d)
+            date="--after=\"$after 00:00\" --before=\"$before 23:59\""
+        else
+            date="--since=$(date --date="$1 day ago" +"%Y-%m-%d")"
+        fi
+    fi
 
-	git log "$date" \
-		--all \
-		--pretty=format:"%C(auto,yellow)%h%C(auto,blue)%>(12,trunc)%ad  %C(auto,reset)%s %C(auto,red)% gD% D" \
-		--date=short \
-		--author="\($(git config user.name)\)\|\($(git config user.email)\)" &&
-		cd ${pwd}
+    git log "$date" \
+        --all \
+        --pretty=format:"%C(auto,yellow)%h%C(auto,blue)%>(12,trunc)%ad  %C(auto,reset)%s %C(auto,red)% gD% D" \
+        --date=short \
+        --author="\($(git config user.name)\)\|\($(git config user.email)\)" &&
+        cd ${pwd}
 }
 
 # $ extract
 #
 # Useful extraction function (https://github.com/xvoland/Extract)
 function extract() {
-	if [ -z "$1" ]; then
-		# display usage if no parameters given
-		echo "Usage: extract <path/file_name>.<zip|rar|bz2|gz|tar|tbz2|tgz|Z|7z|xz|ex|tar.bz2|tar.gz|tar.xz>"
-	else
-		if [ -f "$1" ]; then
-			NAME=${1%.*}
-			#mkdir $NAME && cd $NAME
-			case "$1" in
-			*.tar.bz2) tar xvjf ./"$1" ;;
-			*.tar.gz) tar xvzf ./"$1" ;;
-			*.tar.xz) tar xvJf ./"$1" ;;
-			*.lzma) unlzma ./"$1" ;;
-			*.bz2) bunzip2 ./"$1" ;;
-			*.rar) unrar x -ad ./"$1" ;;
-			*.gz) gunzip ./"$1" ;;
-			*.tar) tar xvf ./"$1" ;;
-			*.tbz2) tar xvjf ./"$1" ;;
-			*.tgz) tar xvzf ./"$1" ;;
-			*.zip) unzip ./"$1" ;;
-			*.Z) uncompress ./"$1" ;;
-			*.7z) 7z x ./"$1" ;;
-			*.xz) unxz ./"$1" ;;
-			*.exe) cabextract ./"$1" ;;
-			*) echo "extract: '$1' - unknown archive method" ;;
-			esac
-		else
-			echo "'$1' - file does not exist"
-		fi
-	fi
+    if [ -z "$1" ]; then
+        # display usage if no parameters given
+        echo "Usage: extract <path/file_name>.<zip|rar|bz2|gz|tar|tbz2|tgz|Z|7z|xz|ex|tar.bz2|tar.gz|tar.xz>"
+    else
+        if [ -f "$1" ]; then
+            NAME=${1%.*}
+            #mkdir $NAME && cd $NAME
+            case "$1" in
+            *.tar.bz2) tar xvjf ./"$1" ;;
+            *.tar.gz) tar xvzf ./"$1" ;;
+            *.tar.xz) tar xvJf ./"$1" ;;
+            *.lzma) unlzma ./"$1" ;;
+            *.bz2) bunzip2 ./"$1" ;;
+            *.rar) unrar x -ad ./"$1" ;;
+            *.gz) gunzip ./"$1" ;;
+            *.tar) tar xvf ./"$1" ;;
+            *.tbz2) tar xvjf ./"$1" ;;
+            *.tgz) tar xvzf ./"$1" ;;
+            *.zip) unzip ./"$1" ;;
+            *.Z) uncompress ./"$1" ;;
+            *.7z) 7z x ./"$1" ;;
+            *.xz) unxz ./"$1" ;;
+            *.exe) cabextract ./"$1" ;;
+            *) echo "extract: '$1' - unknown archive method" ;;
+            esac
+        else
+            echo "'$1' - file does not exist"
+        fi
+    fi
 }
 
 # $ hist
 #
 # A bit more convenient history lookup
 function hist() {
-	if [[ -n "$@" ]]; then
-		history | grep "$@"
-	else
-		history | less
-	fi
+    if [[ -n "$@" ]]; then
+        history | grep "$@"
+    else
+        history | less
+    fi
 }
 
 # $ symlink
 #
 # Constantly forgetting TARGET LINK_NAME paradigm
 function symlink() {
-	if [[ -n "$@" ]]; then
-		ln -s "$1" "$2"
-	else
-		echo "symlink TARGET LINK_NAME"
-	fi
+    if [[ -n "$@" ]]; then
+        ln -s "$1" "$2"
+    else
+        echo "symlink TARGET LINK_NAME"
+    fi
 }
 
 # $ dr
@@ -242,24 +242,24 @@ function symlink() {
 # Create a docker container image and run it. It will use the directory name
 # as container name.
 function dr() {
-	docker build --no-cache -t ${PWD##*/} .
-	docker run --net="host" -it --rm --name ${PWD##*/} ${PWD##*/}
+    docker build --no-cache -t ${PWD##*/} .
+    docker run --net="host" -it --rm --name ${PWD##*/} ${PWD##*/}
 }
 
 # $ run [n-times] [command]
 #
 # Execute a command n-times
 function run() {
-	local n="$1"
-	local cmd="${@:2}"
+    local n="$1"
+    local cmd="${@:2}"
 
-	if [[ -n "$@" ]]; then
-		for i in $(seq "$n"); do
-			$cmd
-		done
-	else
-		echo "Usage: run [n-times] [command]"
-	fi
+    if [[ -n "$@" ]]; then
+        for i in $(seq "$n"); do
+            $cmd
+        done
+    else
+        echo "Usage: run [n-times] [command]"
+    fi
 }
 
 # $ headphones [mac-address]
@@ -271,110 +271,110 @@ function run() {
 #   https://wiki.archlinux.org/index.php/bluetooth
 #   https://wiki.archlinux.org/index.php/Bluetooth_headset
 function headphones() {
-	local mac="$1"
+    local mac="$1"
 
-	if [[ -n "$@" ]]; then
-		echo -e "power on\npair $mac\nconnect $mac\ntrust $mac\nexit" | bluetoothctl
-	else
-		echo "Usage: bl [mac-address]"
-	fi
+    if [[ -n "$@" ]]; then
+        echo -e "power on\npair $mac\nconnect $mac\ntrust $mac\nexit" | bluetoothctl
+    else
+        echo "Usage: bl [mac-address]"
+    fi
 }
 
 # $ gconf_dump
 #
 # Dump gnome configuration
 function gconf_dump() {
-	dconf dump / >$HOME/.gnome-conf
+    dconf dump / >$HOME/.gnome-conf
 }
 
 # $ gconf_load
 #
 # Load gnome configuration
 function gconf_load() {
-	cat $HOME/.gnome-conf load >dconf
+    cat $HOME/.gnome-conf load >dconf
 }
 
 # $ deb [file-name]
 #
 # Install a *.deb package
 function deb() {
-	local file="$1"
-	sudo dpkg -i $file
-	sudo apt-get install -f
+    local file="$1"
+    sudo dpkg -i $file
+    sudo apt-get install -f
 }
 
 # $ viddl [url] [dir]
 #
 # Download vid from url and place it in dir, uses youtube-dl
 function viddl() {
-	local url=${1}
-	local dir=${2:-$PWD}
+    local url=${1}
+    local dir=${2:-$PWD}
 
-	if [[ -n "$@" ]]; then
-		# youtube-dl \
-		# --external-downloader aria2c \
-		# --external-downloader-args '-c -j 5 -x 5 -s 5 -k 1M' \
-		# --ignore-errors \
-		# --continue \
-		# --no-overwrites \
-		# --download-archive progress.txt \
-		yt-dlp \
-			--no-check-certificate \
-			-o "$dir/%(title)s.%(ext)s" "$url" \
-			-f bestvideo[ext=mp4]+bestaudio[ext=m4a] \
-			--merge-output-format mp4 \
-			else
-		echo "Usage: viddl [url] [dir]"
-	fi
+    if [[ -n "$@" ]]; then
+        # youtube-dl \
+        # --external-downloader aria2c \
+        # --external-downloader-args '-c -j 5 -x 5 -s 5 -k 1M' \
+        # --ignore-errors \
+        # --continue \
+        # --no-overwrites \
+        # --download-archive progress.txt \
+        yt-dlp \
+            --no-check-certificate \
+            -o "$dir/%(title)s.%(ext)s" "$url" \
+            -f bestvideo[ext=mp4]+bestaudio[ext=m4a] \
+            --merge-output-format mp4 \
+            else
+        echo "Usage: viddl [url] [dir]"
+    fi
 }
 
 # $ http
 #
 # curl url and pipe to jq
 function http() {
-	# If the first argument starts with a :, then assume it's a port and use
-	# localhost
-	curl -s "http${1:+://localhost}${1:-}" | jq .
+    # If the first argument starts with a :, then assume it's a port and use
+    # localhost
+    curl -s "http${1:+://localhost}${1:-}" | jq .
 }
 
 # $ dec2bin
 #
 # Decimal to binary converter
 function dec2bin() {
-	echo "obase=2; $1" | bc
+    echo "obase=2; $1" | bc
 }
 
 # $ dec2hex
 #
 # Decimal to hexadecimal converter
 function dec2hex() {
-	echo "obase=16; $1" | bc
+    echo "obase=16; $1" | bc
 }
 
 # $ hex2dec
 #
 # Hexadecimal to decimal converter
 function hex2dec() {
-	echo "ibase=16; $1" | bc
+    echo "ibase=16; $1" | bc
 }
 
 # $ hex2bin
 #
 # Hexadecimal to binary converter
 function hex2bin() {
-	echo "ibase=16; obase=2; $1" | bc
+    echo "ibase=16; obase=2; $1" | bc
 }
 
 # $ bin2dec
 #
 # Binary to decimal converter
 function bin2dec() {
-	echo "ibase=2; $1" | bc
+    echo "ibase=2; $1" | bc
 }
 
 # $ bin2hex
 #
 # Binary to hexadecimal converter
 function bin2hex() {
-	echo "ibase=2; obase=16; $1" | bc
+    echo "ibase=2; obase=16; $1" | bc
 }
