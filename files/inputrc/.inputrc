@@ -62,7 +62,7 @@ set convert-meta off
 
 # Vi-mode settings (http://vim.wikia.com/wiki/Use_vi_shortcuts_in_terminal)
 
-# a full example omiting the wrapping \1 and \2
+# a full example omitting the wrapping \1 and \2
 #
 # \e[     (open sequence: ESC CSI)
 # 48;5;   (specifies 256 bg)
@@ -86,6 +86,10 @@ set show-mode-in-prompt on
 
 # Use vi style editing
 set editing-mode vi
+
+# Set the key sequences for vi mode, set to lower timeout so not to wait
+# too long for a key sequence to complete, especially when using escape
+set keyseq-timeout 50
 
 # Custom mode strings for modes
 # set vi-cmd-mode-string "\1\e[48;5;4m\2\1\e[1;38;5;18m\2 N \1\e[0m\2 \1\e[0 q\2"
