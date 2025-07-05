@@ -16,11 +16,18 @@ export PATH=$GOPATH/bin:$PATH
 # Rust
 export PATH=$HOME/.cargo/bin:$PATH
 
+# Zig
+export PATH=$HOME/zig:$PATH
+
 # Node
 export PATH=/usr/local/lib/node/bin:$PATH
+export PATH="$HOME/.npm-global/bin:$PATH"
 
 # GCloud
 export PATH=$HOME/google-cloud-sdk/bin:$PATH
 
 # OpenSSL
 export PATH=/usr/local/ssl/bin:$PATH
+
+# Fly.io
+export PATH=$HOME/.fly/bin:$PATH
