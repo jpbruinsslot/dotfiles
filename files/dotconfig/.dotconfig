@@ -15,6 +15,7 @@
 		"eslint": "/.eslintrc",
 		"fonts": "/.fonts",
 		"functions": "/.functions",
+		"ghostty": "/.config/ghostty/config",
 		"gitconfig": "/.gitconfig",
 		"gnome": "/.gnome-conf",
 		"gtk": "/.config/gtk-3.0/gtk.css",
