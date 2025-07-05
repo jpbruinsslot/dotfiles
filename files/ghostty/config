@@ -49,3 +49,6 @@ theme = catppuccin-frappe
 fullscreen = true
 window-decoration = false
 window-padding-color = background
+cursor-style = block
+cursor-style-blink = true
+shell-integration-features = no-cursor
