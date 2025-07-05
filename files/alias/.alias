@@ -126,6 +126,11 @@ alias gti="git"  # Yeah I know, don't judge me!
 # Alias for pre-commit
 alias gitpc="pre-commit run --all-files"
 
+# $ n
+#
+# Alias for nvim
+alias n="nvim"
+
 # $ gpg
 #
 # Alias for gpg2
