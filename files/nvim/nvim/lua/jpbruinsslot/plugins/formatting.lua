@@ -19,12 +19,26 @@ return {
 				javascript = { "prettier" },
 				json = { "prettier" },
 				lua = { "stylua" },
-				markdown = { "prettier" },
+				markdown = { "prettier_md" }, -- use custom formatter for markdown
 				python = { "isort", "ruff_format" },
 				rust = { "rustfmt" },
 				sh = { "shfmt" },
 				yaml = { "prettier" },
 				["*"] = { "codespell" },
+			},
+			formatters = {
+				prettier_md = {
+					command = "prettier",
+					args = {
+						"--stdin-filepath",
+						"$FILENAME",
+						"--prose-wrap",
+						"always",
+						"--print-width",
+						"80",
+					},
+					stdin = true,
+				},
 			},
 			format_on_save = {
 				lsp_fallback = true, -- if a formatter isn't available for the filetype, use lsp

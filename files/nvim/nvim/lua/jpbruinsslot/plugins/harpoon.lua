@@ -30,17 +30,22 @@ return {
 		end
 
 		-- Keybindings
+
+		-- Add current buffer to Harpoon list
 		vim.keymap.set("n", "<leader>a", function()
 			harpoon:list():add()
 		end)
+
+		-- Toggle Harpoon list
 		vim.keymap.set("n", "<C-e>", function()
 			toggle_telescope(harpoon:list())
 		end)
 
-		-- Toggle previous & next buffers stored within Harpoon list
+		-- Toggle previous buffers stored within Harpoon list (ctrl-shift-p)
 		vim.keymap.set("n", "<C-S-P>", function()
 			harpoon:list():prev()
 		end)
+		-- Toggle next buffers stored within Harpoon list (ctrl-shift-n)
 		vim.keymap.set("n", "<C-S-N>", function()
 			harpoon:list():next()
 		end)
