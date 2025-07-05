@@ -41,5 +41,5 @@ style = "Regular"
 decorations = "none"
 startup_mode = "Maximized"
 padding = { x = 0, y = 0}
-opacity = 0.95
+opacity = 1.00
 blur = true
