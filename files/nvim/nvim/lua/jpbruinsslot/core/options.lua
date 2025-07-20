@@ -120,3 +120,23 @@ vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 -- Enables persistent undo, which allows undo history to be saved across
 -- sessions.
 vim.opt.undofile = true
+
+------------------------------------------------------------------------------
+--- Netrw (file explorer)
+------------------------------------------------------------------------------
+
+-- Open netrw in a vertical split by default
+vim.g.netrw_browse_split = 4
+
+-- Hide banner at the top
+vim.g.netrw_banner = 0
+
+-- List style: 0=thin, 1=long, 2=tree, 3=longtree
+vim.g.netrw_liststyle = 1
+
+-- Open files in the same window
+vim.g.netrw_browse_split = 0
+
+-- Sort directories first
+vim.g.netrw_sort_by = "name"
+vim.g.netrw_sort_sequence = [[[\/]$,*]]

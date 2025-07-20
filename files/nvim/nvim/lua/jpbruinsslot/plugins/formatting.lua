@@ -22,9 +22,11 @@ return {
 				markdown = { "prettier_md" }, -- use custom formatter for markdown
 				python = { "isort", "ruff_format" },
 				rust = { "rustfmt" },
+				scss = { "prettier" },
+				sass = { "prettier" },
 				sh = { "shfmt" },
 				yaml = { "prettier" },
-				["*"] = { "codespell" },
+				["*"] = {},
 			},
 			formatters = {
 				prettier_md = {
