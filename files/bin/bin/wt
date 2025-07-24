@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+set -e
+
+checkout_command() {
+    local branch=$1
+
+    if [ -z "$branch" ]; then
+        echo "Error: Branch name is required for checkout command."
+        exit 1
+    fi
+
+    # Check if worktree directory already exists
+    if [ -d "$branch" ]; then
+        echo "Worktree for branch '$branch' already exists. Changing to directory '$branch'."
+        echo "cd \"$branch\""
+        return 0
+    fi
+
+    # Check if branch exists locally
+    if ! git show-ref --verify --quiet "refs/heads/$branch"; then
+        echo "Branch '$branch' does not exist locally. Attempting to create it from origin/$branch or as a new branch..."
+        git fetch origin "$branch" 2>/dev/null || true                            # Fetch, ignore errors if remote branch doesn't exist
+        git branch "$branch" "origin/$branch" 2>/dev/null || git branch "$branch" # Create from origin or as new
+    fi
+
+    # Create worktree in folder named after branch
+    git worktree add "$branch" "$branch"
+    echo "cd \"$branch\""
+}
+
+list_command() {
+    git worktree list
+}
+
+remove_command() {
+    local branch=$1
+
+    if [ -z "$branch" ]; then
+        echo "Error: Branch name is required for remove command."
+        exit 1
+    fi
+
+    local worktree_path=$(git worktree list --porcelain | grep "^worktree $branch" | sed -n 's/^worktree //p')
+
+    if [ -z "$worktree_path" ]; then
+        echo "Error: No worktree found for branch '$branch'."
+        exit 1
+    fi
+
+    echo "Removing worktree at: $worktree_path"
+    git worktree remove "$worktree_path" || true # Allow removal to fail if already removed or other issues
+    rm -rf "$worktree_path"
+    echo "Worktree for branch '$branch' removed."
+}
+
+prune_command() {
+    echo "Pruning git worktrees..."
+    git worktree prune
+    echo "Git worktrees pruned."
+}
+
+main() {
+    local command=$1
+    local arg=$2
+
+    case "$command" in
+    checkout)
+        checkout_command "$arg"
+        ;;
+    list)
+        list_command
+        ;;
+    remove)
+        remove_command "$arg"
+        ;;
+    prune)
+        prune_command
+        ;;
+    *)
+        echo "Usage: wt <command> [arguments]"
+        echo ""
+        echo "Commands:"
+        echo "  checkout <branch-name>  Create and checkout a new worktree for the specified branch."
+        echo "  list                    List all existing git worktrees."
+        echo "  remove <branch-name>    Remove a specified worktree and its associated directory."
+        echo "  prune                   Prune (remove) stale git worktree entries."
+        exit 1
+        ;;
+    esac
+}
+
+main "$@"
+
