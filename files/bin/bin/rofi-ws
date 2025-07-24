@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# Get current workspace
+current_desktop=$(wmctrl -d | awk '$2 == "*" {print $1}')
+
+# Collect window list on current workspace
+wmctrl -l | awk -v desk="$current_desktop" '$2 == desk' | while read -r line; do
+    win_id=$(echo "$line" | awk '{print $1}')
+    title=$(echo "$line" | cut -d ' ' -f4-)
+
+    # Get program name (WM_CLASS)
+    class=$(xprop -id "$win_id" WM_CLASS 2>/dev/null | awk -F '"' '{print $4}')
+
+    # Print for rofi: <win_id>\t<program – title>
+    printf "%s\t%s – %s\n" "$win_id" "$class" "$title"
+done | rofi -dmenu -i -p "Windows" | cut -f1 | xargs -r wmctrl -ia
