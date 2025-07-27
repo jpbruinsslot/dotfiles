@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+ADDRESS="E6:5B:C3:7E:77:19"
+CONTROL_UUID="99fa0001-338a-1024-8a49-009c0215f78a"
+
+# Commands to move the desk
+MOVE_UP="0x47 0x00"
+MOVE_DOWN="0x46 0x00"
+
+# Function to move the desk
+move_desk() {
+	local command=$1
+	echo "Connecting to desk at $ADDRESS"
+	gatttool -b "$ADDRESS" --char-write-req --handle="$CONTROL_UUID" --value="$command"
+	echo "Desk moved with command $command"
+}
+
+# User input to move up or down
+read -p "Enter 'up' to move up or 'down' to move down: " direction
+
+if [ "$direction" == "up" ]; then
+	move_desk "$MOVE_UP"
+elif [ "$direction" == "down" ]; then
+	move_desk "$MOVE_DOWN"
+else
+	echo "Invalid command. Use 'up' or 'down'."
+fi

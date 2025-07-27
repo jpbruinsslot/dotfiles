@@ -3,42 +3,42 @@ now=$(date +"%I")
 
 case $now in
 12)
-	echo ""
-	;;
+    echo ""
+    ;;
 01)
-	echo ""
-	;;
+    echo ""
+    ;;
 02)
-	echo ""
-	;;
+    echo ""
+    ;;
 03)
-	echo ""
-	;;
+    echo ""
+    ;;
 04)
-	echo ""
-	;;
+    echo ""
+    ;;
 05)
-	echo ""
-	;;
+    echo ""
+    ;;
 06)
-	echo ""
-	;;
+    echo ""
+    ;;
 07)
-	echo ""
-	;;
+    echo ""
+    ;;
 08)
-	echo ""
-	;;
+    echo ""
+    ;;
 09)
-	echo ""
-	;;
+    echo ""
+    ;;
 10)
-	echo ""
-	;;
+    echo ""
+    ;;
 11)
-	echo ""
-	;;
+    echo ""
+    ;;
 *)
-	echo "here"
-	;;
+    echo "here"
+    ;;
 esac

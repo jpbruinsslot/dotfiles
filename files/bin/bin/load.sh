@@ -1,47 +1,8 @@
 #!/usr/bin/env bash
 
-# Calculates the overall CPU utilization percentage from /proc/stat over a 1-second interval.
+# Gets the 1-minute CPU load average.
 get_cpu_load() {
-    local cpu_stats_before=($(grep '^cpu ' /proc/stat))
-    local user_before=${cpu_stats_before[1]:-0}
-    local nice_before=${cpu_stats_before[2]:-0}
-    local system_before=${cpu_stats_before[3]:-0}
-    local idle_before=${cpu_stats_before[4]:-0}
-    local iowait_before=${cpu_stats_before[5]:-0}
-    local irq_before=${cpu_stats_before[6]:-0}
-    local softirq_before=${cpu_stats_before[7]:-0}
-    local steal_before=${cpu_stats_before[8]:-0}
-    local guest_before=${cpu_stats_before[9]:-0}
-
-    local total_cpu_time_before=$((user_before + nice_before + system_before + idle_before + iowait_before + irq_before + softirq_before + steal_before + guest_before))
-    local idle_time_before=$idle_before
-
-    sleep 1
-
-    local cpu_stats_after=($(grep '^cpu ' /proc/stat))
-    local user_after=${cpu_stats_after[1]:-0}
-    local nice_after=${cpu_stats_after[2]:-0}
-    local system_after=${cpu_stats_after[3]:-0}
-    local idle_after=${cpu_stats_after[4]:-0}
-    local iowait_after=${cpu_stats_after[5]:-0}
-    local irq_after=${cpu_stats_after[6]:-0}
-    local softirq_after=${cpu_stats_after[7]:-0}
-    local steal_after=${cpu_stats_after[8]:-0}
-    local guest_after=${cpu_stats_after[9]:-0}
-
-    local total_cpu_time_after=$((user_after + nice_after + system_after + idle_after + iowait_after + irq_after + softirq_after + steal_after + guest_after))
-    local idle_time_after=$idle_after
-
-    # Calculate differences
-    local total_diff=$((total_cpu_time_after - total_cpu_time_before))
-    local idle_diff=$((idle_time_after - idle_time_before))
-
-    # Calculate CPU usage percentage
-    if (( total_diff > 0 )); then
-        echo $(( (total_diff - idle_diff) * 100 / total_diff ))
-    else
-        echo 0
-    fi
+    awk '{printf "%.2f", $1}' /proc/loadavg
 }
 
 # Calculates the memory usage percentage.
@@ -133,8 +94,7 @@ main() {
     cpu_temp=$(get_cpu_temp)
     net_speeds=$(get_network_speeds)
 
-    printf " %d°C  %2d%%  %2d%% ⮃ %s\n" "$cpu_temp" "$cpu_load" "$mem_load" "$net_speeds"
+    printf " %d°C  %s  %2d%% ⮃ %s\n" "$cpu_temp" "$cpu_load" "$mem_load" "$net_speeds"
 }
 
 main
-

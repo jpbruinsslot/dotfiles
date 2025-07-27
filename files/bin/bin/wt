@@ -1,5 +1,37 @@
 #!/usr/bin/env bash
 set -e
+#
+# wt
+#
+# This script provides a convenient wrapper around `git worktree` commands,
+# simplifying common worktree operations such as creating, listing, removing,
+# and pruning worktrees. It aims to streamline the workflow for managing
+# multiple working directories for a single Git repository.
+#
+# Features:
+# - `checkout <branch-name>`: Creates a new worktree for the specified branch.
+#   If the branch doesn't exist locally, it attempts to create it from `origin/<branch-name>`
+#   or as a new, empty branch. If the worktree already exists, it provides a `cd` command.
+# - `list`: Lists all existing git worktrees.
+# - `remove <branch-name>`: Removes a specified worktree and its associated directory.
+# - `prune`: Prunes (removes) stale git worktree entries.
+#
+# Dependencies:
+# - `git` (specifically `git worktree` functionality).
+#
+# Usage:
+#   wt <command> [arguments]
+#
+# Commands:
+#   checkout <branch-name>  Create and checkout a new worktree for the specified branch.
+#                           Example: `wt checkout feature/new-feature`
+#   list                    List all existing git worktrees.
+#                           Example: `wt list`
+#   remove <branch-name>    Remove a specified worktree and its associated directory.
+#                           Example: `wt remove old-feature`
+#   prune                   Prune (remove) stale git worktree entries.
+#                           Example: `wt prune`
+#
 
 checkout_command() {
     local branch=$1
