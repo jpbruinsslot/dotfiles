@@ -94,12 +94,15 @@ set keyseq-timeout 50
 # Custom mode strings for modes
 # set vi-cmd-mode-string "\1\e[48;5;4m\2\1\e[1;38;5;18m\2 N \1\e[0m\2 \1\e[0 q\2"
 # set vi-ins-mode-string "\1\e[48;5;7m\2\1\e[1;38;5;18m\2 I \1\e[0m\2 \1\e[0 q\2"
-set vi-cmd-mode-string \1\e[31;1m\2 ≡ \1\e[0m\2
-set vi-ins-mode-string \1\e[31;1m\2 > \1\e[0m\2
+# set vi-cmd-mode-string \1\e[31;1m\2 ≡ \1\e[0m\2
+# set vi-ins-mode-string \1\e[31;1m\2 > \1\e[0m\2
 # set vi-ins-mode-string \1\e[31;1m\2> \1\e[0m\2
 # set vi-cmd-mode-string \1\e[31;1m\2# \1\e[0m\2
 # set vi-cmd-mode-string "\1\e[0 q\2"
 # set vi-ins-mode-string "\1\e[6 q\2"
+set vi-cmd-mode-string \1\e[31;1m\2 ■ \1\e[0m\2
+set vi-ins-mode-string \1\e[31;1m\2 ⯈ \1\e[0m\2
+
 
 # Keymaps for when we're in command mode
 set keymap vi-command
