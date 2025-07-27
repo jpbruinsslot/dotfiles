@@ -27,14 +27,13 @@ vim.keymap.set("n", "<leader>h", "<C-W>s")
 vim.keymap.set("n", "<leader>=", "<C-W>=")
 
 -- Useful mappings for managing tabs
-vim.keymap.set("n", "tn", ":tabnew<CR>")
+vim.keymap.set("n", "tt", ":tabnew<CR>")
 vim.keymap.set("n", "tc", ":tabclose<CR>")
-vim.keymap.set("n", "to", ":tabonly<CR>")
 vim.keymap.set("n", "tm", ":tabmove<CR>")
 vim.keymap.set("n", "tr", ":tabrename<CR>")
 
 -- Tab navigation
-vim.keymap.set("n", "th", ":tabprevious<CR>")
+vim.keymap.set("n", "tn", ":tabprevious<CR>")
 vim.keymap.set("n", "tl", ":tabnext<CR>")
 
 -- Opens a new tab with the current buffer's path
