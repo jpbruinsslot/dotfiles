@@ -8,11 +8,25 @@ return {
 			options = {
 				theme = "auto",
 				icons_enabled = true,
+				disabled_filetypes = { statusline = { "neo-tree" } },
 				globalstatus = true,
 			},
 			sections = {
-				lualine_a = { "mode" },
-				lualine_b = { "branch" },
+				lualine_a = {
+					{
+						"mode",
+						separator = { right = "" },
+						fmt = function(str)
+							return " " .. str
+						end,
+					},
+				},
+				lualine_b = {
+					{
+						"branch",
+						separator = { right = "" },
+					},
+				},
 				lualine_c = { "filename" },
 				lualine_x = {
 					{
@@ -36,7 +50,7 @@ return {
 				lualine_z = {},
 			},
 			tabline = {},
-			extensions = { "nvim-tree" },
+			extensions = { "neo-tree" },
 		})
 	end,
 }
