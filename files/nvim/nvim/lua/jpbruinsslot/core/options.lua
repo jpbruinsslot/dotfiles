@@ -138,5 +138,5 @@ vim.g.netrw_liststyle = 1
 vim.g.netrw_browse_split = 0
 
 -- Sort directories first
-vim.g.netrw_sort_by = "name"
+vim.g.netrw_sort_by = "none"
 vim.g.netrw_sort_sequence = [[[\/]$,*]]

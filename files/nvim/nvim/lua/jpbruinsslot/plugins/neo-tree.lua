@@ -33,7 +33,11 @@ return {
 					["<cr>"] = "open_with_window_picker",
 					["o"] = "set_root",
 					["."] = "toggle_hidden",
+					["/"] = "none", -- Disable default '/' mapping
 				},
+			},
+			filesystem = {
+				hijack_netrw_behavior = "disabled", -- Disable netrw hijacking
 			},
 		})
 
