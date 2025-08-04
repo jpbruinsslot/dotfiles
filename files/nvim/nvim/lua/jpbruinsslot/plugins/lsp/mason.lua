@@ -34,9 +34,13 @@ return {
 				"pyright",
 				"rust_analyzer",
 				"bashls",
+				"html",
+				"ts_ls",
+				"somesass_ls",
+				"eslint",
 			},
 
-			-- auto-install  configure servers (with lspconfig)
+			-- auto-install configure servers (with lspconfig)
 			automatic_installation = true,
 		})
 
