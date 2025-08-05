@@ -43,6 +43,7 @@
 # resize-overlay-duration = 4s 200ms
 
 theme = catppuccin-frappe
+font-family = Berkeley Mono
 # font-feature = -liga
 # font-feature = -calt
 # font-feature = -dlig
