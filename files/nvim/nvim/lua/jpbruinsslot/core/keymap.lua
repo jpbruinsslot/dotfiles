@@ -34,7 +34,7 @@ vim.keymap.set("n", "tr", ":tabrename<CR>")
 
 -- Tab navigation
 vim.keymap.set("n", "tn", ":tabprevious<CR>")
-vim.keymap.set("n", "tl", ":tabnext<CR>")
+vim.keymap.set("n", "to", ":tabnext<CR>")
 
 -- Opens a new tab with the current buffer's path
 vim.keymap.set("n", "<leader>te", ":tabedit %:p:h<CR>")

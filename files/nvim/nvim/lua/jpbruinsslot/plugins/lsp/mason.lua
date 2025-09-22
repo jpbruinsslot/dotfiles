@@ -38,6 +38,7 @@ return {
 				"ts_ls",
 				"somesass_ls",
 				"eslint",
+				"svelte",
 			},
 
 			-- auto-install configure servers (with lspconfig)

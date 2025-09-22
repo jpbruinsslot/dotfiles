@@ -46,6 +46,7 @@ return {
 					"markdown_inline",
 					"query",
 					"rust",
+					"svelte",
 					"tsv",
 					"vim",
 					"vimdoc",

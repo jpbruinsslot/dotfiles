@@ -205,3 +205,13 @@ alias pubkey_gpg="gpg --armor --export | xclip -selection clipboard | echo '=> P
 #
 # Pipe my private gpg key to my clipboard.
 alias prikey_gpg="gpg --armor --export-secret-keys | xclip -selection clipboard | echo '=> Private key copied to pasteboard.'"
+
+# $ netrw
+#
+# Open netrw in Neovim
+alias netrw="nvim -c ':Ex'"
+
+# $ week
+#
+# Show the current week number
+alias week="date +%V"
