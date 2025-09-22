@@ -9,7 +9,8 @@ set -e
 # multiple working directories for a single Git repository.
 #
 # Features:
-# - `checkout <branch-name>`: Creates a new worktree for the specified branch.
+# - `checkout <branch-name> [base-branch]`: Creates a new worktree for the specified branch.
+#   If `base-branch` is provided, the new branch is based on it.
 #   If the branch doesn't exist locally, it attempts to create it from `origin/<branch-name>`
 #   or as a new, empty branch. If the worktree already exists, it provides a `cd` command.
 # - `list`: Lists all existing git worktrees.
@@ -23,8 +24,9 @@ set -e
 #   wt <command> [arguments]
 #
 # Commands:
-#   checkout <branch-name>  Create and checkout a new worktree for the specified branch.
+#   checkout <branch-name> [base-branch]  Create and checkout a new worktree for the specified branch.
 #                           Example: `wt checkout feature/new-feature`
+#                           Example: `wt checkout feature/another-feature main`
 #   list                    List all existing git worktrees.
 #                           Example: `wt list`
 #   remove <branch-name>    Remove a specified worktree and its associated directory.
@@ -35,28 +37,42 @@ set -e
 
 checkout_command() {
     local branch=$1
+    local base_branch=$2
 
     if [ -z "$branch" ]; then
         echo "Error: Branch name is required for checkout command."
         exit 1
     fi
 
-    # Check if worktree directory already exists
     if [ -d "$branch" ]; then
         echo "Worktree for branch '$branch' already exists. Changing to directory '$branch'."
         echo "cd \"$branch\""
         return 0
     fi
 
-    # Check if branch exists locally
-    if ! git show-ref --verify --quiet "refs/heads/$branch"; then
-        echo "Branch '$branch' does not exist locally. Attempting to create it from origin/$branch or as a new branch..."
-        git fetch origin "$branch" 2>/dev/null || true                            # Fetch, ignore errors if remote branch doesn't exist
-        git branch "$branch" "origin/$branch" 2>/dev/null || git branch "$branch" # Create from origin or as new
+    # If branch exists, just create worktree
+    if git show-ref --verify --quiet "refs/heads/$branch"; then
+        git worktree add "$branch" "$branch"
+        echo "cd \"$branch\""
+        return 0
     fi
 
-    # Create worktree in folder named after branch
-    git worktree add "$branch" "$branch"
+    # Branch does not exist, create it and the worktree
+    if [ -n "$base_branch" ]; then
+        echo "Creating new branch '$branch' from '$base_branch' and checking it out."
+        git worktree add -b "$branch" "$branch" "$base_branch"
+    else
+        echo "Branch '$branch' does not exist locally. Attempting to create from origin or as a new branch from HEAD."
+        # Fetch from origin to see if the branch exists there
+        git fetch origin "$branch" --quiet 2>/dev/null
+        # Try to create from remote tracking branch first.
+        if git rev-parse --verify --quiet "origin/$branch" > /dev/null; then
+            git worktree add --track -b "$branch" "$branch"
+        else
+            # Create a new branch from HEAD
+            git worktree add -b "$branch" "$branch"
+        fi
+    fi
     echo "cd \"$branch\""
 }
 
@@ -81,7 +97,6 @@ remove_command() {
 
     echo "Removing worktree at: $worktree_path"
     git worktree remove "$worktree_path" || true # Allow removal to fail if already removed or other issues
-    rm -rf "$worktree_path"
     echo "Worktree for branch '$branch' removed."
 }
 
@@ -93,17 +108,18 @@ prune_command() {
 
 main() {
     local command=$1
-    local arg=$2
+    local arg1=$2
+    local arg2=$3
 
     case "$command" in
     checkout)
-        checkout_command "$arg"
+        checkout_command "$arg1" "$arg2"
         ;;
     list)
         list_command
         ;;
     remove)
-        remove_command "$arg"
+        remove_command "$arg1"
         ;;
     prune)
         prune_command
@@ -112,7 +128,7 @@ main() {
         echo "Usage: wt <command> [arguments]"
         echo ""
         echo "Commands:"
-        echo "  checkout <branch-name>  Create and checkout a new worktree for the specified branch."
+        echo "  checkout <branch-name> [base-branch]  Create and checkout a new worktree for the specified branch."
         echo "  list                    List all existing git worktrees."
         echo "  remove <branch-name>    Remove a specified worktree and its associated directory."
         echo "  prune                   Prune (remove) stale git worktree entries."
@@ -122,4 +138,3 @@ main() {
 }
 
 main "$@"
-
