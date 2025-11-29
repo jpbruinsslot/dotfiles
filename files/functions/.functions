@@ -305,7 +305,7 @@ function deb() {
 
 # $ viddl [url] [dir]
 #
-# Download vid from url and place it in dir, uses youtube-dl
+# Download vid from url and place it in dir, uses yt-dlp
 function viddl() {
     local url=${1}
     local dir=${2:-$PWD}
@@ -322,8 +322,8 @@ function viddl() {
             --no-check-certificate \
             -o "$dir/%(title)s.%(ext)s" "$url" \
             -f bestvideo[ext=mp4]+bestaudio[ext=m4a] \
-            --merge-output-format mp4 \
-            else
+            --merge-output-format mp4
+    else
         echo "Usage: viddl [url] [dir]"
     fi
 }
