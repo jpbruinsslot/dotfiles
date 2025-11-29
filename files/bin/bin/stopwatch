@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+#
+# stopwatch.sh
+#
+# A simple terminal stopwatch that displays elapsed time and plays an audible beep
+# at configurable intervals. The script continuously updates the elapsed time
+# in the terminal and triggers a SoX-generated beep when the specified interval
+# has elapsed.
+#
+# Features:
+# - Displays elapsed time in hh:mm:ss format, updated every second.
+# - Plays a short beep sound every interval using SoX (`play`).
+# - Accepts flexible interval input: supports hours, minutes, and seconds.
+# - Defaults to a 3-minute interval if no argument is provided.
+#
+# Usage:
+#   stopwatch.sh [INTERVAL]
+#
+# Examples:
+#   stopwatch.sh 1m        # Beep every 1 minute
+#   stopwatch.sh 30s       # Beep every 30 seconds
+#   stopwatch.sh 3m30s     # Beep every 3 minutes 30 seconds
+#   stopwatch.sh 1h15m     # Beep every 1 hour 15 minutes
+#
+# Dependencies:
+# - `sox` package providing the `play` command for sound output.
+#   Install with: sudo apt install sox
+#
+DEFAULT_INTERVAL="3m" # Default interval if none provided
+
+# Parse an interval string like "1h15m30s" into total seconds.
+parse_interval() {
+    local input="$1"
+    local total=0
+
+    # Match valid interval format (e.g., 1h15m30s)
+    [[ "$input" =~ ^([0-9]+h)?([0-9]+m)?([0-9]+s)?$ ]] || {
+        echo "❌ Invalid interval format: $input" >&2
+        echo "   Use formats like 1h15m30s, 2m, or 45s" >&2
+        exit 1
+    }
+
+    local hours="${BASH_REMATCH[1]}"
+    local minutes="${BASH_REMATCH[2]}"
+    local seconds="${BASH_REMATCH[3]}"
+
+    # Strip trailing letters and default to 0
+    hours="${hours%h}"
+    hours="${hours:-0}"
+    minutes="${minutes%m}"
+    minutes="${minutes:-0}"
+    seconds="${seconds%s}"
+    seconds="${seconds:-0}"
+
+    ((total = hours * 3600 + minutes * 60 + seconds))
+    echo "$total"
+}
+
+beep() {
+    if command -v play >/dev/null 2>&1; then
+        play -q -n synth 0.2 sin 880 >/dev/null 2>&1 &
+    else
+        printf "\a" # fallback terminal bell
+    fi
+}
+
+main() {
+    local input_interval="${1:-$DEFAULT_INTERVAL}"
+    local INTERVAL
+    INTERVAL=$(parse_interval "$input_interval")
+
+    if ((INTERVAL <= 0)); then
+        echo "❌ Interval must be greater than 0 seconds." >&2
+        exit 1
+    fi
+
+    echo "⏱️ Stopwatch started (interval: ${input_interval})"
+    echo "Press Ctrl+C to stop."
+    echo
+
+    SECONDS=0
+    while true; do
+        printf "\rElapsed: %02dh %02dm %02ds" \
+            $((SECONDS / 3600)) $(((SECONDS / 60) % 60)) $((SECONDS % 60))
+        sleep 1
+
+        if ((SECONDS % INTERVAL == 0 && SECONDS != 0)); then
+            printf "\n🔔 -- Interval reached (%dh %02dm %02ds) --\n" \
+                $((SECONDS / 3600)) $(((SECONDS / 60) % 60)) $((SECONDS % 60))
+            beep
+        fi
+    done
+}
+
+main "$@"
