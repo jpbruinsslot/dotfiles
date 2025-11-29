@@ -1,13 +1,8 @@
 # .bash_rc
 #
-# .bash_profile is executed for login shells, while .bashrc is executed for
-# interactive non-login shells. By either logging in with your username and
-# password locally or ssh, the .bash_profile file is executed to configure
-# your shell before the initial command prompt. But, if you're already logged
-# into your machine and open a new terminal window then the .bashrc file
-# is executed before the window command prompt.
-#
-# Source: http://apple.stackexchange.com/a/51038
+# This file is executed for *new interactive, non-login shells* (a shell session
+# that you start *after* you've already logged in, e.g. opening a new terminal
+# window).
 
 export TERM=xterm-256color-italic
 
@@ -32,7 +27,7 @@ shopt -s checkwinsize
 
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
-# shopt -s globstar
+shopt -s globstar
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -61,10 +56,6 @@ if ! shopt -oq posix; then
     fi
 fi
 
-if [[ -f $HOME/.bash_profile ]]; then
-    source $HOME/.bash_profile
-fi
-
 # FZF
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 export FZF_DEFAULT_OPTS='--color=bg+:#3B4252,bg:#2E3440,spinner:#81A1C1,hl:#616E88,fg:#D8DEE9,header:#616E88,info:#81A1C1,pointer:#81A1C1,marker:#81A1C1,fg+:#D8DEE9,prompt:#81A1C1,hl+:#81A1C1'
@@ -72,7 +63,6 @@ export FZF_DEFAULT_OPTS='--color=bg+:#3B4252,bg:#2E3440,spinner:#81A1C1,hl:#616E
 # Rust
 [[ -f "/home/jp/.config/autopackage/paths-bash" ]] && . "/home/jp/.config/autopackage/paths-bash"
 source "$HOME/.cargo/env"
-. "$HOME/.cargo/env"
 
 # NVM (Node Version Manager)
 export NVM_DIR="$HOME/.nvm"
